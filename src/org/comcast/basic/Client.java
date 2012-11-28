@@ -4,10 +4,17 @@
  */
 package org.comcast.basic;
 
+import org.comcast.router.InputChannel;
+
 /**
  *
  * @author Quality of Service
  */
-public class Client {
+public class Client implements Comparable<Client>, InputChannel {
+
+    @Override
+    public int compareTo(Client o) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

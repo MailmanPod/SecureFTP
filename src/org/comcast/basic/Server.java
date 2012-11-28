@@ -33,8 +33,8 @@ public class Server implements Comparable<Server>, OutputChannel {
         config = c;
     }
     
-    public Server(Message[] group, ServerConfig c){
-        messageToSend = new BinaryHeap<>(group);
+    public Server(BinaryHeap<Message> group, ServerConfig c){
+        messageToSend = group;
         client = new FTPClient();
         config = c;
     }
@@ -61,7 +61,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessage(Message message) throws SocketException, IOException, UnderflowException{
+    public void uploadMessage(Message message) throws SocketException, IOException{
         
         FileInputStream fis = null;
         
@@ -86,13 +86,11 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessages(BinaryHeap<Message> messages) throws SocketException, IOException, UnderflowException{
-        
-        BinaryHeap<Message> proc = messages;
+    public void uploadMessages() throws SocketException, IOException, UnderflowException{
         Message toSend = null;
         
-        while (!proc.isEmpty()){
-            toSend = proc.deleteMin();
+        while (!this.messageToSend.isEmpty()){
+            toSend = this.messageToSend.deleteMin();
             uploadMessage(toSend);
         }
     }
@@ -127,7 +125,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void downloadMessages(BinaryHeap<Message> messages) {
+    public void downloadMessages() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

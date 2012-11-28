@@ -6,8 +6,6 @@ package org.comcast.basic;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -94,6 +92,4 @@ public class ServerConfig {
     public void setPassLogin(String passLogin) {
         this.passLogin = passLogin;
     }
-    
-    
 }

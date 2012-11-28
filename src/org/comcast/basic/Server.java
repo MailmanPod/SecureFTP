@@ -25,15 +25,18 @@ public class Server implements Comparable<Server>, OutputChannel {
     private BinaryHeap<Message> messageToSend;
     private int serverPriority;
     private FTPClient client;
+    private ServerConfig config;
     
-    public Server(){
+    public Server(ServerConfig c){
         messageToSend = new BinaryHeap<>();
         client = new FTPClient();
+        config = c;
     }
     
-    public Server(Message[] group){
+    public Server(Message[] group, ServerConfig c){
         messageToSend = new BinaryHeap<>(group);
         client = new FTPClient();
+        config = c;
     }
     
     public void addMessage(Message send){
@@ -58,15 +61,18 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessage(Message message) throws SocketException, IOException{
+    public void uploadMessage(Message message) throws SocketException, IOException, UnderflowException{
         
         FileInputStream fis = null;
         
-        client.connect("localhost");
-        client.login("adminroot", "adminroot");
+        client.connect(config.getIpAddress());
+        client.login(config.getUserLogin(), config.getPassLogin());
         
-        String local = ".\\FTPServer2\\UPLOADER.txt";
-        String remote = "UPLOADER.txt";
+        /*String local = ".\\FTPServer2\\UPLOADER.txt";
+        String remote = "UPLOADER.txt";*/
+        
+        String local = message.getLocalPath();
+        String remote = message.getRemotePath();
         
         client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
         
@@ -80,8 +86,15 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessages(BinaryHeap<Message> messages) throws SocketException, IOException{
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void uploadMessages(BinaryHeap<Message> messages) throws SocketException, IOException, UnderflowException{
+        
+        BinaryHeap<Message> proc = messages;
+        Message toSend = null;
+        
+        while (!proc.isEmpty()){
+            toSend = proc.deleteMin();
+            uploadMessage(toSend);
+        }
     }
 
     /**

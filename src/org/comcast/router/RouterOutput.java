@@ -7,6 +7,7 @@ package org.comcast.router;
 import java.io.IOException;
 import java.net.SocketException;
 import org.comcast.structures.BinaryHeap;
+import org.comcast.structures.OpenAdressingHashTable;
 import org.comcast.structures.SimpleList;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -17,6 +18,7 @@ import org.quartz.JobExecutionException;
  * @author Quality of Service
  */
 public class RouterOutput implements OutputChannel, Job{
+    private static final String ROUTER_SERVICE_NAME = "router_output";
 
     @Override
     public void uploadMessage(Message message) throws SocketException, IOException{
@@ -53,4 +55,12 @@ public class RouterOutput implements OutputChannel, Job{
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    private class RouterWorkerThread implements Runnable{
+
+        @Override
+        public void run() {
+            
+        }
+        
+    }
 }

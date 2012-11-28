@@ -20,6 +20,17 @@ public class Message implements Serializable, Comparable<Message> {
     private InputChannel source;
     private File message;
     private int priority;
+    
+    private String localPath;
+    private String remotePath;
+
+    public Message(InputChannel source, File message, int priority, String localPath, String remotePath) {
+        this.source = source;
+        this.message = message;
+        this.priority = priority;
+        this.localPath = localPath;
+        this.remotePath = remotePath;
+    }
 
     public Message(InputChannel source, File message, int priority) {
         this.source = source;
@@ -71,7 +82,8 @@ public class Message implements Serializable, Comparable<Message> {
 
     @Override
     public String toString() {
-        return "Message{" + "source=" + source + ", message=" + message + ", priority=" + priority + '}';
+        return "Message{" + "source=" + source + ", message=" + message + ", priority=" + priority + 
+                ", localPath=" + localPath + ", remotePath=" + remotePath + '}';
     }
 
     @Override
@@ -81,6 +93,34 @@ public class Message implements Serializable, Comparable<Message> {
         }
         
         return this.getPriority() - o.getPriority();
+    }
+
+    /**
+     * @return the localPath
+     */
+    public String getLocalPath() {
+        return localPath;
+    }
+
+    /**
+     * @param localPath the localPath to set
+     */
+    public void setLocalPath(String localPath) {
+        this.localPath = localPath;
+    }
+
+    /**
+     * @return the remotePath
+     */
+    public String getRemotePath() {
+        return remotePath;
+    }
+
+    /**
+     * @param remotePath the remotePath to set
+     */
+    public void setRemotePath(String remotePath) {
+        this.remotePath = remotePath;
     }
     
 }

@@ -10,6 +10,6 @@ import java.io.Serializable;
  *
  * @author Quality of Service
  */
-public interface InputChannel extends Serializable{
+public interface InputChannel extends Serializable, Comparable<InputChannel> {
     
 }

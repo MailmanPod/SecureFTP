@@ -63,26 +63,34 @@ public class Server implements Comparable<Server>, OutputChannel {
     @Override
     public void uploadMessage(Message message) throws SocketException, IOException {
 
-        FileInputStream fis = null;
+        try {
+            FileInputStream fis = null;
+            client.connect(config.getIpAddress());
+            client.login(config.getUserLogin(), config.getPassLogin());
 
-        client.connect(config.getIpAddress());
-        client.login(config.getUserLogin(), config.getPassLogin());
+            /*String local = ".\\FTPServer2\\UPLOADER.txt";
+             String remote = "UPLOADER.txt";*/
 
-        /*String local = ".\\FTPServer2\\UPLOADER.txt";
-         String remote = "UPLOADER.txt";*/
+            String local = message.getLocalPath();
+            String remote = message.getRemotePath();
 
-        String local = message.getLocalPath();
-        String remote = message.getRemotePath();
+            client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
 
-        client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+            fis = new FileInputStream(local);
+            client.storeFile(remote, fis);
 
-        fis = new FileInputStream(local);
-        client.storeFile(remote, fis);
+            client.noop();
 
-        client.noop();
+            fis.close();
+            client.disconnect();
 
-        fis.close();
-        client.disconnect();
+        } catch (SocketException ex) {
+            client.disconnect();
+            throw new SocketException(ex.getLocalizedMessage());
+        } catch (IOException ex) {
+            client.disconnect();
+            throw new IOException(ex);
+        }
     }
 
     @Override

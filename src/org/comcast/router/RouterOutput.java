@@ -59,6 +59,7 @@ public class RouterOutput implements Job {
         public void run() {
             try {
                 server.uploadMessages();
+                
             } catch (SocketException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();

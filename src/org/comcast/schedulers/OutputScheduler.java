@@ -32,8 +32,10 @@ public class OutputScheduler {
     private BinaryHeap<Message> sender;
     private Server serverSender;
 
-    public OutputScheduler(){
-        
+    public OutputScheduler(ServerConfig config, BinaryHeap<Message> mess){
+        this.configuration = config;
+        this.sender = mess;
+        this.serverSender = new Server(mess, config);
     }
     
     public void startJob() throws SchedulerException {
@@ -51,10 +53,13 @@ public class OutputScheduler {
         System.out.println("------- Scheduling Job  -------------------");
 
         JobDataMap map = new JobDataMap();
-        map.put("nombre_persona", "El pulpito asesino");
+        map.put("comcast.config.serverconfig", this.configuration);
+        map.put("comcast.config.server", this.serverSender);
+        map.put("comcast.data.messages", this.sender);
+        
         // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterOutput.class)
-                .withIdentity("job1", "group1")
+                .withIdentity("Uploading_Files", "group1")
                 .usingJobData(map)
                 .build();
 

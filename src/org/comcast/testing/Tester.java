@@ -28,11 +28,24 @@ public class Tester {
         config.setUserLogin("adminroot");
         config.setPassLogin("adminroot");
 
-        Message archivo = new Message(new Client(), new File("UPLOADER.txt"),
-                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "UPLOADER.txt");
+        Message archivo = new Message(new Client(), new File("RSAPrivate.key"),
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "RSAPrivate.key");
+        
+        Message archivo1 = new Message(new Client(), new File("RSAPublic.key"), 
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "RSAPublic.key");
+        
+        Message archivo2 = new Message(new Client(), new File("UPLOADER.txt"), 
+                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "UPLOADER.txt");
+        
+        Message archivo3 = new Message(new Client(), new File("retrieve.txt"), 
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "retrieve.txt");
 
         BinaryHeap<Message> pila = new BinaryHeap<>();
+        pila.insert(archivo3);
         pila.insert(archivo);
+        pila.insert(archivo2);
+        pila.insert(archivo1);
+        
 
         OutputScheduler s = new OutputScheduler(config, pila);
         s.startJob();

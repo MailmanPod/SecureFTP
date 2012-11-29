@@ -31,12 +31,6 @@ public class Message implements Serializable, Comparable<Message> {
         this.remotePath = remotePath;
     }
 
-    public Message(InputChannel source, File message, int priority) {
-        this.source = source;
-        this.message = message;
-        this.priority = priority;
-    }
-
     /**
      * @return the source
      */

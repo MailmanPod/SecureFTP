@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.comcast.basic;
+package org.comcast.logic;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,6 +39,12 @@ public class Server implements Comparable<Server>, OutputChannel {
         config = c;
     }
 
+    public Server(Message[] group, ServerConfig c){
+        messageToSend = new BinaryHeap<>(group);
+        client = new FTPClient();
+        config = c;
+    }
+    
     public void addMessage(Message send) {
         this.messageToSend.insert(send);
     }

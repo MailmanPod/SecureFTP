@@ -5,8 +5,8 @@
 package org.comcast.schedulers;
 
 import java.util.Date;
-import org.comcast.basic.Server;
-import org.comcast.basic.ServerConfig;
+import org.comcast.logic.Server;
+import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.router.RouterOutput;
 import org.comcast.structures.BinaryHeap;

@@ -6,8 +6,8 @@ package org.comcast.testing;
 
 import java.io.File;
 import java.io.IOException;
-import org.comcast.basic.Client;
-import org.comcast.basic.ServerConfig;
+import org.comcast.logic.Client;
+import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.schedulers.OutputScheduler;
 import org.comcast.structures.BinaryHeap;

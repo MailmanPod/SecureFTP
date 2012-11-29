@@ -61,10 +61,7 @@ public class RouterOutput implements Job{
             } catch (SocketException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();
-            } catch (IOException ex) {
-                System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
-                ex.printStackTrace();
-            } catch (UnderflowException ex) {
+            } catch (    IOException | UnderflowException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();
             }

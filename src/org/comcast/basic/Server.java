@@ -26,70 +26,70 @@ public class Server implements Comparable<Server>, OutputChannel {
     private int serverPriority;
     private FTPClient client;
     private ServerConfig config;
-    
-    public Server(ServerConfig c){
+
+    public Server(ServerConfig c) {
         messageToSend = new BinaryHeap<>();
         client = new FTPClient();
         config = c;
     }
-    
-    public Server(BinaryHeap<Message> group, ServerConfig c){
+
+    public Server(BinaryHeap<Message> group, ServerConfig c) {
         messageToSend = group;
         client = new FTPClient();
         config = c;
     }
-    
-    public void addMessage(Message send){
+
+    public void addMessage(Message send) {
         this.messageToSend.insert(send);
     }
-    
-    public Message takeMessage() throws UnderflowException{
+
+    public Message takeMessage() throws UnderflowException {
         return this.messageToSend.deleteMin();
     }
-    
-    public Message findMaxPriority() throws UnderflowException{
+
+    public Message findMaxPriority() throws UnderflowException {
         return this.messageToSend.findMin();
-    } 
-    
+    }
+
     @Override
     public int compareTo(Server o) {
-        if(o == null){
+        if (o == null) {
             throw new NullObjectParameterException("El objeto servidor esta vacio");
         }
-        
+
         return (this.getServerPriority() - o.getServerPriority());
     }
 
     @Override
-    public void uploadMessage(Message message) throws SocketException, IOException{
-        
+    public void uploadMessage(Message message) throws SocketException, IOException {
+
         FileInputStream fis = null;
-        
+
         client.connect(config.getIpAddress());
         client.login(config.getUserLogin(), config.getPassLogin());
-        
+
         /*String local = ".\\FTPServer2\\UPLOADER.txt";
-        String remote = "UPLOADER.txt";*/
-        
+         String remote = "UPLOADER.txt";*/
+
         String local = message.getLocalPath();
         String remote = message.getRemotePath();
-        
+
         client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
-        
+
         fis = new FileInputStream(local);
         client.storeFile(remote, fis);
-        
+
         client.noop();
-        
+
         fis.close();
         client.disconnect();
     }
 
     @Override
-    public void uploadMessages() throws SocketException, IOException, UnderflowException{
+    public void uploadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
-        
-        while (!this.messageToSend.isEmpty()){
+
+        while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             uploadMessage(toSend);
         }
@@ -128,5 +128,4 @@ public class Server implements Comparable<Server>, OutputChannel {
     public void downloadMessages() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }

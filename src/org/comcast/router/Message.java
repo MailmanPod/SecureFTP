@@ -13,14 +13,13 @@ import org.comcast.exceptions.NullObjectParameterException;
  * @author Quality of Service
  */
 public class Message implements Serializable, Comparable<Message> {
+
     public static final int HIGH_PRIORITY = 1;
     public static final int NORMAL_PRIORITY = 5;
     public static final int LOW_PRIORITY = 10;
-    
     private InputChannel source;
     private File message;
     private int priority;
-    
     private String localPath;
     private String remotePath;
 
@@ -82,16 +81,16 @@ public class Message implements Serializable, Comparable<Message> {
 
     @Override
     public String toString() {
-        return "Message{" + "source=" + source + ", message=" + message + ", priority=" + priority + 
-                ", localPath=" + localPath + ", remotePath=" + remotePath + '}';
+        return "Message{" + "source=" + source + ", message=" + message + ", priority=" + priority
+                + ", localPath=" + localPath + ", remotePath=" + remotePath + '}';
     }
 
     @Override
     public int compareTo(Message o) {
-        if(o == null){
+        if (o == null) {
             throw new NullObjectParameterException("No hay mensaje para comparar <br> El mensaje esta vacio");
         }
-        
+
         return this.getPriority() - o.getPriority();
     }
 
@@ -122,5 +121,4 @@ public class Message implements Serializable, Comparable<Message> {
     public void setRemotePath(String remotePath) {
         this.remotePath = remotePath;
     }
-    
 }

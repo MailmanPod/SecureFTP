@@ -15,18 +15,21 @@ import org.comcast.structures.SimpleList;
  *
  * @author Quality of Service
  */
-public interface OutputChannel extends Serializable{
-    
+public interface OutputChannel extends Serializable {
+
     public static final int MAX_PRIORITY = 1;
     public static final int NORMAL_PRIORITY = 5;
     public static final int LOW_PRIORITY = 10;
-    
+
     public void uploadMessage(Message message) throws SocketException, IOException;
+
     public void uploadMessages() throws SocketException, IOException, UnderflowException;
-    
+
     public void downloadMessage(Message message);
+
     public void downloadMessages();
-    
+
     public Message retrieveMessage();
+
     public SimpleList<Message> retrieveMesseges();
 }

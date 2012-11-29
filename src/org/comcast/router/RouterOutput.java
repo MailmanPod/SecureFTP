@@ -24,7 +24,8 @@ import org.quartz.JobExecutionException;
  *
  * @author Quality of Service
  */
-public class RouterOutput implements Job{
+public class RouterOutput implements Job {
+
     private static final String ROUTER_SERVICE_NAME = "router_output";
 
     @Override
@@ -32,18 +33,18 @@ public class RouterOutput implements Job{
         BinaryHeap<Message> toSend = null;
         ServerConfig serverConfig = null;
         Server server = null;
-        
+
         JobDetail detail = jec.getJobDetail();
         JobDataMap dataMap = detail.getJobDataMap();
-        
+
         serverConfig = (ServerConfig) dataMap.get("comcast.config.serverconfig");
         server = (Server) dataMap.get("comcast.config.server");
         toSend = (BinaryHeap<Message>) dataMap.get("comcast.data.messages");
-        
+
         new RouterWorkerThread(server);
     }
-    
-    private class RouterWorkerThread implements Runnable{
+
+    private class RouterWorkerThread implements Runnable {
 
         private Server server;
         private Thread runner;
@@ -53,7 +54,7 @@ public class RouterOutput implements Job{
             runner = new Thread(this);
             runner.start();
         }
-        
+
         @Override
         public void run() {
             try {
@@ -61,7 +62,7 @@ public class RouterOutput implements Job{
             } catch (SocketException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();
-            } catch (    IOException | UnderflowException ex) {
+            } catch (IOException | UnderflowException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();
             }

@@ -32,12 +32,12 @@ public class OutputScheduler {
     private BinaryHeap<Message> sender;
     private Server serverSender;
 
-    public OutputScheduler(ServerConfig config, BinaryHeap<Message> mess){
+    public OutputScheduler(ServerConfig config, BinaryHeap<Message> mess) {
         this.configuration = config;
         this.sender = mess;
         this.serverSender = new Server(mess, config);
     }
-    
+
     public void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
 
@@ -56,7 +56,7 @@ public class OutputScheduler {
         map.put("comcast.config.serverconfig", this.configuration);
         map.put("comcast.config.server", this.serverSender);
         map.put("comcast.data.messages", this.sender);
-        
+
         // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterOutput.class)
                 .withIdentity("Uploading_Files", "group1")
@@ -81,8 +81,7 @@ public class OutputScheduler {
 
         // wait long enough so that the scheduler as an opportunity to 
         // run the job!
-        System.out.println
-        ("------- Waiting 65 seconds... -------------");
+        System.out.println("------- Waiting 65 seconds... -------------");
         try {
             // wait 65 seconds to show job
             Thread.sleep(65L * 1000L);

@@ -12,9 +12,9 @@ import java.net.UnknownHostException;
  * @author Quality of Service
  */
 public class ServerConfig {
+
     private String ipAddress;
     private String hostName;
-    
     private String userLogin;
     private String passLogin;
 
@@ -23,7 +23,7 @@ public class ServerConfig {
         this.ipAddress = getIPAddress();
     }
 
-    private String getIPAddress(){
+    private String getIPAddress() {
         try {
             InetAddress localhost = InetAddress.getByName(hostName);
             return localhost.getHostAddress();
@@ -31,7 +31,7 @@ public class ServerConfig {
             return "localhost";
         }
     }
-    
+
     @Override
     public String toString() {
         return "ServerConfig{" + "ipAddress=" + getIpAddress() + ", hostName=" + getHostName() + ", userLogin=" + getUserLogin() + '}';

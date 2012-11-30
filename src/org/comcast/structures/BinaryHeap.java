@@ -21,7 +21,7 @@ import org.comcast.exceptions.UnderflowException;
  *
  * @author Mark Allen Weiss
  */
-public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
+public class BinaryHeap<E extends Comparable<? super E>> {
 
     /**
      * Construct the binary heap.
@@ -37,18 +37,18 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
      */
     public BinaryHeap(int capacity) {
         currentSize = 0;
-        array = (AnyType[]) new Comparable[capacity + 1];
+        array = (E[]) new Comparable[capacity + 1];
     }
 
     /**
      * Construct the binary heap given an array of items.
      */
-    public BinaryHeap(AnyType[] items) {
+    public BinaryHeap(E[] items) {
         currentSize = items.length;
-        array = (AnyType[]) new Comparable[(currentSize + 2) * 11 / 10];
+        array = (E[]) new Comparable[(currentSize + 2) * 11 / 10];
 
         int i = 1;
-        for (AnyType item : items) {
+        for (E item : items) {
             array[ i++] = item;
         }
         buildHeap();
@@ -60,7 +60,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
      *
      * @param x the item to insert.
      */
-    public void insert(AnyType x) {
+    public void insert(E x) {
         if (currentSize == array.length - 1) {
             enlargeArray(array.length * 2 + 1);
         }
@@ -74,8 +74,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
     }
 
     private void enlargeArray(int newSize) {
-        AnyType[] old = array;
-        array = (AnyType[]) new Comparable[newSize];
+        E[] old = array;
+        array = (E[]) new Comparable[newSize];
         for (int i = 0; i < old.length; i++) {
             array[ i] = old[ i];
         }
@@ -86,7 +86,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
      *
      * @return the smallest item, or throw an UnderflowException if empty.
      */
-    public AnyType findMin() throws UnderflowException {
+    public E findMin() throws UnderflowException {
         if (isEmpty()) {
             throw new UnderflowException();
         }
@@ -98,12 +98,12 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
      *
      * @return the smallest item, or throw an UnderflowException if empty.
      */
-    public AnyType deleteMin() throws UnderflowException {
+    public E deleteMin() throws UnderflowException {
         if (isEmpty()) {
             throw new UnderflowException();
         }
 
-        AnyType minItem = findMin();
+        E minItem = findMin();
         array[ 1] = array[ currentSize--];
         percolateDown(1);
 
@@ -137,7 +137,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
     }
     private static final int DEFAULT_CAPACITY = 10;
     private int currentSize;      // Number of elements in heap
-    private AnyType[] array; // The heap array
+    private E[] array; // The heap array
 
     /**
      * Internal method to percolate down in the heap.
@@ -146,7 +146,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
      */
     private void percolateDown(int hole) {
         int child;
-        AnyType tmp = array[ hole];
+        E tmp = array[ hole];
 
         for (; hole * 2 <= currentSize; hole = child) {
             child = hole * 2;
@@ -161,5 +161,49 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
             }
         }
         array[ hole] = tmp;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder cadena = new StringBuilder();
+        LocalIterator<E> itr = this.getIterator();
+
+        while (itr.hasMoreElements()) {
+            cadena.append("\n").append(itr.returnElement());
+        }
+
+        return cadena.toString();
+    }
+    
+    public LocalIterator<E> getIterator(){
+        return new Iterator();
+    }
+    
+    private class Iterator implements LocalIterator<E>{
+
+        private int i; 
+        
+        public Iterator(){
+            i = 1;
+        }
+        
+        @Override
+        public boolean hasMoreElements() {
+            return i < (currentSize + 1);
+        }
+
+        @Override
+        public E returnElement() {
+            E buffer = array[i];
+            i++;
+            
+            return buffer;
+        }
+
+        @Override
+        public int size() {
+            return currentSize;
+        }
+        
     }
 }

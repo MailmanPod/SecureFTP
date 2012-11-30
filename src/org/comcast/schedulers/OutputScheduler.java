@@ -5,6 +5,7 @@
 package org.comcast.schedulers;
 
 import java.util.Date;
+import org.comcast.builder.Mail;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
@@ -29,12 +30,14 @@ public class OutputScheduler {
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
-    private BinaryHeap<Message> sender;
+    private BinaryHeap<Message> uploadFiles;
+    private Mail advice;
     private Server serverSender;
 
-    public OutputScheduler(ServerConfig config, BinaryHeap<Message> mess) {
+    public OutputScheduler(ServerConfig config, BinaryHeap<Message> mess, Mail mail) {
         this.configuration = config;
-        this.sender = mess;
+        this.uploadFiles = mess;
+        this.advice = mail;
         this.serverSender = new Server(mess, config);
     }
 
@@ -54,7 +57,8 @@ public class OutputScheduler {
         JobDataMap map = new JobDataMap();
         map.put("comcast.config.serverconfig", this.configuration);
         map.put("comcast.config.server", this.serverSender);
-        map.put("comcast.data.messages", this.sender);
+        map.put("comcast.data.messages", this.uploadFiles);
+        map.put("comcast.data.mail", this.advice);
 
         // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterOutput.class)

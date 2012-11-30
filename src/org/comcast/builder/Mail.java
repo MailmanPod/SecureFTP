@@ -5,13 +5,16 @@
 package org.comcast.builder;
 
 import java.util.Properties;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  *
@@ -25,8 +28,8 @@ public class Mail {
     private String subject;
     private String mailText;
     private String sendProtocol;
-    private String userName;
-    private String userPassword;
+    private String mailUserName;
+    private String mailUserPassword;
     
     private Session session;
     private MimeMessage message;
@@ -116,38 +119,38 @@ public class Mail {
     }
 
     /**
-     * @return the userName
+     * @return the mailUserName
      */
-    public String getUserName() {
-        return userName;
+    public String getMailUserName() {
+        return mailUserName;
     }
 
     /**
-     * @param userName the userName to set
+     * @param mailUserName the mailUserName to set
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setMailUserName(String mailUserName) {
+        this.mailUserName = mailUserName;
     }
 
     /**
-     * @return the userPassword
+     * @return the mailUserPassword
      */
-    public String getUserPassword() {
-        return userPassword;
+    public String getMailUserPassword() {
+        return mailUserPassword;
     }
 
     /**
-     * @param userPassword the userPassword to set
+     * @param mailUserPassword the mailUserPassword to set
      */
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setMailUserPassword(String mailUserPassword) {
+        this.mailUserPassword = mailUserPassword;
     }
 
     @Override
     public String toString() {
         return "Mail{" + "properties=" + properties + ", session=" + session
                 + ", from=" + from + ", recipients=" + recipient + ", subject=" + subject + ", mailText="
-                + mailText + ", sendProtocol=" + sendProtocol + ", userName=" + userName + ", userPassword=" + userPassword + '}';
+                + mailText + ", sendProtocol=" + sendProtocol + ", userName=" + mailUserName + ", userPassword=" + mailUserPassword + '}';
     }
 
     public void initSession() {
@@ -160,13 +163,21 @@ public class Mail {
         message.addRecipient(
                 Message.RecipientType.TO,
                 new InternetAddress(this.recipient));
-        message.setSubject("System Configuration");
-        message.setText(this.mailText);
+        
+        
+        BodyPart cuerpo = new MimeBodyPart();
+        cuerpo.setText(this.mailText);
+        
+        MimeMultipart multiParte = new MimeMultipart();
+        multiParte.addBodyPart(cuerpo);
+        
+        message.setSubject(this.subject);
+        message.setContent(multiParte, "multipart/alternative");
     }
 
     public void sendMail() throws NoSuchProviderException, MessagingException {
         Transport t = session.getTransport(this.sendProtocol);
-        t.connect(this.userName, this.userPassword);
+        t.connect(this.mailUserName, this.mailUserPassword);
         t.sendMessage(message, message.getAllRecipients());
     }
 }

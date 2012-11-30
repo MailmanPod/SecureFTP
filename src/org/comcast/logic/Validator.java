@@ -235,7 +235,7 @@ public class Validator {
      * false, en caso contrario.
      */
     public static boolean isPassword(String toValid) {
-        Pattern patron = Pattern.compile("(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.n])(?=.*[A-Z])(?=.*[a-z]).*$");
+        Pattern patron = Pattern.compile("(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$");
         Pattern patron2 = Pattern.compile("^\\s|\\s|\\s$|^$");
         Matcher m = patron.matcher(toValid);
         Matcher m2 = patron2.matcher(toValid);
@@ -272,4 +272,38 @@ public class Validator {
         return m.matches();
     }
     
+    public static boolean isMail(String toValid){
+        Pattern patron = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$");
+        Pattern patron2 = Pattern.compile("^\\s|\\s|\\s$|^$");
+        Matcher m = patron.matcher(toValid);
+        Matcher m2 = patron2.matcher(toValid);
+
+        if (m2.find()) {
+            return false;
+        }
+
+        return m.matches();
+    }
+    
+    public static boolean isMailSubject(String toValid){
+        Pattern patron = Pattern.compile("([a-zA-Z]|[0-9]|\\[|\\]|\\(|\\)|\\s|\\?|\\¿|\\!|\\¡|\\&|\\:|\\.|\\-|\\_|\\*)+");
+        Pattern patron2 = Pattern.compile("^\\s|\\s$|^$");
+        
+        Matcher m = patron.matcher(toValid);
+        Matcher m2 = patron2.matcher(toValid);
+
+        if (m2.find()) {
+            return false;
+        }
+
+        return m.matches();
+    }
+    
+    public static boolean isTextEmpty(String toValid){
+        Pattern patron2 = Pattern.compile("^\\s|\\s$|^$");
+        
+        Matcher m2 = patron2.matcher(toValid);
+        
+        return !m2.find();
+    }
 }

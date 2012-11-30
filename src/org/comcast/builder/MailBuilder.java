@@ -6,6 +6,7 @@ package org.comcast.builder;
 
 import java.util.Properties;
 import javax.mail.Session;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.Validator;
 
 /**
@@ -40,33 +41,96 @@ public class MailBuilder {
     
     public void buildFrom(String from){
         
-        
+        if(from != null && Validator.isMail(from)){
+            this.mail.setFrom(from);
+        }
     }
     
     public void buildRecipient(String recipient){
         
-        
+        if(recipient != null && Validator.isMail(recipient)){
+            this.mail.setRecipient(recipient);
+        }
     }
     
     public void buildSubject(String subject){
         
+        if(subject != null && Validator.isMailSubject(subject)){
+            this.mail.setSubject(subject);
+        }
     }
     
     public void buildMailText(String mailText){
         
+        if(mailText != null && Validator.isTextEmpty(mailText)){
+            this.mail.setMailText(mailText);
+        }
     }
     
     public void buildSendProtocol(String protocol){
         
-        if(Validator.isText(protocol)){
+        if(protocol != null && Validator.isText(protocol)){
             this.mail.setSendProtocol(protocol);
         }
     }
     
-    public void buildUserName(String userName){
+    public void buildMailUserName(String mailUserName){
         
-        if(Validator.isUserName(userName)){
-            this.mail.setUserName(userName);
+        if(mailUserName != null && Validator.isMail(mailUserName)){
+            this.mail.setMailUserName(mailUserName);
         }
+    }
+    
+    public void buildMailUserPassword(String mailUserPassword){
+     
+        if(mailUserPassword != null && Validator.isPassword(mailUserPassword)){
+            this.mail.setMailUserPassword(mailUserPassword);
+        }
+    }
+    
+    public Mail getMail() throws InformationRequiredException{
+        this.requiredElements = 0;
+        
+        if(mail.getProperties() == null){
+            this.requiredElements += PROPERTIES;
+        }
+        
+        if(mail.getFrom() == null){
+            this.requiredElements += FROM;
+        }
+        
+        if(mail.getRecipient() == null){
+            this.requiredElements += RECIPIENTS;
+        }
+        
+        if(mail.getSubject() == null){
+            this.requiredElements += SUBJECT;
+        }
+        
+        if(mail.getMailText() == null){
+            this.requiredElements += MAIL_TEXT;
+        }
+        
+        if(mail.getSendProtocol() == null){
+            this.requiredElements += SEND_PROTOCOL;
+        }
+        
+        if(mail.getMailUserName() == null){
+            this.requiredElements += USER_NAME;
+        }
+        
+        if(mail.getMailUserPassword() == null){
+            this.requiredElements += USER_PASSWORD;
+        }
+        
+        if(this.requiredElements > 0){
+            throw new InformationRequiredException("Faltan datos requeridos para enviar el mail");
+        }
+        
+        return this.mail;
+    }
+    
+    public int getRequiredElements(){
+        return this.requiredElements;
     }
 }

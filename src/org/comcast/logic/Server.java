@@ -39,22 +39,10 @@ public class Server implements Comparable<Server>, OutputChannel {
         config = c;
     }
 
-    public Server(Message[] group, ServerConfig c){
+    public Server(Message[] group, ServerConfig c) {
         messageToSend = new BinaryHeap<>(group);
         client = new FTPClient();
         config = c;
-    }
-    
-    public void addMessage(Message send) {
-        this.messageToSend.insert(send);
-    }
-
-    public Message takeMessage() throws UnderflowException {
-        return this.messageToSend.deleteMin();
-    }
-
-    public Message findMaxPriority() throws UnderflowException {
-        return this.messageToSend.findMin();
     }
 
     @Override

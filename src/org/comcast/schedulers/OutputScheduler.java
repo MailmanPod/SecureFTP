@@ -51,7 +51,6 @@ public class OutputScheduler {
         Date runTime = evenMinuteDate(new Date());
 
         System.out.println("------- Scheduling Job  -------------------");
-
         JobDataMap map = new JobDataMap();
         map.put("comcast.config.serverconfig", this.configuration);
         map.put("comcast.config.server", this.serverSender);

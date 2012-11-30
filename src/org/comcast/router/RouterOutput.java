@@ -6,14 +6,10 @@ package org.comcast.router;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.structures.BinaryHeap;
-import org.comcast.structures.OpenAdressingHashTable;
-import org.comcast.structures.SimpleList;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -59,7 +55,7 @@ public class RouterOutput implements Job {
         public void run() {
             try {
                 server.uploadMessages();
-                
+
             } catch (SocketException ex) {
                 System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
                 ex.printStackTrace();

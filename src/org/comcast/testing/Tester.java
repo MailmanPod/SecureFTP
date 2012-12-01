@@ -35,23 +35,27 @@ public class Tester {
         config.setUserLogin("adminroot");
         config.setPassLogin("adminroot");
 
-        Message archivo = new Message(new Client(), new File("RSAPrivate.key"),
+        Message archivo = new Message(new Client(),
                 Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "RSAPrivate.key");
 
-        Message archivo1 = new Message(new Client(), new File("RSAPublic.key"),
+        Message archivo1 = new Message(new Client(),
                 Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "RSAPublic.key");
 
-        Message archivo2 = new Message(new Client(), new File("UPLOADER.txt"),
-                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "UPLOADER.txt");
-
-        Message archivo3 = new Message(new Client(), new File("retrieve.txt"),
+        Message archivo3 = new Message(new Client(),
                 Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "retrieve.txt");
+
+        Message archivo4 = new Message(new Client(),
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "dynamic.txt");
+
+        Message archivo2 = new Message(new Client(),
+                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "UPLOADER.txt");
 
         BinaryHeap<Message> pila = new BinaryHeap<>();
         pila.insert(archivo3);
         pila.insert(archivo);
         pila.insert(archivo2);
         pila.insert(archivo1);
+        pila.insert(archivo4);
 
         Properties props = new Properties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");
@@ -66,10 +70,10 @@ public class Tester {
         builder.buildRecipient("brueradamian@gmail.com");
         builder.buildSubject("Prueba completa");
         builder.buildSendProtocol("smtp");
-        builder.buildMailText("Monospaced");
+        builder.buildMailText("FTPClient running");
         builder.buildMailUserName("brueradamian@gmail.com");
         builder.buildMailUserPassword("www.640intelPRO.net");
-        
+
         Mail m = builder.getMail();
 
         OutputScheduler s = new OutputScheduler(config, pila, m);

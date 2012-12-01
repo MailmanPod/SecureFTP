@@ -8,13 +8,13 @@ package org.comcast.exceptions;
  *
  * @author Quality of Service
  */
-public class InformationRequiredException extends GlobalException{
-    
-    public InformationRequiredException(){
+public class InformationRequiredException extends GlobalException {
+
+    public InformationRequiredException() {
         super();
     }
-    
-    public InformationRequiredException(String s){
+
+    public InformationRequiredException(String s) {
         super(s);
     }
 }

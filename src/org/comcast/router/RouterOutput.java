@@ -73,23 +73,46 @@ public class RouterOutput implements Job {
             runner.start();
         }
 
-        @Override
-        public void run() {
+        private void confirmMail() {
             try {
-                server.uploadMessages();
-
-                mail.setMailText("Archivos enviados al servidor: " + config.getHostName() + "\n" + showUploadFiles.toString());
+                String buffer = mail.getMailText();
+                mail.setMailText(buffer + "\nArchivos enviados al servidor: " + config.getHostName() + "\n" + showUploadFiles.toString());
 
                 mail.initSession();
                 mail.createMail();
                 mail.sendMail();
 
             } catch (MessagingException ex) {
-                System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
+                //JOptionPane
+                System.exit(1);
+            }
+        }
+
+        private void confirmMail(String s) {
+            try {
+                mail.setMailText("Error al enviar los archivos al servidor \n" + s);
+
+                mail.initSession();
+                mail.createMail();
+                mail.sendMail();
+
+            } catch (MessagingException ex) {
+                //JOptionPane
+                System.exit(1);
+            }
+        }
+
+        @Override
+        public void run() {
+            try {
+                server.uploadMessages();
+
+                confirmMail();
+
             } catch (SocketException ex) {
-                System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
+                confirmMail(ex.getMessage());
             } catch (IOException | UnderflowException ex) {
-                System.out.println("Exception Name: " + ex.getClass().getCanonicalName());
+                confirmMail(ex.getMessage());
             }
         }
     }

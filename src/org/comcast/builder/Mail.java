@@ -30,7 +30,6 @@ public class Mail {
     private String sendProtocol;
     private String mailUserName;
     private String mailUserPassword;
-    
     private Session session;
     private MimeMessage message;
 
@@ -163,14 +162,14 @@ public class Mail {
         message.addRecipient(
                 Message.RecipientType.TO,
                 new InternetAddress(this.recipient));
-        
-        
+
+
         BodyPart cuerpo = new MimeBodyPart();
         cuerpo.setText(this.mailText);
-        
+
         MimeMultipart multiParte = new MimeMultipart();
         multiParte.addBodyPart(cuerpo);
-        
+
         message.setSubject(this.subject);
         message.setContent(multiParte, "multipart/alternative");
     }

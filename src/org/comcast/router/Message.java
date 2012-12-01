@@ -18,14 +18,12 @@ public class Message implements Serializable, Comparable<Message> {
     public static final int NORMAL_PRIORITY = 5;
     public static final int LOW_PRIORITY = 10;
     private InputChannel source;
-    private File message;
     private int priority;
     private String localPath;
     private String remotePath;
 
-    public Message(InputChannel source, File message, int priority, String localPath, String remotePath) {
+    public Message(InputChannel source, int priority, String localPath, String remotePath) {
         this.source = source;
-        this.message = message;
         this.priority = priority;
         this.localPath = localPath;
         this.remotePath = remotePath;
@@ -46,20 +44,6 @@ public class Message implements Serializable, Comparable<Message> {
     }
 
     /**
-     * @return the message
-     */
-    public File getMessage() {
-        return message;
-    }
-
-    /**
-     * @param message the message to set
-     */
-    public void setMessage(File message) {
-        this.message = message;
-    }
-
-    /**
      * @return the priority
      */
     public int getPriority() {
@@ -75,7 +59,7 @@ public class Message implements Serializable, Comparable<Message> {
 
     @Override
     public String toString() {
-        return "Message{" + "source=" + source + ", message=" + message + ", priority=" + priority
+        return "Message{" + "source=" + source + ", priority=" + priority
                 + ", localPath=" + localPath + ", remotePath=" + remotePath + '}';
     }
 

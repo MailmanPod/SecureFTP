@@ -162,7 +162,7 @@ public class BinaryHeap<E extends Comparable<? super E>> {
         }
         array[ hole] = tmp;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder cadena = new StringBuilder();
@@ -174,19 +174,19 @@ public class BinaryHeap<E extends Comparable<? super E>> {
 
         return cadena.toString();
     }
-    
-    public LocalIterator<E> getIterator(){
+
+    public LocalIterator<E> getIterator() {
         return new Iterator();
     }
-    
-    private class Iterator implements LocalIterator<E>{
 
-        private int i; 
-        
-        public Iterator(){
+    private class Iterator implements LocalIterator<E> {
+
+        private int i;
+
+        public Iterator() {
             i = 1;
         }
-        
+
         @Override
         public boolean hasMoreElements() {
             return i < (currentSize + 1);
@@ -196,7 +196,7 @@ public class BinaryHeap<E extends Comparable<? super E>> {
         public E returnElement() {
             E buffer = array[i];
             i++;
-            
+
             return buffer;
         }
 
@@ -204,6 +204,5 @@ public class BinaryHeap<E extends Comparable<? super E>> {
         public int size() {
             return currentSize;
         }
-        
     }
 }

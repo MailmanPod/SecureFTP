@@ -5,6 +5,7 @@
 package org.comcast.logic;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.FTP;
@@ -62,9 +63,6 @@ public class Server implements Comparable<Server>, OutputChannel {
             client.connect(config.getIpAddress());
             client.login(config.getUserLogin(), config.getPassLogin());
 
-            /*String local = ".\\FTPServer2\\UPLOADER.txt";
-             String remote = "UPLOADER.txt";*/
-
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
 
@@ -76,6 +74,7 @@ public class Server implements Comparable<Server>, OutputChannel {
             client.noop();
 
             fis.close();
+            client.logout();
             client.disconnect();
 
         } catch (SocketException ex) {
@@ -97,18 +96,34 @@ public class Server implements Comparable<Server>, OutputChannel {
         }
     }
 
-    /**
-     * @return the serverPriority
-     */
-    public int getServerPriority() {
-        return serverPriority;
+    @Override
+    public void downloadMessage(Message message) throws SocketException, IOException {
+        FileOutputStream fos = null;
+
+        client.connect(config.getIpAddress());
+        client.login(config.getUserLogin(), config.getPassLogin());
+
+        String local = message.getLocalPath();
+        String remote = message.getRemotePath();
+
+        fos = new FileOutputStream(local);
+        client.retrieveFile(remote, fos);
+
+        client.noop();
+
+        fos.close();
+        client.logout();
+        client.disconnect();
     }
 
-    /**
-     * @param serverPriority the serverPriority to set
-     */
-    public void setServerPriority(int serverPriority) {
-        this.serverPriority = serverPriority;
+    @Override
+    public void downloadMessages() throws SocketException, IOException, UnderflowException {
+        Message toSend = null;
+
+        while (!this.messageToSend.isEmpty()) {
+            toSend = this.messageToSend.deleteMin();
+            downloadMessage(toSend);
+        }
     }
 
     @Override
@@ -121,13 +136,17 @@ public class Server implements Comparable<Server>, OutputChannel {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public void downloadMessage(Message message) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * @return the serverPriority
+     */
+    public int getServerPriority() {
+        return serverPriority;
     }
 
-    @Override
-    public void downloadMessages() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * @param serverPriority the serverPriority to set
+     */
+    public void setServerPriority(int serverPriority) {
+        this.serverPriority = serverPriority;
     }
 }

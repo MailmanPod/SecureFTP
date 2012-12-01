@@ -26,7 +26,7 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  * @author Quality of Service
  */
-public class OutputScheduler {
+public class OutputScheduler implements SchedulerInterface{
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -41,7 +41,8 @@ public class OutputScheduler {
         this.serverSender = new Server(mess, config);
     }
 
-    public void startJob() throws SchedulerException {
+    @Override
+    public final void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
 
         // First we must get a reference to a scheduler
@@ -93,7 +94,8 @@ public class OutputScheduler {
         }
     }
 
-    public void stopJob() throws SchedulerException {
+    @Override
+    public final void stopJob() throws SchedulerException {
         // shut down the scheduler
         System.out.println("------- Shutting Down ---------------------");
         scheduler.shutdown(true);

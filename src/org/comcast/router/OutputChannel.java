@@ -25,9 +25,9 @@ public interface OutputChannel extends Serializable {
 
     public void uploadMessages() throws SocketException, IOException, UnderflowException;
 
-    public void downloadMessage(Message message);
+    public void downloadMessage(Message message) throws SocketException, IOException;
 
-    public void downloadMessages();
+    public void downloadMessages() throws SocketException, IOException, UnderflowException;
 
     public Message retrieveMessage();
 

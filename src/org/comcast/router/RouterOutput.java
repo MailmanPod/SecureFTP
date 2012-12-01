@@ -30,7 +30,7 @@ public class RouterOutput implements Job {
     private static final String ROUTER_SERVICE_NAME = "router_output";
 
     @Override
-    public void execute(JobExecutionContext jec) throws JobExecutionException {
+    public final void execute(JobExecutionContext jec) throws JobExecutionException {
         BinaryHeap<Message> toSend = null;
         ServerConfig serverConfig = null;
         Server server = null;
@@ -90,7 +90,7 @@ public class RouterOutput implements Job {
 
         private void confirmMail(String s) {
             try {
-                mail.setMailText("Error al enviar los archivos al servidor \n" + s);
+                mail.setMailText("Error al enviar los archivos al servidor \n\n" + s);
 
                 mail.initSession();
                 mail.createMail();

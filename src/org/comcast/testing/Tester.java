@@ -14,6 +14,7 @@ import org.comcast.logic.Client;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
 import org.comcast.router.Message;
+import org.comcast.schedulers.InputScheduler;
 import org.comcast.schedulers.OutputScheduler;
 import org.comcast.structures.BinaryHeap;
 import org.quartz.SchedulerException;
@@ -76,7 +77,7 @@ public class Tester {
 
         Mail m = builder.getMail();
 
-        OutputScheduler s = new OutputScheduler(config, pila, m);
+        InputScheduler s = new InputScheduler(config, pila, m);
         s.startJob();
 
         System.out.println("Pausa... pulse una tecla para finalizar la aplicación");

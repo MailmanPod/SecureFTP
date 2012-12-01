@@ -21,11 +21,7 @@ public interface OutputChannel extends Serializable {
     public static final int NORMAL_PRIORITY = 5;
     public static final int LOW_PRIORITY = 10;
 
-    public void uploadMessage(Message message) throws SocketException, IOException;
-
     public void uploadMessages() throws SocketException, IOException, UnderflowException;
-
-    public void downloadMessage(Message message) throws SocketException, IOException;
 
     public void downloadMessages() throws SocketException, IOException, UnderflowException;
 

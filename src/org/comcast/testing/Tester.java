@@ -77,7 +77,9 @@ public class Tester {
 
         Mail m = builder.getMail();
 
-        InputScheduler s = new InputScheduler(config, pila, m);
+        //InputScheduler s = new InputScheduler(config, pila, m);
+        OutputScheduler s = new OutputScheduler(config, pila, m);
+        
         s.startJob();
 
         System.out.println("Pausa... pulse una tecla para finalizar la aplicación");

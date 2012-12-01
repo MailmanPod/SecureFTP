@@ -55,13 +55,12 @@ public class Server implements Comparable<Server>, OutputChannel {
         return (this.getServerPriority() - o.getServerPriority());
     }
 
-    @Override
-    public void uploadMessage(Message message) throws SocketException, IOException {
+    private void uploadMessage(Message message) throws SocketException, IOException {
 
         try {
             FileInputStream fis = null;
-            client.connect(config.getIpAddress());
-            client.login(config.getUserLogin(), config.getPassLogin());
+            /*client.connect(config.getIpAddress());
+            client.login(config.getUserLogin(), config.getPassLogin());*/
 
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
@@ -74,8 +73,55 @@ public class Server implements Comparable<Server>, OutputChannel {
             client.noop();
 
             fis.close();
-            client.logout();
-            client.disconnect();
+            /*client.logout();
+            client.disconnect();*/
+
+        } catch (SocketException ex) {
+            closeConnection();
+            throw new SocketException(ex.getLocalizedMessage());
+        } catch (IOException ex) {
+            closeConnection();
+            throw new IOException(ex);
+        }
+    }
+
+    @Override
+    public void uploadMessages() throws SocketException, IOException, UnderflowException {
+        Message toSend = null;
+        
+        openConnection();
+
+        while (!this.messageToSend.isEmpty()) {
+            toSend = this.messageToSend.deleteMin();
+            uploadMessage(toSend);
+        }
+        
+        closeConnection();
+    }
+
+    private void openConnection() throws SocketException, IOException {
+        client.connect(config.getIpAddress());
+        client.login(config.getUserLogin(), config.getPassLogin());
+    }
+
+    private void closeConnection() throws SocketException, IOException {
+        client.logout();
+        client.disconnect();
+    }
+
+    private void downloadMessage(Message message) throws SocketException, IOException {
+        try {
+
+            FileOutputStream fos = null;
+
+            String local = message.getLocalPath();
+            String remote = message.getRemotePath();
+
+            fos = new FileOutputStream(local);
+            client.retrieveFile(remote, fos);
+
+            client.noop();
+            fos.close();
 
         } catch (SocketException ex) {
             client.disconnect();
@@ -87,43 +133,17 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessages() throws SocketException, IOException, UnderflowException {
-        Message toSend = null;
-
-        while (!this.messageToSend.isEmpty()) {
-            toSend = this.messageToSend.deleteMin();
-            uploadMessage(toSend);
-        }
-    }
-
-    @Override
-    public void downloadMessage(Message message) throws SocketException, IOException {
-        FileOutputStream fos = null;
-
-        client.connect(config.getIpAddress());
-        client.login(config.getUserLogin(), config.getPassLogin());
-
-        String local = message.getLocalPath();
-        String remote = message.getRemotePath();
-
-        fos = new FileOutputStream(local);
-        client.retrieveFile(remote, fos);
-
-        client.noop();
-
-        fos.close();
-        client.logout();
-        client.disconnect();
-    }
-
-    @Override
     public void downloadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
+
+        openConnection();
 
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             downloadMessage(toSend);
         }
+
+        closeConnection();
     }
 
     @Override

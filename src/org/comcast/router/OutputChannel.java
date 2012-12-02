@@ -7,9 +7,8 @@ package org.comcast.router;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.SocketException;
+import org.apache.commons.net.ftp.FTPFile;
 import org.comcast.exceptions.UnderflowException;
-import org.comcast.structures.BinaryHeap;
-import org.comcast.structures.SimpleList;
 
 /**
  *
@@ -25,7 +24,5 @@ public interface OutputChannel extends Serializable {
 
     public void downloadMessages() throws SocketException, IOException, UnderflowException;
 
-    public Message retrieveMessage();
-
-    public SimpleList<Message> retrieveMesseges();
+    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException;
 }

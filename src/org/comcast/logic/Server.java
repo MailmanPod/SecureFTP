@@ -10,12 +10,13 @@ import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPFileFilter;
 import org.comcast.exceptions.NullObjectParameterException;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.router.Message;
 import org.comcast.router.OutputChannel;
 import org.comcast.structures.BinaryHeap;
-import org.comcast.structures.SimpleList;
 
 /**
  *
@@ -60,7 +61,7 @@ public class Server implements Comparable<Server>, OutputChannel {
         try {
             FileInputStream fis = null;
             /*client.connect(config.getIpAddress());
-            client.login(config.getUserLogin(), config.getPassLogin());*/
+             client.login(config.getUserLogin(), config.getPassLogin());*/
 
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
@@ -74,7 +75,7 @@ public class Server implements Comparable<Server>, OutputChannel {
 
             fis.close();
             /*client.logout();
-            client.disconnect();*/
+             client.disconnect();*/
 
         } catch (SocketException ex) {
             closeConnection();
@@ -88,14 +89,14 @@ public class Server implements Comparable<Server>, OutputChannel {
     @Override
     public void uploadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
-        
+
         openConnection();
 
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             uploadMessage(toSend);
         }
-        
+
         closeConnection();
     }
 
@@ -147,13 +148,15 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public Message retrieveMessage() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public SimpleList<Message> retrieveMesseges() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException{
+        
+        openConnection();
+        
+        FTPFile[] buffer = client.mlistDir(dir);
+        
+        closeConnection();
+        
+        return buffer;
     }
 
     /**

@@ -6,6 +6,7 @@ package org.comcast.router;
 
 import java.io.File;
 import java.io.Serializable;
+import org.apache.commons.net.ftp.FTPFile;
 import org.comcast.exceptions.NullObjectParameterException;
 
 /**
@@ -21,12 +22,14 @@ public class Message implements Serializable, Comparable<Message> {
     private int priority;
     private String localPath;
     private String remotePath;
+    private FTPFile encapsulation;
 
-    public Message(InputChannel source, int priority, String localPath, String remotePath) {
+    public Message(InputChannel source, int priority, String localPath, String remotePath, FTPFile en) {
         this.source = source;
         this.priority = priority;
         this.localPath = localPath;
         this.remotePath = remotePath;
+        this.encapsulation = en;
     }
 
     /**
@@ -48,13 +51,6 @@ public class Message implements Serializable, Comparable<Message> {
      */
     public int getPriority() {
         return priority;
-    }
-
-    /**
-     * @param priority the priority to set
-     */
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     @Override
@@ -98,5 +94,19 @@ public class Message implements Serializable, Comparable<Message> {
      */
     public void setRemotePath(String remotePath) {
         this.remotePath = remotePath;
+    }
+
+    /**
+     * @return the encapsulation
+     */
+    public FTPFile getEncapsulation() {
+        return encapsulation;
+    }
+
+    /**
+     * @param encapsulation the encapsulation to set
+     */
+    public void setEncapsulation(FTPFile encapsulation) {
+        this.encapsulation = encapsulation;
     }
 }

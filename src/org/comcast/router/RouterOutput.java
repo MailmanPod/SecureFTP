@@ -6,13 +6,11 @@ package org.comcast.router;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import org.comcast.builder.Mail;
+import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
-import org.comcast.exceptions.UnderflowException;
 import org.comcast.structures.BinaryHeap;
 import org.comcast.structures.LocalIterator;
 import org.quartz.Job;

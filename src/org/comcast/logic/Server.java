@@ -147,15 +147,23 @@ public class Server implements Comparable<Server>, OutputChannel {
         closeConnection();
     }
 
-    @Override
-    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException{
-        
+    public void downloadSingle(Message mess) throws SocketException, IOException {
         openConnection();
-        
-        FTPFile[] buffer = client.mlistDir(dir);
-        
+
+        this.downloadMessage(mess);
+
         closeConnection();
-        
+    }
+
+    @Override
+    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException {
+
+        openConnection();
+
+        FTPFile[] buffer = client.mlistDir(dir);
+
+        closeConnection();
+
         return buffer;
     }
 

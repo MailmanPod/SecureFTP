@@ -191,7 +191,7 @@ public class Tester {
          System.out.println("Directorio: " + name);
          }*/
 
-        /*String password = "www.640intelPRO@fox.com";
+        /*String password = "null";
         
          if(Validator.isPassword(password)){
          System.out.println("Password validado y correcto");

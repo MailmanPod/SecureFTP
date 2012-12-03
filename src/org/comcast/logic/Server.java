@@ -56,7 +56,7 @@ public class Server implements Comparable<Server>, OutputChannel {
         return (this.getServerPriority() - o.getServerPriority());
     }
 
-    private void uploadMessage(Message message) throws SocketException, IOException {
+    private synchronized void uploadMessage(Message message) throws SocketException, IOException {
 
         try {
             FileInputStream fis = null;
@@ -87,7 +87,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void uploadMessages() throws SocketException, IOException, UnderflowException {
+    public synchronized void uploadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
 
         openConnection();
@@ -100,17 +100,17 @@ public class Server implements Comparable<Server>, OutputChannel {
         closeConnection();
     }
 
-    private void openConnection() throws SocketException, IOException {
+    private synchronized void openConnection() throws SocketException, IOException {
         client.connect(config.getIpAddress());
         client.login(config.getUserLogin(), config.getPassLogin());
     }
 
-    private void closeConnection() throws SocketException, IOException {
+    private synchronized void closeConnection() throws SocketException, IOException {
         client.logout();
         client.disconnect();
     }
 
-    private void downloadMessage(Message message) throws SocketException, IOException {
+    private synchronized void downloadMessage(Message message) throws SocketException, IOException {
         try {
 
             FileOutputStream fos = null;
@@ -134,7 +134,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public void downloadMessages() throws SocketException, IOException, UnderflowException {
+    public synchronized void downloadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
 
         openConnection();
@@ -147,7 +147,7 @@ public class Server implements Comparable<Server>, OutputChannel {
         closeConnection();
     }
 
-    public void downloadSingle(Message mess) throws SocketException, IOException {
+    public synchronized void downloadSingle(Message mess) throws SocketException, IOException {
         openConnection();
 
         this.downloadMessage(mess);

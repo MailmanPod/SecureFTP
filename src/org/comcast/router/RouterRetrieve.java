@@ -111,7 +111,7 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae los archivos del directorio actual.
+     * Este trae los archivos del directorio actual. Construir la tabla.
      *
      * @param dir
      * @return

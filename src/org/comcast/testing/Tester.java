@@ -28,13 +28,19 @@ import org.quartz.SchedulerException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import javax.crypto.NoSuchPaddingException;
 
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.comcast.crypto.Crypto;
+import org.comcast.crypto.CryptoProvider;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -77,7 +83,10 @@ public class Tester {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SchedulerException, IOException,
-            InformationRequiredException {
+            InformationRequiredException, NoSuchAlgorithmException, ClassNotFoundException, 
+            NoSuchPaddingException, NoSuchPaddingException, InvalidKeyException, GeneralSecurityException {
+        
+        
         // TODO code application logic here
         ServerConfig config = new ServerConfig("QoS-PC");
         config.setUserLogin("adminroot");
@@ -85,58 +94,87 @@ public class Tester {
 
         //s();
 
-        /*Message archivo = new Message(new Client(),
-         Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\RSAPrivate.key", new FTPFile());
+        Message archivo = new Message(new Client(),
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\RSAPrivate.key", new FTPFile());
 
-         Message archivo1 = new Message(new Client(),
-         Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\RSAPublic.key", new FTPFile());
+        Message archivo1 = new Message(new Client(),
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\RSAPublic.key", new FTPFile());
 
-         Message archivo3 = new Message(new Client(),
-         Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\retrieve.txt", new FTPFile());
+        Message archivo3 = new Message(new Client(),
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\retrieve.txt", new FTPFile());
 
-         Message archivo4 = new Message(new Client(),
-         Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\dynamic.txt", new FTPFile());
+        Message archivo4 = new Message(new Client(),
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\dynamic.txt", new FTPFile());
 
-         Message archivo2 = new Message(new Client(),
-         Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\UPLOADER.txt", new FTPFile());
+        Message archivo2 = new Message(new Client(),
+                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\UPLOADER.txt", new FTPFile());
 
-         BinaryHeap<Message> pila = new BinaryHeap<>();
-         pila.insert(archivo3);
-         pila.insert(archivo);
-         pila.insert(archivo2);
-         pila.insert(archivo1);
-         pila.insert(archivo4);
+        /*BinaryHeap<Message> pila = new BinaryHeap<>();
+        BinaryHeap<Message> pila2 = new BinaryHeap<>();
+        pila.insert(archivo3);
+        pila.insert(archivo);
+        pila.insert(archivo2);
+        pila2.insert(archivo1);
+        pila2.insert(archivo4);
 
-         Properties props = new Properties();
-         props.setProperty("mail.smtp.host", "smtp.gmail.com");
-         props.setProperty("mail.smtp.starttls.enable", "true");
-         props.setProperty("mail.smtp.port", "587");
-         props.setProperty("mail.smtp.user", "brueradamian@gmail.com");
-         props.setProperty("mail.smtp.auth", "true");
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.host", "smtp.gmail.com");
+        props.setProperty("mail.smtp.starttls.enable", "true");
+        props.setProperty("mail.smtp.port", "587");
+        props.setProperty("mail.smtp.user", "brueradamian@gmail.com");
+        props.setProperty("mail.smtp.auth", "true");
 
-         MailBuilder builder = new MailBuilder();
-         builder.buildProperties(props);
-         builder.buildFrom("bruera@noreply.com");
-         builder.buildRecipient("brueradamian@gmail.com");
-         builder.buildSubject("Prueba completa");
-         builder.buildSendProtocol("smtp");
-         builder.buildMailText("FTPClient running");
-         builder.buildMailUserName("brueradamian@gmail.com");
-         builder.buildMailUserPassword("www.640intelPRO.net");
+        MailBuilder builder = new MailBuilder();
+        builder.buildProperties(props);
+        builder.buildFrom("bruera@noreply.com");
+        builder.buildRecipient("brueradamian@gmail.com");
+        builder.buildSubject("Prueba completa");
+        builder.buildSendProtocol("smtp");
+        builder.buildMailText("FTPClient running");
+        builder.buildMailUserName("brueradamian@gmail.com");
+        builder.buildMailUserPassword("null");
 
-         Mail m = builder.getMail();
+        Mail m = builder.getMail();
 
-         InputScheduler s = new InputScheduler(config, pila, m);
-         //OutputScheduler s = new OutputScheduler(config, pila, m);
+        InputScheduler s = new InputScheduler(config, pila, m);
+        OutputScheduler se = new OutputScheduler(config, pila2, m);
 
-         s.startJob();
+        s.startJob();
+        se.startJob();
 
-         System.out.println("Pausa... pulse una tecla para finalizar la aplicación");
-         System.in.read();
+        System.out.println("Pausa... pulse una tecla para finalizar la aplicación");
+        System.in.read();
 
-         s.stopJob();*/
+        s.stopJob();
+        s.stopJob();*/
 
-        RouterRetrieve list = new RouterRetrieve(config);
+        Crypto crypto = CryptoProvider.getInstance();
+        
+        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";
+        
+        String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
+        String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
+        
+        String pn = aux + ".public";
+        String pv = aux + ".private";
+        String cryp = aux + ".crypto";
+        
+        String publicName = "C:\\Key\\" + pn;
+        String privateName = "C:\\Key\\" + pv;
+        String cyptoFile = particion + cryp;
+        
+        System.out.println("Public: " + publicName);
+        System.out.println("Private: " + privateName);
+        //System.out.println("Particion: " + particion);
+        System.out.println("CryptoFile: " + cyptoFile);
+        
+        //crypto.keyGenerateRSA(publicName, privateName);
+        
+        //crypto.encryptRSA(partida, cyptoFile, publicName);
+        
+        //crypto.decryptRSA(cyptoFile, partida, privateName);
+        
+        /*RouterRetrieve list = new RouterRetrieve(config);
         /*FTPFile[] files = list.getFiles("/");
 
          for (FTPFile ff : files) {
@@ -147,7 +185,7 @@ public class Tester {
          System.out.println("Directory Name: " + ff.getName());
          }
          }*/
-        SimpleList<Message> files = list.getAllFiles("/");
+        /*SimpleList<Message> files = list.getAllFiles("/");
         // SimpleList<Message> files = list.getSimpleListCurrent("/Testing/");
         Message aux = null;
         LocalIterator<Message> iter = files.getIterador();
@@ -159,7 +197,7 @@ public class Tester {
             FTPFile ff = aux.getEncapsulation();
 
             if (ff.getType() == FTPFile.FILE_TYPE) {
-                System.out.println("File Name: " + aux.getRemotePath() + "  Type: " + aux.getFileType()
+                System.out.println("File Name: " + ff.getName() + "  Type: " + aux.getFileType()
                         + "   Size: " + FileUtils.byteCountToDisplaySize(ff.getSize()));
                 i++;
                 l += ff.getSize();
@@ -168,7 +206,7 @@ public class Tester {
             }
         }
         DecimalFormat df = new DecimalFormat("0.000");
-        System.out.println("Files: " + i + " Total Size: " + df.format(((l / 1024.0) / 1024)));
+        System.out.println("Files: " + i + " Total Size: " + df.format(((l / 1024.0) / 1024)));*/
 
         /*Message[] array = files.toArray(Message.class);
 

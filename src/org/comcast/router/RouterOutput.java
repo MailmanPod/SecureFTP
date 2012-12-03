@@ -74,7 +74,7 @@ public class RouterOutput implements Job {
         private void confirmMail() {
             try {
                 String buffer = mail.getMailText();
-                mail.setMailText(buffer + "\nArchivos enviados al servidor: " + config.getHostName() + "\n" + showUploadFiles.toString());
+                mail.setMailText(buffer + "\n\nArchivos enviados al servidor: " + config.getHostName() + "\n\n" + showUploadFiles.toString());
 
                 mail.initSession();
                 mail.createMail();
@@ -88,7 +88,7 @@ public class RouterOutput implements Job {
 
         private void confirmMail(String s) {
             try {
-                mail.setMailText("Error al enviar los archivos al servidor \n\n" + s);
+                mail.setMailText("\n\nError al enviar los archivos al servidor \n\n" + s);
 
                 mail.initSession();
                 mail.createMail();

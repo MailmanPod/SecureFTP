@@ -41,6 +41,8 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoProvider;
+import org.quartz.SchedulerFactory;
+import org.quartz.impl.StdSchedulerFactory;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -55,7 +57,7 @@ public class Tester {
 
         FileInputStream is = null;
         try {
-            File f = new File("D:\\Photoshop CS6\\amtlib01 byHuguito\\Estas\\64-bit\\amtlib.dll");
+            File f = new File("D:\\Proyectos en NetBeans 6\\TRABAJO PRACTICO 2\\configinit.xml");
             is = new FileInputStream(f);
 
             ContentHandler contenthandler = new BodyContentHandler(10 * 1024 * 1024);
@@ -94,7 +96,7 @@ public class Tester {
 
         //s();
 
-        Message archivo = new Message(new Client(),
+        /*Message archivo = new Message(new Client(),
                 Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\RSAPrivate.key", new FTPFile());
 
         Message archivo1 = new Message(new Client(),
@@ -109,7 +111,7 @@ public class Tester {
         Message archivo2 = new Message(new Client(),
                 Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\UPLOADER.txt", new FTPFile());
 
-        /*BinaryHeap<Message> pila = new BinaryHeap<>();
+        BinaryHeap<Message> pila = new BinaryHeap<>();
         BinaryHeap<Message> pila2 = new BinaryHeap<>();
         pila.insert(archivo3);
         pila.insert(archivo);
@@ -135,20 +137,31 @@ public class Tester {
         builder.buildMailUserPassword("null");
 
         Mail m = builder.getMail();
+        
+        SchedulerFactory sf = new StdSchedulerFactory();
 
         InputScheduler s = new InputScheduler(config, pila, m);
+        s.setScheduler(sf.getScheduler());
         OutputScheduler se = new OutputScheduler(config, pila2, m);
+        se.setScheduler(sf.getScheduler());
 
-        s.startJob();
-        se.startJob();
+        //s.startJob();
+        //se.startJob();
+        s.start();
+        se.start();
+        
+        /*if(se.isAlive()){
+            System.out.println("IS ALIVE!!!!!!!!");
+            se.interrupt();
+        }*/
 
         System.out.println("Pausa... pulse una tecla para finalizar la aplicación");
         System.in.read();
 
-        s.stopJob();
-        s.stopJob();*/
+        //s.stopJob();
+        //se.stopJob();
 
-        Crypto crypto = CryptoProvider.getInstance();
+        /*Crypto crypto = CryptoProvider.getInstance();
         
         String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";
         
@@ -166,6 +179,7 @@ public class Tester {
         System.out.println("Public: " + publicName);
         System.out.println("Private: " + privateName);
         //System.out.println("Particion: " + particion);
+        System.out.println("Original: " + partida);
         System.out.println("CryptoFile: " + cyptoFile);
         
         //crypto.keyGenerateRSA(publicName, privateName);

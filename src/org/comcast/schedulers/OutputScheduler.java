@@ -5,6 +5,8 @@
 package org.comcast.schedulers;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.comcast.builder.Mail;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
@@ -26,7 +28,7 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  * @author Quality of Service
  */
-public class OutputScheduler implements SchedulerInterface{
+public class OutputScheduler extends Thread implements SchedulerInterface{
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -41,13 +43,17 @@ public class OutputScheduler implements SchedulerInterface{
         this.serverSender = new Server(mess, config);
     }
 
+    public void setScheduler(Scheduler s){
+        this.scheduler = s;
+    }
+    
     @Override
     public final void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
 
         // First we must get a reference to a scheduler
-        SchedulerFactory sf = new StdSchedulerFactory();
-        scheduler = sf.getScheduler();
+        //SchedulerFactory sf = new StdSchedulerFactory();
+        //scheduler = sf.getScheduler();
 
         System.out.println("------- Initialization Complete -----------");
 
@@ -63,13 +69,13 @@ public class OutputScheduler implements SchedulerInterface{
 
         // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterOutput.class)
-                .withIdentity("Uploading_Files", "group1")
+                .withIdentity("Uploading_Files", "upload")
                 .usingJobData(map)
                 .build();
 
         // Trigger the job to run on the next round minute
         Trigger trigger = newTrigger()
-                .withIdentity("trigger1", "group1")
+                .withIdentity("trigger_upload", "upload")
                 .startAt(runTime)
                 .build();
 
@@ -88,9 +94,11 @@ public class OutputScheduler implements SchedulerInterface{
         System.out.println("------- Waiting 65 seconds... -------------");
         try {
             // wait 65 seconds to show job
-            Thread.sleep(65L * 1000L);
+            sleep(65L * 1000L);
             // executing...
-        } catch (Exception e) {
+        } catch (InterruptedException ex) {
+            System.out.println("Exception: \n" + ex.toString());
+            scheduler.shutdown(true);
         }
     }
 
@@ -100,5 +108,17 @@ public class OutputScheduler implements SchedulerInterface{
         System.out.println("------- Shutting Down ---------------------");
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
+    }
+    
+    @Override
+    public void run(){
+        try {
+            startJob();
+            
+            stopJob();
+        } catch (SchedulerException ex) {
+            System.out.println("Exception: " + ex.toString());
+            ex.printStackTrace();
+        }
     }
 }

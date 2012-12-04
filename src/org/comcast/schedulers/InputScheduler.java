@@ -27,7 +27,7 @@ import static org.quartz.JobBuilder.newJob;
  *
  * @author Quality of Service
  */
-public class InputScheduler implements SchedulerInterface {
+public class InputScheduler extends Thread implements SchedulerInterface {
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -41,14 +41,18 @@ public class InputScheduler implements SchedulerInterface {
         this.advice = mail;
         this.serverSender = new Server(mess, config);
     }
+    
+    public void setScheduler(Scheduler s){
+        this.scheduler = s;
+    }
 
     @Override
     public final void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
 
         // First we must get a reference to a scheduler
-        SchedulerFactory sf = new StdSchedulerFactory();
-        scheduler = sf.getScheduler();
+        
+        //scheduler = sf.getScheduler();
 
         System.out.println("------- Initialization Complete -----------");
 
@@ -64,13 +68,13 @@ public class InputScheduler implements SchedulerInterface {
 
         // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterInput.class)
-                .withIdentity("Download_Files", "group1")
+                .withIdentity("Download_Files", "download")
                 .usingJobData(map)
                 .build();
 
         // Trigger the job to run on the next round minute
         Trigger trigger = newTrigger()
-                .withIdentity("trigger1", "group1")
+                .withIdentity("trigger1_download", "download")
                 .startAt(runTime)
                 .build();
 
@@ -89,9 +93,11 @@ public class InputScheduler implements SchedulerInterface {
         System.out.println("------- Waiting 65 seconds... -------------");
         try {
             // wait 65 seconds to show job
-            Thread.sleep(65L * 1000L);
+            sleep(65L * 1000L);
             // executing...
-        } catch (Exception e) {
+        } catch (InterruptedException ex) {
+            System.out.println("Exception: \n" + ex.toString());
+            scheduler.shutdown(true);
         }
     }
 
@@ -101,5 +107,17 @@ public class InputScheduler implements SchedulerInterface {
         System.out.println("------- Shutting Down ---------------------");
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
+    }
+    
+    @Override
+    public void run(){
+        try {
+            startJob();
+            
+            stopJob();
+        } catch (SchedulerException ex) {
+            System.out.println("Exception: " + ex.toString());
+            ex.printStackTrace();
+        }
     }
 }

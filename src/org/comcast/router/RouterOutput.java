@@ -82,6 +82,7 @@ public class RouterOutput implements Job {
 
             } catch (MessagingException ex) {
                 //JOptionPane
+                System.out.println("Exception: " + ex.toString());
                 System.exit(1);
             }
         }
@@ -96,6 +97,7 @@ public class RouterOutput implements Job {
 
             } catch (MessagingException ex) {
                 //JOptionPane
+                System.out.println("Exception: " + ex.toString());
                 System.exit(1);
             }
         }

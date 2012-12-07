@@ -41,6 +41,7 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoProvider;
+import org.comcast.xml.XMLConfiguration;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 import org.xml.sax.ContentHandler;
@@ -86,13 +87,51 @@ public class Tester {
      */
     public static void main(String[] args) throws SchedulerException, IOException,
             InformationRequiredException, NoSuchAlgorithmException, ClassNotFoundException, 
-            NoSuchPaddingException, NoSuchPaddingException, InvalidKeyException, GeneralSecurityException {
+            NoSuchPaddingException, NoSuchPaddingException, InvalidKeyException, GeneralSecurityException, Exception {
         
+        /*XMLConfiguration xml = new XMLConfiguration();
+        xml.createConection(XMLConfiguration.CLIENT_CONFIG_SCHEMA, XMLConfiguration.CLIENT_CONFIG);
+        //ServerConfig config = xml.getServerConfig();
+        Client config = xml.getClientConfig();
+        xml.closeConection(XMLConfiguration.CLIENT_CONFIG);
+        
+        System.out.println(config.toString());
+        
+        config.setClientName("Damian");
+        config.setClientLastName("Bruera");
+        config.setOrganization("Dynamic Software");
+        config.setDownloadPath("C:\\ServerDownloads");
+        config.setSetupRun(false);
+        xml.createConection(XMLConfiguration.CLIENT_CONFIG_SCHEMA, XMLConfiguration.CLIENT_CONFIG);
+        xml.setClientConfig(config);
+        xml.closeConection(XMLConfiguration.CLIENT_CONFIG);
+        
+        System.out.println(config.toString());*/
+        
+        XMLConfiguration xml = new XMLConfiguration();
+        xml.createConection(XMLConfiguration.MAIL_CONTENT_SCHEMA, XMLConfiguration.MAIL_CONTENT);
+        Properties prop = xml.getMailContent();
+        Properties p = new Properties();
+        p.setProperty("comcast.from", prop.getProperty("comcast.from"));
+        p.setProperty("comcast.recipient", prop.getProperty("comcast.recipient"));
+        p.setProperty("comcast.subject", "Resultados");
+        p.setProperty("comcast.protocol", prop.getProperty("comcast.protocol"));
+        p.setProperty("comcast.text", "Tareas Realizadas");
+        p.setProperty("comcast.user", prop.getProperty("comcast.user"));
+        p.setProperty("comcast.password", "null");
+        xml.setMailContent(p);
+        xml.closeConection(XMLConfiguration.MAIL_CONTENT);
+        
+        //System.out.println(prop.toString());
+        
+        /*xml.createConection(XMLConfiguration.MAIL_PROPERTIES_SCHEMA, XMLConfiguration.MAIL_PROPERTIES);
+        xml.setMailProperties("brueradamian@gmail.com");
+        xml.closeConection(XMLConfiguration.MAIL_PROPERTIES);*/
         
         // TODO code application logic here
-        ServerConfig config = new ServerConfig("QoS-PC");
+        /*ServerConfig config = new ServerConfig("QoS-PC");
         config.setUserLogin("adminroot");
-        config.setPassLogin("adminroot");
+        config.setPassLogin("adminroot");*/
 
         //s();
 
@@ -155,8 +194,8 @@ public class Tester {
             se.interrupt();
         }*/
 
-        System.out.println("Pausa... pulse una tecla para finalizar la aplicación");
-        System.in.read();
+        /*System.out.println("Pausa... pulse una tecla para finalizar la aplicación");
+        System.in.read();*/
 
         //s.stopJob();
         //se.stopJob();
@@ -180,7 +219,7 @@ public class Tester {
         System.out.println("Private: " + privateName);
         //System.out.println("Particion: " + particion);
         System.out.println("Original: " + partida);
-        System.out.println("CryptoFile: " + cyptoFile);
+        System.out.println("CryptoFile: " + cyptoFile);*/
         
         //crypto.keyGenerateRSA(publicName, privateName);
         
@@ -188,7 +227,7 @@ public class Tester {
         
         //crypto.decryptRSA(cyptoFile, partida, privateName);
         
-        /*RouterRetrieve list = new RouterRetrieve(config);
+        //RouterRetrieve list = new RouterRetrieve(config);
         /*FTPFile[] files = list.getFiles("/");
 
          for (FTPFile ff : files) {
@@ -220,7 +259,7 @@ public class Tester {
             }
         }
         DecimalFormat df = new DecimalFormat("0.000");
-        System.out.println("Files: " + i + " Total Size: " + df.format(((l / 1024.0) / 1024)));*/
+        System.out.println("Files: " + i + " Total Size: " + df.format(((l / 1024.0) / 1024)));
 
         /*Message[] array = files.toArray(Message.class);
 

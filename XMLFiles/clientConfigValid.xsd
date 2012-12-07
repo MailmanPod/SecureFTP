@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="client">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="config">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="clientName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="clientLastName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="clientOrganization" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="localization" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="downloadPath" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="isSetupRun" minOccurs="1" maxOccurs="1" type="xsd:boolean"></xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

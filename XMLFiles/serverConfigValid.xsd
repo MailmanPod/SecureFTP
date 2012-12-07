@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="server">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="config">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="serverName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="serverUser" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="serverPassword" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

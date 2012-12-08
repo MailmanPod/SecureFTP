@@ -5,9 +5,11 @@
 package org.comcast.router;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketException;
+import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -17,6 +19,7 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.logic.Client;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
+import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
 import org.xml.sax.ContentHandler;
 
@@ -260,5 +263,57 @@ public class RouterRetrieve {
         }
 
         return type;
+    }
+
+    public SimpleList<File> getLocalFiles(String pathName) {
+        File f = new File(pathName);
+        SimpleList<File> list = new SimpleList<>();
+
+        if (f.isDirectory()) {
+            File[] array = f.listFiles();
+            SimpleList<File> buffer = new SimpleList<>();
+
+            list = buffer.toSimpleList(array);
+        }
+
+        return list;
+    }
+
+    public SimpleList<File> getLocalFiles(String pathName, FileFilter filter) {
+        File f = new File(pathName);
+        SimpleList<File> list = new SimpleList<>();
+
+        if (f.isDirectory()) {
+            File[] array = f.listFiles(filter);
+            SimpleList<File> buffer = new SimpleList<>();
+
+            list = buffer.toSimpleList(array);
+        }
+
+        return list;
+    }
+
+    public SimpleList<Message> getLocalMessages(String pathName, String destin, FileFilter filter) throws IOException {
+        SimpleList<Message> list = new SimpleList<>();
+        SimpleList<File> fileList = null;
+        if (filter != null) {
+            fileList = getLocalFiles(pathName, filter);
+        } else {
+            fileList = getLocalFiles(pathName);
+        }
+
+        LocalIterator<File> iter = fileList.getIterador();
+
+        while (iter.hasMoreElements()) {
+            File aux = iter.returnElement();
+
+            if (aux.isFile()) {
+                Message mes = new Message(new Client(), Message.NORMAL_PRIORITY, aux.getAbsolutePath(), destin + aux.getName(), new FTPFile());
+                mes.setFileType(getType(aux.getAbsolutePath()));
+                list.addLast(mes);
+            }
+        }
+
+        return list;
     }
 }

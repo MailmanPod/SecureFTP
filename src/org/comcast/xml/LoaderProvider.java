@@ -10,12 +10,12 @@ package org.comcast.xml;
  */
 public class LoaderProvider {
 
-    private Loader instance = null;
+    private static Loader instance = null;
 
     private LoaderProvider() {
     }
 
-    public Loader getInstance() {
+    public static Loader getInstance() {
         if (instance == null) {
             instance = new Loader();
         }

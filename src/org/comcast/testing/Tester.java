@@ -32,6 +32,7 @@ import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import javax.crypto.NoSuchPaddingException;
 
 import org.apache.tika.metadata.Metadata;
@@ -41,6 +42,9 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoProvider;
+import org.comcast.logic.DateScheduler;
+import org.comcast.xml.Loader;
+import org.comcast.xml.LoaderProvider;
 import org.comcast.xml.XMLConfiguration;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -108,7 +112,7 @@ public class Tester {
         
         System.out.println(config.toString());*/
         
-        XMLConfiguration xml = new XMLConfiguration();
+        /*XMLConfiguration xml = new XMLConfiguration();
         xml.createConection(XMLConfiguration.MAIL_CONTENT_SCHEMA, XMLConfiguration.MAIL_CONTENT);
         Properties prop = xml.getMailContent();
         Properties p = new Properties();
@@ -120,7 +124,7 @@ public class Tester {
         p.setProperty("comcast.user", prop.getProperty("comcast.user"));
         p.setProperty("comcast.password", "null");
         xml.setMailContent(p);
-        xml.closeConection(XMLConfiguration.MAIL_CONTENT);
+        xml.closeConection(XMLConfiguration.MAIL_CONTENT);*/
         
         //System.out.println(prop.toString());
         
@@ -135,7 +139,14 @@ public class Tester {
 
         //s();
 
-        /*Message archivo = new Message(new Client(),
+        Loader l = LoaderProvider.getInstance();
+        ServerConfig config = l.getServerConfiguration();
+        Mail m = l.getMail();
+        DateScheduler date = new DateScheduler(0, 1, 0, 10, DateScheduler.DECEMBER, 2012);
+        System.out.println(config.toString());
+        System.out.println(m.toString());
+        
+        Message archivo = new Message(new Client(),
                 Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\RSAPrivate.key", new FTPFile());
 
         Message archivo1 = new Message(new Client(),
@@ -151,14 +162,14 @@ public class Tester {
                 Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\UPLOADER.txt", new FTPFile());
 
         BinaryHeap<Message> pila = new BinaryHeap<>();
-        BinaryHeap<Message> pila2 = new BinaryHeap<>();
+//        BinaryHeap<Message> pila2 = new BinaryHeap<>();
         pila.insert(archivo3);
         pila.insert(archivo);
         pila.insert(archivo2);
-        pila2.insert(archivo1);
-        pila2.insert(archivo4);
+        pila.insert(archivo1);
+        pila.insert(archivo4);
 
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");
         props.setProperty("mail.smtp.starttls.enable", "true");
         props.setProperty("mail.smtp.port", "587");
@@ -175,20 +186,22 @@ public class Tester {
         builder.buildMailUserName("brueradamian@gmail.com");
         builder.buildMailUserPassword("null");
 
-        Mail m = builder.getMail();
+        Mail m = builder.getMail();*/
         
         SchedulerFactory sf = new StdSchedulerFactory();
 
-        InputScheduler s = new InputScheduler(config, pila, m);
-        s.setScheduler(sf.getScheduler());
-        OutputScheduler se = new OutputScheduler(config, pila2, m);
+//        InputScheduler s = new InputScheduler(config, pila, m);
+//        s.setScheduler(sf.getScheduler());
+//        s.setDateScheduler(date);
+        OutputScheduler se = new OutputScheduler(config, pila, m);
         se.setScheduler(sf.getScheduler());
+        se.setDateScheduler(date);
 
         //s.startJob();
         //se.startJob();
-        s.start();
+//        s.start();
         se.start();
-        
+//        
         /*if(se.isAlive()){
             System.out.println("IS ALIVE!!!!!!!!");
             se.interrupt();

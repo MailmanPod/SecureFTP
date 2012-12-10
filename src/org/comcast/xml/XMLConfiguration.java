@@ -51,23 +51,23 @@ public final class XMLConfiguration {
     /**
      *
      */
-    public static final String SERVER_CONFIG = ".\\XMLFiles\\serverconfig.xml";
-    public static final String SERVER_CONFIG_SCHEMA = ".\\XMLFiles\\serverConfigValid.xsd";
+    public static final String SERVER_CONFIG = "serverconfig.xml";
+    public static final String SERVER_CONFIG_SCHEMA = "serverConfigValid.xsd";
     /**
      *
      */
-    public static final String CLIENT_CONFIG = ".\\XMLFiles\\clientconfig.xml";
-    public static final String CLIENT_CONFIG_SCHEMA = ".\\XMLFiles\\clientConfigValid.xsd";
+    public static final String CLIENT_CONFIG = "clientconfig.xml";
+    public static final String CLIENT_CONFIG_SCHEMA = "clientConfigValid.xsd";
     /**
      *
      */
-    public static final String MAIL_PROPERTIES = ".\\XMLFiles\\mailproperties.xml";
-    public static final String MAIL_PROPERTIES_SCHEMA = ".\\XMLFiles\\mailpropertiesValid.xsd";
+    public static final String MAIL_PROPERTIES = "mailproperties.xml";
+    public static final String MAIL_PROPERTIES_SCHEMA = "mailpropertiesValid.xsd";
     /**
      *
      */
-    public static final String MAIL_CONTENT = ".\\XMLFiles\\mailcontent.xml";
-    public static final String MAIL_CONTENT_SCHEMA = ".\\XMLFiles\\mailContentValid.xsd";
+    public static final String MAIL_CONTENT = "mailcontent.xml";
+    public static final String MAIL_CONTENT_SCHEMA = "mailContentValid.xsd";
 
     /**
      * Constructor sin parametros, por default.
@@ -87,17 +87,20 @@ public final class XMLConfiguration {
      * @throws SAXException si ocurre algun problema durante la operacion.
      * @throws IOException si ocurre algun problema durante la operacion.
      */
-    public void createConection(String schema, String xmlFile) throws ParserConfigurationException, SAXException, IOException {
+    public void createConection(String schema, String xmlFile) throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
+        File fileSchema = new File(this.getClass().getResource(schema).toURI());
+        File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
+        
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
-        factory.setAttribute(JAXP_SCHEMA_SOURCE, new File(schema));
+        factory.setAttribute(JAXP_SCHEMA_SOURCE, fileSchema);
         factory.setIgnoringElementContentWhitespace(true);
 
         DocumentBuilder constructor = factory.newDocumentBuilder();/*constructor es el parser*/
         constructor.setErrorHandler(new DefaultErrorHandler());
-        File configFile = new File(xmlFile);
-        root = constructor.parse(configFile);
+//        File configFile = new File(xmlFile);
+        root = constructor.parse(fileXML);
 
         userElement = root.getDocumentElement();/*apunta u la raiz del arbol*/
     }
@@ -116,11 +119,13 @@ public final class XMLConfiguration {
      */
     public void closeConection(String xmlFile) throws TransformerConfigurationException, TransformerException, IOException, URISyntaxException {
         root.setXmlStandalone(false);
+        
+        File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(root);
-        StreamResult result = new StreamResult(new File(xmlFile));
+        StreamResult result = new StreamResult(fileXML);
         transformer.transform(source, result);
     }
 

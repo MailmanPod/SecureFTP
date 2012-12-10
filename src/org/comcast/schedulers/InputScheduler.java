@@ -4,14 +4,22 @@
  */
 package org.comcast.schedulers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.comcast.builder.Mail;
+import org.comcast.logic.DateScheduler;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.router.RouterInput;
 import org.comcast.router.RouterOutput;
 import org.comcast.structures.BinaryHeap;
+import org.quartz.CronExpression;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -22,6 +30,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import static org.quartz.TriggerBuilder.newTrigger;
 import static org.quartz.DateBuilder.*;
 import static org.quartz.JobBuilder.newJob;
+import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
  *
@@ -34,6 +43,7 @@ public class InputScheduler extends Thread implements SchedulerInterface {
     private BinaryHeap<Message> downloadFiles;
     private Mail advice;
     private Server serverSender;
+    private DateScheduler date;
 
     public InputScheduler(ServerConfig config, BinaryHeap<Message> mess, Mail mail) {
         this.configuration = config;
@@ -44,6 +54,10 @@ public class InputScheduler extends Thread implements SchedulerInterface {
     
     public void setScheduler(Scheduler s){
         this.scheduler = s;
+    }
+    
+    public void setDateScheduler(DateScheduler ds){
+        this.date = ds;
     }
 
     @Override
@@ -57,7 +71,14 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         System.out.println("------- Initialization Complete -----------");
 
         // computer a time that is on the next round minute
-        Date runTime = evenMinuteDate(new Date());
+        //Date runTime = evenMinuteDate(new Date());
+//        Date runTime = dateOf(20, 54, 00, 9, DECEMBER, 2012);
+        Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
+        
+        String aux = advice.getMailText();
+        DateFormat format = DateFormat.getDateInstance();
+        String form = "\n" + "Datos de fecha: " + format.format(runTime);
+        advice.setMailText(aux + form);
 
         System.out.println("------- Scheduling Job  -------------------");
         JobDataMap map = new JobDataMap();
@@ -77,7 +98,8 @@ public class InputScheduler extends Thread implements SchedulerInterface {
                 .withIdentity("trigger1_download", "download")
                 .startAt(runTime)
                 .build();
-
+       
+        
         // Tell quartz to schedule the job using our trigger
         scheduler.scheduleJob(job, trigger);
         System.out.println(job.getKey() + " will run at: " + runTime);
@@ -90,10 +112,14 @@ public class InputScheduler extends Thread implements SchedulerInterface {
 
         // wait long enough so that the scheduler as an opportunity to 
         // run the job!
-        System.out.println("------- Waiting 65 seconds... -------------");
+        
         try {
             // wait 65 seconds to show job
-            sleep(65L * 1000L);
+            long end = runTime.getTime();
+            long start = System.currentTimeMillis();
+            long res = end - start;
+            System.out.println("------- Waiting "+ res +" seconds... -------------");
+            sleep(res);
             // executing...
         } catch (InterruptedException ex) {
             System.out.println("Exception: \n" + ex.toString());

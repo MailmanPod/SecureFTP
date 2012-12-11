@@ -14,7 +14,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.comcast.logic.Client;
+import org.comcast.builder.Client;
 import org.comcast.logic.ServerConfig;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -90,7 +90,7 @@ public final class XMLConfiguration {
     public void createConection(String schema, String xmlFile) throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
         File fileSchema = new File(this.getClass().getResource(schema).toURI());
         File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
-        
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
@@ -119,7 +119,7 @@ public final class XMLConfiguration {
      */
     public void closeConection(String xmlFile) throws TransformerConfigurationException, TransformerException, IOException, URISyntaxException {
         root.setXmlStandalone(false);
-        
+
         File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -187,11 +187,11 @@ public final class XMLConfiguration {
         //closeConection();
     }
 
-    public Client getClientConfig() throws ParserConfigurationException, SAXException,
+    public Properties getClientConfig() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
         //createConection();
-        Client config = null;
+        Properties config = new Properties();
 
         NodeList NodoUsers = userElement.getChildNodes();/*devuelve los hijos de la raiz (en este caso)*/
 
@@ -203,26 +203,46 @@ public final class XMLConfiguration {
 
             NodeList cn = user.getElementsByTagName("clientName");
             Text clientName = (Text) cn.item(0).getFirstChild();
+            String att_name = cn.item(0).getAttributes().item(0).getNodeValue();;
 
             NodeList cln = user.getElementsByTagName("clientLastName");
             Text clientLastName = (Text) cln.item(0).getFirstChild();
+            String att_last = cln.item(0).getAttributes().item(0).getNodeValue();
 
             NodeList co = user.getElementsByTagName("clientOrganization");
             Text clientOrganization = (Text) co.item(0).getFirstChild();
+            String att_org = co.item(0).getAttributes().item(0).getNodeValue();
 
             NodeList l = user.getElementsByTagName("localization");
             Text localization = (Text) l.item(0).getFirstChild();
+            String att_locale = l.item(0).getAttributes().item(0).getNodeValue();
 
             NodeList dp = user.getElementsByTagName("downloadPath");
             Text downloadPath = (Text) dp.item(0).getFirstChild();
+            String att_download = dp.item(0).getAttributes().item(0).getNodeValue();
+
+            NodeList pu = user.getElementsByTagName("publicStorage");
+            Text publicStorage = (Text) pu.item(0).getFirstChild();
+            String att_public = pu.item(0).getAttributes().item(0).getNodeValue();
+
+            NodeList pv = user.getElementsByTagName("privateStorage");
+            Text privateStorage = (Text) pv.item(0).getFirstChild();
+            String att_private = pv.item(0).getAttributes().item(0).getNodeValue();
 
             NodeList isr = user.getElementsByTagName("isSetupRun");
             Text isSetupRun = (Text) isr.item(0).getFirstChild();
+            String att_setup = isr.item(0).getAttributes().item(0).getNodeValue();
+//            boolean aux = (isSetupRun.getData().compareToIgnoreCase("true") == 0) ? true : false;
 
-            boolean aux = (isSetupRun.getData().compareToIgnoreCase("true") == 0) ? true : false;
+            config.setProperty(att_name, clientName.getData());
+            config.setProperty(att_last, clientLastName.getData());
+            config.setProperty(att_org, clientOrganization.getData());
+            config.setProperty(att_locale, localization.getData());
+            config.setProperty(att_download, downloadPath.getData());
+            config.setProperty(att_public, publicStorage.getData());
+            config.setProperty(att_private, privateStorage.getData());
+            config.setProperty(att_setup, isSetupRun.getData());
 
-            config = new Client(clientName.getData(), clientLastName.getData(),
-                    clientOrganization.getData(), localization.getData(), downloadPath.getData(), aux);
         }
         //closeConection();
         return config;
@@ -256,6 +276,12 @@ public final class XMLConfiguration {
             NodeList dp = user.getElementsByTagName("downloadPath");
             Text downloadPath = (Text) dp.item(0).getFirstChild();
 
+            NodeList pu = user.getElementsByTagName("publicStorage");
+            Text publicStorage = (Text) pu.item(0).getFirstChild();
+
+            NodeList pv = user.getElementsByTagName("privateStorage");
+            Text privateStorage = (Text) pv.item(0).getFirstChild();
+
             NodeList isr = user.getElementsByTagName("isSetupRun");
             Text isSetupRun = (Text) isr.item(0).getFirstChild();
 
@@ -264,6 +290,8 @@ public final class XMLConfiguration {
             clientOrganization.setData(config.getOrganization());
             localization.setData(config.getLocalization());
             downloadPath.setData(config.getDownloadPath());
+            publicStorage.setData(config.getPublicStorage());
+            privateStorage.setData(config.getPrivateStorage());
 
             String aux = (config.isSetupRun()) ? "true" : "false";
             isSetupRun.setData(aux);

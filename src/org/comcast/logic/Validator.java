@@ -302,6 +302,6 @@ public class Validator {
 
         Matcher m2 = patron2.matcher(toValid);
 
-        return !m2.find();
+        return m2.find();
     }
 }

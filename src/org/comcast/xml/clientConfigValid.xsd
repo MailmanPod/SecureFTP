@@ -6,12 +6,78 @@
         <xsd:element name="config">
           <xsd:complexType>
             <xsd:sequence>
-              <xsd:element name="clientName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
-              <xsd:element name="clientLastName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
-              <xsd:element name="clientOrganization" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
-              <xsd:element name="localization" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
-              <xsd:element name="downloadPath" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
-              <xsd:element name="isSetupRun" minOccurs="1" maxOccurs="1" type="xsd:boolean"></xsd:element>
+              <xsd:element name="clientName" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="clientLastName" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="clientOrganization" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="localization" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="downloadPath" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="publicStorage" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="privateStorage" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="isSetupRun" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:boolean">
+                      <xsd:attribute name="alias" type="xsd:string" use="required"></xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>

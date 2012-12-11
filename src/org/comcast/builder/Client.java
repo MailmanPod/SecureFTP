@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.comcast.logic;
+package org.comcast.builder;
 
 import org.comcast.exceptions.NullObjectParameterException;
 import org.comcast.router.InputChannel;
@@ -19,25 +19,18 @@ public class Client implements Comparable<Client>, InputChannel {
     private boolean setupRun;
     private String localization;
     private String downloadPath;
+    private String publicStorage;
+    private String privateStorage;
 
     public Client() {
-    }
-    
-    public Client(String clientName, String clientLastName, String organization, String localization, String downloadPath, boolean setupRun) {
-        this.clientName = clientName;
-        this.clientLastName = clientLastName;
-        this.organization = organization;
-        this.localization = localization;
-        this.downloadPath = downloadPath;
-        this.setupRun = setupRun;
     }
 
     @Override
     public int compareTo(Client o) {
-        if(o == null){
+        if (o == null) {
             throw new NullObjectParameterException("El objeto Cliente no tiene ningun valor asociado");
         }
-        
+
         return this.getClientLastName().compareTo(o.getClientLastName());
     }
 
@@ -99,8 +92,9 @@ public class Client implements Comparable<Client>, InputChannel {
 
     @Override
     public String toString() {
-        return "Client{" + "clientName=" + clientName + ", clientLastName=" + clientLastName + 
-                ", organization=" + organization + ", setupRun=" + setupRun + ", localization=" + localization + ", downloadPath=" + downloadPath + '}';
+        return "Client{" + "clientName=" + clientName + ", clientLastName=" + clientLastName + ", organization=" + organization
+                + ", setupRun=" + setupRun + ", localization=" + localization + ", downloadPath=" + downloadPath
+                + ", publicStorage=" + publicStorage + ", privateStorage=" + privateStorage + '}';
     }
 
     /**
@@ -129,5 +123,33 @@ public class Client implements Comparable<Client>, InputChannel {
      */
     public void setLocalization(String localization) {
         this.localization = localization;
+    }
+
+    /**
+     * @return the publicStorage
+     */
+    public String getPublicStorage() {
+        return publicStorage;
+    }
+
+    /**
+     * @param publicStorage the publicStorage to set
+     */
+    public void setPublicStorage(String publicStorage) {
+        this.publicStorage = publicStorage;
+    }
+
+    /**
+     * @return the privateStorage
+     */
+    public String getPrivateStorage() {
+        return privateStorage;
+    }
+
+    /**
+     * @param privateStorage the privateStorage to set
+     */
+    public void setPrivateStorage(String privateStorage) {
+        this.privateStorage = privateStorage;
     }
 }

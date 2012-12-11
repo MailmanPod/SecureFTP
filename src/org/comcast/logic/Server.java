@@ -100,7 +100,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     private synchronized void openConnection() throws SocketException, IOException {
-        client.connect(config.getIpAddress());
+        client.connect(config.getIpAddress(), 21);
         client.login(config.getUserLogin(), config.getPassLogin());
     }
 

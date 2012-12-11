@@ -23,8 +23,8 @@ public class MailBuilder {
     public static final int SEND_PROTOCOL = 32;
     public static final int USER_NAME = 64;
     public static final int USER_PASSWORD = 128;
-    protected Mail mail;
-    protected int requiredElements;
+    private Mail mail;
+    private int requiredElements;
 
     public MailBuilder() {
         this.mail = new Mail();
@@ -60,7 +60,7 @@ public class MailBuilder {
 
     public void buildMailText(String mailText) {
 
-        if (mailText != null && Validator.isTextEmpty(mailText)) {
+        if (mailText != null && !Validator.isTextEmpty(mailText)) {
             this.mail.setMailText(mailText);
         }
     }

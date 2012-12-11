@@ -13,7 +13,8 @@ import javax.xml.transform.TransformerException;
 import org.comcast.builder.Mail;
 import org.comcast.builder.MailBuilder;
 import org.comcast.exceptions.InformationRequiredException;
-import org.comcast.logic.Client;
+import org.comcast.builder.Client;
+import org.comcast.builder.ClientBuilder;
 import org.comcast.logic.ServerConfig;
 import org.xml.sax.SAXException;
 
@@ -40,13 +41,27 @@ public class Loader {
     }
 
     public Client getClientConfiguration() throws ParserConfigurationException, SAXException, IOException,
-            TransformerConfigurationException, TransformerException, URISyntaxException {
+            TransformerConfigurationException, TransformerException, URISyntaxException, InformationRequiredException {
 
         general.createConection(XMLConfiguration.CLIENT_CONFIG_SCHEMA, XMLConfiguration.CLIENT_CONFIG);
-        Client config = general.getClientConfig();
+        Properties config = general.getClientConfig();
+        ClientBuilder builder = new ClientBuilder();
+
+        builder.buildClientName(config.getProperty("comcast.name"));
+        builder.buildClientLastName(config.getProperty("comcast.last"));
+        builder.buildOrganization(config.getProperty("comcast.org"));
+        builder.buildLocale(config.getProperty("comcast.locale"));
+        builder.buildDownloadPath(config.getProperty("comcast.download"));
+        builder.buildPublicStorage(config.getProperty("comcast.public"));
+        builder.buildPrivateStorage(config.getProperty("comcast.private"));
+        boolean aux = (config.getProperty("comcast.setup").compareToIgnoreCase("true") == 0) ? true : false;
+        builder.buildSetupRun(aux);
+
+        Client client = builder.getCLient();
+
         general.closeConection(XMLConfiguration.CLIENT_CONFIG);
 
-        return config;
+        return client;
     }
 
     public Mail getMail() throws ParserConfigurationException, SAXException, IOException,

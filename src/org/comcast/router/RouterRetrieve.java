@@ -16,7 +16,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.comcast.logic.Client;
+import org.comcast.builder.Client;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.structures.LocalIterator;

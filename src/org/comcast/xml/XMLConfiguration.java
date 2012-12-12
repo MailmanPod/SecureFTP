@@ -15,7 +15,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.comcast.builder.Client;
+import org.comcast.crypto.CryptoData;
 import org.comcast.logic.ServerConfig;
+import org.comcast.structures.LocalIterator;
+import org.comcast.structures.OpenAdressingHashTable;
+import org.comcast.structures.SimpleList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -51,23 +55,28 @@ public final class XMLConfiguration {
     /**
      *
      */
-    public static final String SERVER_CONFIG = "serverconfig.xml";
-    public static final String SERVER_CONFIG_SCHEMA = "serverConfigValid.xsd";
+    public static final String SERVER_CONFIG = "./xml/serverconfig.xml";
+    public static final String SERVER_CONFIG_SCHEMA = "./xml/serverConfigValid.xsd";
     /**
      *
      */
-    public static final String CLIENT_CONFIG = "clientconfig.xml";
-    public static final String CLIENT_CONFIG_SCHEMA = "clientConfigValid.xsd";
+    public static final String CLIENT_CONFIG = "./xml/clientconfig.xml";
+    public static final String CLIENT_CONFIG_SCHEMA = "./xml/clientConfigValid.xsd";
     /**
      *
      */
-    public static final String MAIL_PROPERTIES = "mailproperties.xml";
-    public static final String MAIL_PROPERTIES_SCHEMA = "mailpropertiesValid.xsd";
+    public static final String MAIL_PROPERTIES = "./xml/mailproperties.xml";
+    public static final String MAIL_PROPERTIES_SCHEMA = "./xml/mailpropertiesValid.xsd";
     /**
      *
      */
-    public static final String MAIL_CONTENT = "mailcontent.xml";
-    public static final String MAIL_CONTENT_SCHEMA = "mailContentValid.xsd";
+    public static final String MAIL_CONTENT = "./xml/mailcontent.xml";
+    public static final String MAIL_CONTENT_SCHEMA = "./xml/mailContentValid.xsd";
+    /**
+     *
+     */
+    public static final String CRYPTO = "./xml/cryptodata.xml";
+    public static final String CRYPTO_SCHEMA = "./xml/cryptoDataValid.xsd";
 
     /**
      * Constructor sin parametros, por default.
@@ -88,13 +97,28 @@ public final class XMLConfiguration {
      * @throws IOException si ocurre algun problema durante la operacion.
      */
     public void createConection(String schema, String xmlFile) throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
-        File fileSchema = new File(this.getClass().getResource(schema).toURI());
-        File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
+        File fileSchema = new File(schema);
+        File fileXML = new File(xmlFile);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
         factory.setAttribute(JAXP_SCHEMA_SOURCE, fileSchema);
+        factory.setIgnoringElementContentWhitespace(true);
+
+        DocumentBuilder constructor = factory.newDocumentBuilder();/*constructor es el parser*/
+        constructor.setErrorHandler(new DefaultErrorHandler());
+//        File configFile = new File(xmlFile);
+        root = constructor.parse(fileXML);
+
+        userElement = root.getDocumentElement();/*apunta u la raiz del arbol*/
+    }
+
+    public void createConection(String xmlFile) throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
+        File fileXML = new File(xmlFile);
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
         factory.setIgnoringElementContentWhitespace(true);
 
         DocumentBuilder constructor = factory.newDocumentBuilder();/*constructor es el parser*/
@@ -120,7 +144,7 @@ public final class XMLConfiguration {
     public void closeConection(String xmlFile) throws TransformerConfigurationException, TransformerException, IOException, URISyntaxException {
         root.setXmlStandalone(false);
 
-        File fileXML = new File(this.getClass().getResource(xmlFile).toURI());
+        File fileXML = new File(xmlFile);
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -138,8 +162,6 @@ public final class XMLConfiguration {
         NodeList NodoUsers = userElement.getChildNodes();/*devuelve los hijos de la raiz (en este caso)*/
 
         for (int i = 0; i < NodoUsers.getLength(); i++) {
-
-            System.out.println("Item: " + NodoUsers.item(i).getNodeName());
 
             Element user = (Element) NodoUsers.item(i);
 
@@ -196,8 +218,6 @@ public final class XMLConfiguration {
         NodeList NodoUsers = userElement.getChildNodes();/*devuelve los hijos de la raiz (en este caso)*/
 
         for (int i = 0; i < NodoUsers.getLength(); i++) {
-
-            System.out.println("Item: " + NodoUsers.item(i).getNodeName());
 
             Element user = (Element) NodoUsers.item(i);
 
@@ -309,8 +329,6 @@ public final class XMLConfiguration {
 
         for (int i = 0; i < NodoUsers.getLength(); i++) {
 
-            System.out.println("Item: " + NodoUsers.item(i).getNodeName());
-
             Element user = (Element) NodoUsers.item(i);
 
             NodeList h = user.getElementsByTagName("host");
@@ -373,8 +391,6 @@ public final class XMLConfiguration {
 
         for (int i = 0; i < NodoUsers.getLength(); i++) {
 
-            System.out.println("Item: " + NodoUsers.item(i).getNodeName());
-
             Element user = (Element) NodoUsers.item(i);
 
             NodeList f = user.getElementsByTagName("from");
@@ -425,8 +441,6 @@ public final class XMLConfiguration {
 
         for (int i = 0; i < NodoUsers.getLength(); i++) {
 
-            System.out.println("Item: " + NodoUsers.item(i).getNodeName());
-
             Element user = (Element) NodoUsers.item(i);
 
             NodeList f = user.getElementsByTagName("from");
@@ -466,5 +480,106 @@ public final class XMLConfiguration {
             password.setData(c.getProperty(att_password));
         }
         //closeConection();
+    }
+
+    public OpenAdressingHashTable<CryptoData, String> getCryptoData() throws ParserConfigurationException, SAXException,
+            IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
+
+        //createConection();
+        CryptoData config = null;
+        OpenAdressingHashTable<CryptoData, String> list = new OpenAdressingHashTable<CryptoData, String>();
+
+        NodeList NodoUsers = userElement.getChildNodes();/*devuelve los hijos de la raiz (en este caso)*/
+
+        for (int i = 0; i < NodoUsers.getLength(); i++) {
+
+            String algo = NodoUsers.item(i).getNodeName();
+
+            if (algo.equalsIgnoreCase("data")) {
+                Element user = (Element) NodoUsers.item(i);
+
+                NodeList h = user.getElementsByTagName("fileName");
+                Text fileName = (Text) h.item(0).getFirstChild();
+
+                NodeList t = user.getElementsByTagName("original");
+                Text original = (Text) t.item(0).getFirstChild();
+
+                NodeList p = user.getElementsByTagName("cryptoFile");
+                Text cryptoFile = (Text) p.item(0).getFirstChild();
+
+                NodeList u = user.getElementsByTagName("publicKey");
+                Text publicKey = (Text) u.item(0).getFirstChild();
+
+                NodeList a = user.getElementsByTagName("privateKey");
+                Text privateKey = (Text) a.item(0).getFirstChild();
+
+                NodeList e = user.getElementsByTagName("extension");
+                Text extension = (Text) e.item(0).getFirstChild();
+
+                config = new CryptoData(fileName.getData(), original.getData(), cryptoFile.getData(),
+                        publicKey.getData(), privateKey.getData(), extension.getData());
+
+                list.putByKey(config, config.getFileName() + "." + config.getOriginalExtension());
+            }
+        }
+        //closeConection();
+        return list;
+    }
+
+    public void appendCryptoData(CryptoData newData) {
+
+        Element data = root.createElement("data");
+
+        Element fileName = root.createElement("fileName");
+        Element original = root.createElement("original");
+        Element cryptoFile = root.createElement("cryptoFile");
+        Element publicKey = root.createElement("publicKey");
+        Element privateKey = root.createElement("privateKey");
+        Element extension = root.createElement("extension");
+
+        Text fn = root.createTextNode(newData.getFileName());
+        Text o = root.createTextNode(newData.getOriginal());
+        Text cf = root.createTextNode(newData.getCryptoFile());
+        Text pu = root.createTextNode(newData.getPublicKey());
+        Text pv = root.createTextNode(newData.getPrivateKey());
+        Text e = root.createTextNode(newData.getOriginalExtension());
+
+        fileName.appendChild(fn);
+        original.appendChild(o);
+        cryptoFile.appendChild(cf);
+        publicKey.appendChild(pu);
+        privateKey.appendChild(pv);
+        extension.appendChild(e);
+
+        data.appendChild(fileName);
+        data.appendChild(original);
+        data.appendChild(cryptoFile);
+        data.appendChild(publicKey);
+        data.appendChild(privateKey);
+        data.appendChild(extension);
+
+        userElement.appendChild(data);
+    }
+
+    public void removeCryptoData(String fileName, String extension) throws ParserConfigurationException, SAXException,
+            IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
+
+        NodeList NodoUsers = userElement.getChildNodes();/*devuelve los hijos de la raiz (en este caso)*/
+
+        for (int i = 0; i < NodoUsers.getLength(); i++) {
+
+            Element user = (Element) NodoUsers.item(i);
+
+            NodeList fn = user.getElementsByTagName("fileName");
+            Text fname = (Text) fn.item(0).getFirstChild();
+
+            NodeList e = user.getElementsByTagName("extension");
+            Text ext = (Text) e.item(0).getFirstChild();
+
+            if (fname.getData().contains(fileName) && ext.getData().contains(extension)) {
+                userElement.removeChild(user);
+                break;
+            }
+        }
     }
 }

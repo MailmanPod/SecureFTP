@@ -7,6 +7,6 @@
     <protocol key="comcast.protocol">smtp</protocol>
     <text key="comcast.text">Tareas Realizadas</text>
     <user key="comcast.user">brueradamian@gmail.com</user>
-    <password key="comcast.password">null</password>
+    <password key="comcast.password">none</password>
   </content>
 </mail>

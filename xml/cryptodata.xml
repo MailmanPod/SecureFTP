@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<crypto>
+  <data>
+    <fileName>test</fileName>
+    <original>C:\Windows\test.txt</original>
+    <cryptoFile>C:\Windows\test.crypto</cryptoFile>
+    <publicKey>C:\Key\test.public</publicKey>
+    <privateKey>C:\Key\test.private</privateKey>
+    <extension>txt</extension>
+  </data>
+</crypto>

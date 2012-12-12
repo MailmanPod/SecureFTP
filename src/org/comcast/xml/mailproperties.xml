@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><mail><properties><host alias="mail.smtp.host">smtp.gmail.com</host><tls alias="mail.smtp.starttls.enable">true</tls><port alias="mail.smtp.port">587</port><user alias="mail.smtp.user">brueradamian@gmail.com</user><authentication alias="mail.smtp.auth">true</authentication></properties></mail>

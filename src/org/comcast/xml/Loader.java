@@ -15,7 +15,12 @@ import org.comcast.builder.MailBuilder;
 import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.builder.Client;
 import org.comcast.builder.ClientBuilder;
+import org.comcast.crypto.CryptoData;
+import org.comcast.exceptions.EmptyHashTableException;
+import org.comcast.exceptions.InvalidEntryException;
 import org.comcast.logic.ServerConfig;
+import org.comcast.structures.OpenAdressingHashTable;
+import org.comcast.structures.SimpleList;
 import org.xml.sax.SAXException;
 
 /**
@@ -86,6 +91,39 @@ public class Loader {
         builder.buildMailUserPassword(content.getProperty("comcast.password"));
 
         return builder.getMail();
+    }
+
+    public CryptoData getCryptoData(String fileName) throws ParserConfigurationException, SAXException, IOException,
+            TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException, InvalidEntryException {
+
+        general.createConection(XMLConfiguration.CRYPTO_SCHEMA, XMLConfiguration.CRYPTO);
+        OpenAdressingHashTable<CryptoData, String> map = general.getCryptoData();
+        general.closeConection(XMLConfiguration.CRYPTO);
+
+        System.out.println(map.toString());
+
+        CryptoData cd = null;
+
+        if (map.containsKey(fileName)) {
+            cd = map.get(fileName);
+        }
+        return cd;
+    }
+
+    public void appendCryptoData(CryptoData newData) throws ParserConfigurationException, SAXException, IOException,
+            TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException {
+
+        general.createConection(XMLConfiguration.CRYPTO);
+        general.appendCryptoData(newData);
+        general.closeConection(XMLConfiguration.CRYPTO);
+    }
+
+    public void removeCryptoData(String fileName, String extension) throws ParserConfigurationException, SAXException, IOException,
+            TransformerConfigurationException, TransformerException, URISyntaxException {
+
+        general.createConection(XMLConfiguration.CRYPTO);
+        general.removeCryptoData(fileName, extension);
+        general.closeConection(XMLConfiguration.CRYPTO);
     }
 
     public void setServerConfiguration(ServerConfig config) throws ParserConfigurationException, SAXException, IOException,

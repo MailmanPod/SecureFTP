@@ -147,7 +147,7 @@ public class Mail {
 
     @Override
     public String toString() {
-        return "Mail{" + "properties=" + properties + ", session=" + session
+        return "Mail{" + "properties=" + properties
                 + ", from=" + from + ", recipients=" + recipient + ", subject=" + subject + ", mailText="
                 + mailText + ", sendProtocol=" + sendProtocol + ", userName=" + mailUserName + ", userPassword=" + mailUserPassword + '}';
     }

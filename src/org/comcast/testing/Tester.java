@@ -43,6 +43,7 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.crypto.Crypto;
+import org.comcast.crypto.CryptoData;
 import org.comcast.crypto.CryptoProvider;
 import org.comcast.logic.DateScheduler;
 import org.comcast.xml.Loader;
@@ -150,14 +151,14 @@ public class Tester {
 
         //s();
 
-        System.out.println(getIPAddress());
+//        System.out.println(getIPAddress());
         Loader l = LoaderProvider.getInstance();
         ServerConfig config = l.getServerConfiguration();
         Client c = l.getClientConfiguration();
-//        Mail m = l.getMail();
-        DateScheduler date = new DateScheduler(1, 58, 0, 10, DateScheduler.DECEMBER, 2012);
+        Mail m = l.getMail();
+//        DateScheduler date = new DateScheduler(1, 58, 0, 10, DateScheduler.DECEMBER, 2012);
         System.out.println(config.toString());
-//        System.out.println(m.toString());
+        System.out.println(m.toString());
         System.out.println(c.toString());
 
         Message archivo = new Message(new Client(),
@@ -233,6 +234,7 @@ public class Tester {
 
         String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
         String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
+        String ex = partida.substring(partida.lastIndexOf(".") + 1, partida.length());
 
         String pn = aux + ".public";
         String pv = aux + ".private";
@@ -247,7 +249,19 @@ public class Tester {
         //System.out.println("Particion: " + particion);
         System.out.println("Original: " + partida);
         System.out.println("CryptoFile: " + cyptoFile);
+        System.out.println("Extension: " + ex);
 
+        CryptoData nuevo = new CryptoData("turco", "D:\\turco.txt", "D:\\tsla.crypto", "C:\\tsla.public", "C:\\tsla.private", "txt");
+//        l.appendCryptoData(nuevo);
+        l.removeCryptoData(nuevo.getFileName(), nuevo.getOriginalExtension());
+        CryptoData cd = l.getCryptoData(nuevo.getFileName() + "." + nuevo.getOriginalExtension());
+        
+        if(cd != null){
+            System.out.println(cd.toString());
+        }else{
+            System.out.println("No existe");
+        }
+        
         //crypto.keyGenerateRSA(publicName, privateName);
 
         //crypto.encryptRSA(partida, cyptoFile, publicName);

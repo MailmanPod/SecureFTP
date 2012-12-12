@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="crypto">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="data" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="fileName" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="original" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="cryptoFile" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="publicKey" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="privateKey" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="extension" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

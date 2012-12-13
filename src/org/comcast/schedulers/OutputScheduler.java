@@ -30,7 +30,7 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  * @author Quality of Service
  */
-public class OutputScheduler extends Thread implements SchedulerInterface{
+public class OutputScheduler extends Thread implements SchedulerInterface {
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -46,14 +46,14 @@ public class OutputScheduler extends Thread implements SchedulerInterface{
         this.serverSender = new Server(mess, config);
     }
 
-    public void setScheduler(Scheduler s){
+    public void setScheduler(Scheduler s) {
         this.scheduler = s;
     }
-    
-    public void setDateScheduler(DateScheduler ds){
+
+    public void setDateScheduler(DateScheduler ds) {
         this.date = ds;
     }
-    
+
     @Override
     public final void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
@@ -67,10 +67,10 @@ public class OutputScheduler extends Thread implements SchedulerInterface{
         // computer a time that is on the next round minute
 //        Date runTime = evenMinuteDate(new Date());
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
-        
+
         String aux = advice.getMailText();
         DateFormat format = DateFormat.getDateInstance();
-        String form = "\n" + "Datos de fecha: " + format.format(runTime);
+        String form = "\n" + "Datos de fecha: " + runTime;
         advice.setMailText(aux + form);
 
         System.out.println("------- Scheduling Job  -------------------");
@@ -109,7 +109,7 @@ public class OutputScheduler extends Thread implements SchedulerInterface{
             long end = runTime.getTime();
             long start = System.currentTimeMillis();
             long res = end - start;
-            System.out.println("------- Waiting "+ res +" seconds... -------------");
+            System.out.println("------- Waiting " + res + " seconds... -------------");
             sleep(res);
             // executing...
         } catch (InterruptedException ex) {
@@ -125,12 +125,12 @@ public class OutputScheduler extends Thread implements SchedulerInterface{
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
     }
-    
+
     @Override
-    public void run(){
+    public void run() {
         try {
             startJob();
-            
+
             stopJob();
         } catch (SchedulerException ex) {
             System.out.println("Exception: " + ex.toString());

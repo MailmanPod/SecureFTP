@@ -12,6 +12,7 @@
               <xsd:element name="publicKey" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
               <xsd:element name="privateKey" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
               <xsd:element name="extension" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
+              <xsd:element name="destination" minOccurs="1" maxOccurs="1" type="xsd:string"></xsd:element>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>

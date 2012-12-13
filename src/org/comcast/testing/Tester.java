@@ -46,6 +46,7 @@ import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoData;
 import org.comcast.crypto.CryptoProvider;
 import org.comcast.logic.DateScheduler;
+import org.comcast.proxy.Works;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.comcast.xml.XMLConfiguration;
@@ -153,36 +154,46 @@ public class Tester {
 
 //        System.out.println(getIPAddress());
         Loader l = LoaderProvider.getInstance();
-        ServerConfig config = l.getServerConfiguration();
-        Client c = l.getClientConfiguration();
-        Mail m = l.getMail();
-//        DateScheduler date = new DateScheduler(1, 58, 0, 10, DateScheduler.DECEMBER, 2012);
-        System.out.println(config.toString());
-        System.out.println(m.toString());
-        System.out.println(c.toString());
+//        ServerConfig config = l.getServerConfiguration();
+//        Client c = l.getClientConfiguration();
+//        Mail m = l.getMail();
+//        System.out.println(config.toString());
+//        System.out.println(m.toString());
+//        System.out.println(c.toString());
 
         Message archivo = new Message(new Client(),
-                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\RSAPrivate.key", new FTPFile());
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\", new FTPFile());
 
         Message archivo1 = new Message(new Client(),
-                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\RSAPublic.key", new FTPFile());
+                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\", new FTPFile());
 
         Message archivo3 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\retrieve.txt", new FTPFile());
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\", new FTPFile());
 
         Message archivo4 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\dynamic.txt", new FTPFile());
+                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\", new FTPFile());
 
         Message archivo2 = new Message(new Client(),
-                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\UPLOADER.txt", new FTPFile());
+                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\", new FTPFile());
 
         BinaryHeap<Message> pila = new BinaryHeap<>();
+        SimpleList<Message> transferir = new SimpleList<>();
+        transferir.addInOrder(archivo);
+        transferir.addInOrder(archivo1);
+        transferir.addInOrder(archivo2);
+        transferir.addInOrder(archivo3);
+        transferir.addInOrder(archivo4);
+        
 //        BinaryHeap<Message> pila2 = new BinaryHeap<>();
         pila.insert(archivo3);
         pila.insert(archivo);
         pila.insert(archivo2);
         pila.insert(archivo1);
         pila.insert(archivo4);
+        
+        DateScheduler date = new DateScheduler(18, 53, 0, 13, DateScheduler.DECEMBER, 2012);
+        Works w = new Works();
+        w.transferFiles(transferir, date);
 
         /*Properties props = new Properties();
          props.setProperty("mail.smtp.host", "smtp.gmail.com");
@@ -204,10 +215,10 @@ public class Tester {
          Mail m = builder.getMail();*/
 
 //        SchedulerFactory sf = new StdSchedulerFactory();
-//
-////        InputScheduler s = new InputScheduler(config, pila, m);
-////        s.setScheduler(sf.getScheduler());
-////        s.setDateScheduler(date);
+////
+//////        InputScheduler s = new InputScheduler(config, pila, m);
+//////        s.setScheduler(sf.getScheduler());
+//////        s.setDateScheduler(date);
 //        OutputScheduler se = new OutputScheduler(config, pila, m);
 //        se.setScheduler(sf.getScheduler());
 //        se.setDateScheduler(date);
@@ -228,40 +239,43 @@ public class Tester {
         //s.stopJob();
         //se.stopJob();
 
-        Crypto crypto = CryptoProvider.getInstance();
+//        Crypto crypto = CryptoProvider.getInstance();
 
-        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";
+//        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";
+//
+//        String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
+//        String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
+//        String ex = partida.substring(partida.lastIndexOf(".") + 1, partida.length());
+//
+//        String pn = aux + ".public";
+//        String pv = aux + ".private";
+//        String cryp = aux + ".crypto";
+//
+//        String publicName = "C:\\Key\\" + pn;
+//        String privateName = "C:\\Key\\" + pv;
+//        String cyptoFile = particion + cryp;
+//
+//        System.out.println("FileName: " + aux);
+//        System.out.println("Public: " + publicName);
+//        System.out.println("Private: " + privateName);
+//        //System.out.println("Particion: " + particion);
+//        System.out.println("Original: " + partida);
+//        System.out.println("CryptoFile: " + cyptoFile);
+//        System.out.println("Extension: " + ex);
+//        System.out.println("Destination: \\" + cryp);
 
-        String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
-        String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
-        String ex = partida.substring(partida.lastIndexOf(".") + 1, partida.length());
-
-        String pn = aux + ".public";
-        String pv = aux + ".private";
-        String cryp = aux + ".crypto";
-
-        String publicName = "C:\\Key\\" + pn;
-        String privateName = "C:\\Key\\" + pv;
-        String cyptoFile = particion + cryp;
-
-        System.out.println("Public: " + publicName);
-        System.out.println("Private: " + privateName);
-        //System.out.println("Particion: " + particion);
-        System.out.println("Original: " + partida);
-        System.out.println("CryptoFile: " + cyptoFile);
-        System.out.println("Extension: " + ex);
-
-        CryptoData nuevo = new CryptoData("turco", "D:\\turco.txt", "D:\\tsla.crypto", "C:\\tsla.public", "C:\\tsla.private", "txt");
-//        l.appendCryptoData(nuevo);
-        l.removeCryptoData(nuevo.getFileName(), nuevo.getOriginalExtension());
-        CryptoData cd = l.getCryptoData(nuevo.getFileName() + "." + nuevo.getOriginalExtension());
-        
-        if(cd != null){
-            System.out.println(cd.toString());
-        }else{
-            System.out.println("No existe");
-        }
-        
+//        CryptoData nuevo = new CryptoData("turco", "D:\\turco.txt", "D:\\tsla.crypto", "C:\\tsla.public", "C:\\tsla.private", "txt", "\\turco.crypto");
+////        l.appendCryptoData(nuevo);
+////        l.removeCryptoData(nuevo.getFileName(), nuevo.getOriginalExtension());
+//        CryptoData cd = l.getCryptoData(nuevo.getDestination());
+//        
+//        if(cd != null){
+////            System.out.println(cd.toString());
+//            System.out.println("El archivo existe");
+//        }else{
+//            System.out.println("No existe");
+//        }
+//        
         //crypto.keyGenerateRSA(publicName, privateName);
 
         //crypto.encryptRSA(partida, cyptoFile, publicName);

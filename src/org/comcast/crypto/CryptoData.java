@@ -16,14 +16,16 @@ public class CryptoData implements Comparable<CryptoData> {
     private String publicKey;
     private String privateKey;
     private String originalExtension;
+    private String destination;
 
-    public CryptoData(String fileName, String original, String cryptoFile, String publicKey, String privateKey, String extension) {
+    public CryptoData(String fileName, String original, String cryptoFile, String publicKey, String privateKey, String extension, String destination) {
         this.fileName = fileName;
         this.original = original;
         this.cryptoFile = cryptoFile;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.originalExtension = extension;
+        this.destination = destination;
     }
 
     /**
@@ -98,8 +100,9 @@ public class CryptoData implements Comparable<CryptoData> {
 
     @Override
     public String toString() {
-        return "CryptoData{" + "fileName=" + fileName + ", original=" + original + ""
-                + ", cryptoFile=" + cryptoFile + ", publicKey=" + publicKey + ", privateKey=" + privateKey + ", originalExtension=" + getOriginalExtension() + '}';
+        return "CryptoData{" + "fileName=" + fileName + ", original=" + original
+                + ", cryptoFile=" + cryptoFile + ", publicKey=" + publicKey + ", privateKey=" + privateKey
+                + ", originalExtension=" + originalExtension + ", destination=" + destination + '}';
     }
 
     @Override
@@ -119,5 +122,19 @@ public class CryptoData implements Comparable<CryptoData> {
      */
     public void setOriginalExtension(String originalExtension) {
         this.originalExtension = originalExtension;
+    }
+
+    /**
+     * @return the destination
+     */
+    public String getDestination() {
+        return destination;
+    }
+
+    /**
+     * @param destination the destination to set
+     */
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }

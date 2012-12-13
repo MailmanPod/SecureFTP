@@ -93,19 +93,19 @@ public class Loader {
         return builder.getMail();
     }
 
-    public CryptoData getCryptoData(String fileName) throws ParserConfigurationException, SAXException, IOException,
+    public CryptoData getCryptoData(String destination) throws ParserConfigurationException, SAXException, IOException,
             TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException, InvalidEntryException {
 
         general.createConection(XMLConfiguration.CRYPTO_SCHEMA, XMLConfiguration.CRYPTO);
         OpenAdressingHashTable<CryptoData, String> map = general.getCryptoData();
         general.closeConection(XMLConfiguration.CRYPTO);
 
-        System.out.println(map.toString());
+//        System.out.println(map.toString());
 
         CryptoData cd = null;
 
-        if (map.containsKey(fileName)) {
-            cd = map.get(fileName);
+        if (map.containsKey(destination)) {
+            cd = map.get(destination);
         }
         return cd;
     }

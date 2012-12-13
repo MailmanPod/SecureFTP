@@ -516,10 +516,13 @@ public final class XMLConfiguration {
                 NodeList e = user.getElementsByTagName("extension");
                 Text extension = (Text) e.item(0).getFirstChild();
 
-                config = new CryptoData(fileName.getData(), original.getData(), cryptoFile.getData(),
-                        publicKey.getData(), privateKey.getData(), extension.getData());
+                NodeList d = user.getElementsByTagName("destination");
+                Text destination = (Text) d.item(0).getFirstChild();
 
-                list.putByKey(config, config.getFileName() + "." + config.getOriginalExtension());
+                config = new CryptoData(fileName.getData(), original.getData(), cryptoFile.getData(),
+                        publicKey.getData(), privateKey.getData(), extension.getData(), destination.getData());
+
+                list.putByKey(config, config.getDestination());
             }
         }
         //closeConection();
@@ -536,6 +539,7 @@ public final class XMLConfiguration {
         Element publicKey = root.createElement("publicKey");
         Element privateKey = root.createElement("privateKey");
         Element extension = root.createElement("extension");
+        Element destination = root.createElement("destination");
 
         Text fn = root.createTextNode(newData.getFileName());
         Text o = root.createTextNode(newData.getOriginal());
@@ -543,6 +547,7 @@ public final class XMLConfiguration {
         Text pu = root.createTextNode(newData.getPublicKey());
         Text pv = root.createTextNode(newData.getPrivateKey());
         Text e = root.createTextNode(newData.getOriginalExtension());
+        Text d = root.createTextNode(newData.getDestination());
 
         fileName.appendChild(fn);
         original.appendChild(o);
@@ -550,6 +555,7 @@ public final class XMLConfiguration {
         publicKey.appendChild(pu);
         privateKey.appendChild(pv);
         extension.appendChild(e);
+        destination.appendChild(d);
 
         data.appendChild(fileName);
         data.appendChild(original);
@@ -557,6 +563,7 @@ public final class XMLConfiguration {
         data.appendChild(publicKey);
         data.appendChild(privateKey);
         data.appendChild(extension);
+        data.appendChild(destination);
 
         userElement.appendChild(data);
     }

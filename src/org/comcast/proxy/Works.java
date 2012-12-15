@@ -4,27 +4,12 @@
  */
 package org.comcast.proxy;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.NoSuchPaddingException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoData;
 import org.comcast.crypto.CryptoProvider;
-import org.comcast.exceptions.EmptyHashTableException;
-import org.comcast.exceptions.InformationRequiredException;
-import org.comcast.exceptions.InvalidEntryException;
-import org.comcast.exceptions.ListPointerOutOfBoundsException;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
@@ -37,7 +22,6 @@ import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
-import org.xml.sax.SAXException;
 
 /**
  *

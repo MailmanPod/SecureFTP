@@ -59,12 +59,10 @@ public class Server implements Comparable<Server>, OutputChannel {
 
         try {
             FileInputStream fis = null;
-            openConnection();
-
+            
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
 
-            client.enterLocalPassiveMode();
             client.setFileTransferMode(FTP.LOCAL_FILE_TYPE);
             client.setFileType(FTPClient.BINARY_FILE_TYPE);
 
@@ -74,8 +72,7 @@ public class Server implements Comparable<Server>, OutputChannel {
             client.noop();
 
             fis.close();
-            closeConnection();
-
+            
         } catch (SocketException ex) {
             closeConnection();
             throw new SocketException(ex.getLocalizedMessage());
@@ -88,16 +85,21 @@ public class Server implements Comparable<Server>, OutputChannel {
     @Override
     public synchronized void uploadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
+        
+        openConnection();
 
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             uploadMessage(toSend);
         }
+        
+        closeConnection();
     }
 
     private synchronized void openConnection() throws SocketException, IOException {
         client.connect(config.getIpAddress(), 21);
         client.login(config.getUserLogin(), config.getPassLogin());
+        client.enterLocalPassiveMode();
     }
 
     private synchronized void closeConnection() throws SocketException, IOException {
@@ -110,10 +112,6 @@ public class Server implements Comparable<Server>, OutputChannel {
 
             FileOutputStream fos = null;
 
-            openConnection();
-
-            client.enterLocalPassiveMode();
-
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
 
@@ -122,8 +120,6 @@ public class Server implements Comparable<Server>, OutputChannel {
 
             client.noop();
             fos.close();
-
-            closeConnection();
 
         } catch (SocketException ex) {
             client.disconnect();
@@ -138,10 +134,14 @@ public class Server implements Comparable<Server>, OutputChannel {
     public synchronized void downloadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
 
+        openConnection();
+        
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             downloadMessage(toSend);
         }
+        
+        closeConnection();
     }
 
     public synchronized void downloadSingle(Message mess) throws SocketException, IOException {

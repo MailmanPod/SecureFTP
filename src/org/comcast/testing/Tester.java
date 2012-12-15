@@ -232,10 +232,12 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-        DateScheduler date = new DateScheduler(13, 47, 0, 15, DateScheduler.DECEMBER, 2012);
+        DateScheduler date = new DateScheduler(16, 59, 0, 15, DateScheduler.DECEMBER, 2012);
         InterfaceWorks w = new Works();
+        
 //        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
 //                w.getClass().getInterfaces(), new UploadHandler(w));
+        
 //        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
 //                w.getClass().getInterfaces(), new DownloadHandler(w));
         

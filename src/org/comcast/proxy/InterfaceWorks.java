@@ -17,4 +17,6 @@ public interface InterfaceWorks {
     public void transferFiles(SimpleList<Message> toTransfer, DateScheduler date) throws Exception;
 
     public void downloadFiles(SimpleList<Message> toDownload, DateScheduler date) throws Exception;
+    
+    public void decryptFiles(SimpleList<Message> toDownload) throws Exception;
 }

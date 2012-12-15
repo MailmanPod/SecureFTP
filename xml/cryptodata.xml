@@ -13,8 +13,8 @@
     <fileName>dynamic</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\dynamic.txt</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\dynamic.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>txt</extension>
     <destination>\dynamic.crypto</destination>
   </data>
@@ -22,8 +22,8 @@
     <fileName>hola-mundo-texto</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\hola-mundo-texto.txt</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\hola-mundo-texto.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>txt</extension>
     <destination>\hola-mundo-texto.crypto</destination>
   </data>
@@ -31,8 +31,8 @@
     <fileName>retrieve</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\retrieve.txt</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\retrieve.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>txt</extension>
     <destination>\retrieve.crypto</destination>
   </data>
@@ -40,8 +40,8 @@
     <fileName>RSAPrivate</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\RSAPrivate.key</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\RSAPrivate.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>key</extension>
     <destination>\RSAPrivate.crypto</destination>
   </data>
@@ -49,8 +49,8 @@
     <fileName>RSAPublic</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\RSAPublic.key</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\RSAPublic.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>key</extension>
     <destination>\RSAPublic.crypto</destination>
   </data>
@@ -58,8 +58,8 @@
     <fileName>serverconfig</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\serverconfig.xml</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\serverconfig.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>xml</extension>
     <destination>\serverconfig.crypto</destination>
   </data>
@@ -67,8 +67,8 @@
     <fileName>serverConfigValid</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\serverConfigValid.xsd</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\serverConfigValid.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>xsd</extension>
     <destination>\serverConfigValid.crypto</destination>
   </data>
@@ -76,8 +76,8 @@
     <fileName>UPLOADER</fileName>
     <original>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\UPLOADER.txt</original>
     <cryptoFile>D:\Proyectos en NetBeans 9\neuromancerV1\FTPServer2\UPLOADER.crypto</cryptoFile>
-    <publicKey>C:\Key\key1.public</publicKey>
-    <privateKey>C:\Key\key1.private</privateKey>
+    <publicKey>C:\Key\key9159338835210.public</publicKey>
+    <privateKey>C:\Key\key9159338835210.private</privateKey>
     <extension>txt</extension>
     <destination>\UPLOADER.crypto</destination>
   </data>

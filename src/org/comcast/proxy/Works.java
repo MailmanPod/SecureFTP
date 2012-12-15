@@ -44,9 +44,9 @@ public class Works implements InterfaceWorks {
         }
     }
 
-    private CryptoData stringParts(Message full) {
+    private CryptoData stringParts(Message full, long serialID) {
         String partida = full.getLocalPath();
-        String general = "key" + 1;
+        String general = "key" + serialID;
 
         String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
         String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
@@ -90,7 +90,7 @@ public class Works implements InterfaceWorks {
         return (data != null) ? false : true;
     }
 
-    private Properties getEncryptedFiles(SimpleList<Message> plainFiles) throws Exception {
+    private Properties getEncryptedFiles(SimpleList<Message> plainFiles, long serialID) throws Exception {
 
         LocalIterator<Message> iter = plainFiles.getIterador();
         SimpleList<Message> encrypted = new SimpleList<>();
@@ -98,7 +98,7 @@ public class Works implements InterfaceWorks {
 
         while (iter.hasMoreElements()) {
             Message aux = iter.returnElement();
-            CryptoData cd = stringParts(aux);
+            CryptoData cd = stringParts(aux, serialID);
 
             if (isLoadable(cd.getDestination())) {
                 Message transfer = new Message(aux.getSource(), aux.getPriority(), cd.getCryptoFile(), cd.getDestination(), aux.getEncapsulation());
@@ -118,7 +118,8 @@ public class Works implements InterfaceWorks {
 
     private SimpleList<Message> encryptFiles(SimpleList<Message> plainFiles) throws Exception {
 
-        Properties props = getEncryptedFiles(plainFiles);
+        long serialID = System.nanoTime();
+        Properties props = getEncryptedFiles(plainFiles, serialID);
         SimpleList<Message> encrypted = (SimpleList<Message>) props.get("encrypted");
         SimpleList<CryptoData> data = (SimpleList<CryptoData>) props.get("data");
         int i = 0;
@@ -126,7 +127,7 @@ public class Works implements InterfaceWorks {
         LocalIterator<CryptoData> dataIter = data.getIterador();
 
         i += encrypted.size();
-        crypto.keyGenerateRSA("C:\\Key\\key" + 1 + ".public", "C:\\Key\\key" + 1 + ".private", i);
+        crypto.keyGenerateRSA("C:\\Key\\key" + serialID + ".public", "C:\\Key\\key" + serialID + ".private", i);
 
         while (dataIter.hasMoreElements()) {
             boolean flagOrigi = false;
@@ -242,6 +243,7 @@ public class Works implements InterfaceWorks {
         is.start();
     }
 
+    @Override
     public void decryptFiles(SimpleList<Message> toDownload) throws Exception {
 
         LocalIterator<Message> iter = toDownload.getIterador();

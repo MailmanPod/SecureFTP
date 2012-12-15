@@ -28,6 +28,7 @@ import org.quartz.SchedulerException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Proxy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
@@ -46,6 +47,10 @@ import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoData;
 import org.comcast.crypto.CryptoProvider;
 import org.comcast.logic.DateScheduler;
+import org.comcast.proxy.DecryptHandler;
+import org.comcast.proxy.DownloadHandler;
+import org.comcast.proxy.InterfaceWorks;
+import org.comcast.proxy.UploadHandler;
 import org.comcast.proxy.Works;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
@@ -227,11 +232,26 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-        DateScheduler date = new DateScheduler(9, 19, 0, 15, DateScheduler.DECEMBER, 2012);
-        Works w = new Works();
+        DateScheduler date = new DateScheduler(13, 47, 0, 15, DateScheduler.DECEMBER, 2012);
+        InterfaceWorks w = new Works();
+//        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+//                w.getClass().getInterfaces(), new UploadHandler(w));
+//        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+//                w.getClass().getInterfaces(), new DownloadHandler(w));
+        
+        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+                w.getClass().getInterfaces(), new DecryptHandler(w));
+        
+        try{
+//            behind.transferFiles(transferir, date);
+//            behind.downloadFiles(transferir, date);
+            behind.decryptFiles(transferir);
+        }catch (Exception e){
+            System.out.println(e.getLocalizedMessage());
+        }
 //        w.transferFiles(transferir, date);
 //        w.downloadFiles(transferir, date);
-        w.decryptFiles(transferir);
+//        w.decryptFiles(transferir);
 //
         /*Properties props = new Properties();
          props.setProperty("mail.smtp.host", "smtp.gmail.com");

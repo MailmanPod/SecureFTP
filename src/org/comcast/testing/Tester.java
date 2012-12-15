@@ -154,47 +154,85 @@ public class Tester {
 
 //        System.out.println(getIPAddress());
         Loader l = LoaderProvider.getInstance();
-//        ServerConfig config = l.getServerConfiguration();
-//        Client c = l.getClientConfiguration();
-//        Mail m = l.getMail();
+        ServerConfig config = l.getServerConfiguration();
+        Client c = l.getClientConfiguration();
+        Mail m = l.getMail();
 //        System.out.println(config.toString());
 //        System.out.println(m.toString());
 //        System.out.println(c.toString());
-
+//
+//        Message archivo = new Message(new Client(),
+//                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\", new FTPFile());
+//
+//        Message archivo1 = new Message(new Client(),
+//                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\", new FTPFile());
+//        
+//        Message archivo5 = new Message(new Client(),
+//                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\serverConfigValid.xsd", "\\", new FTPFile());
+//
+//        Message archivo3 = new Message(new Client(),
+//                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\", new FTPFile());
+//
+//        Message archivo4 = new Message(new Client(),
+//                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\", new FTPFile());
+//        
+//        Message archivo6 = new Message(new Client(),
+//                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\serverconfig.xml", "\\", new FTPFile());
+//
+//        Message archivo2 = new Message(new Client(),
+//                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\", new FTPFile());
+//        
+//        Message archivo7 = new Message(new Client(),
+//                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\hola-mundo-texto.txt", "\\", new FTPFile());
+        
         Message archivo = new Message(new Client(),
-                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPrivate.key", "\\", new FTPFile());
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPrivate.crypto", "\\RSAPrivate.crypto", new FTPFile());
 
         Message archivo1 = new Message(new Client(),
-                Message.HIGH_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\RSAPublic.key", "\\", new FTPFile());
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPublic.crypto", "\\RSAPublic.crypto", new FTPFile());
+        
+        Message archivo5 = new Message(new Client(),
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "serverConfigValid.crypto", "\\serverConfigValid.crypto", new FTPFile());
 
         Message archivo3 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\retrieve.txt", "\\", new FTPFile());
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "retrieve.crypto", "\\retrieve.crypto", new FTPFile());
 
         Message archivo4 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt", "\\", new FTPFile());
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.crypto", "\\dynamic.crypto", new FTPFile());
+        
+        Message archivo6 = new Message(new Client(),
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "serverconfig.crypto", "\\serverconfig.crypto", new FTPFile());
 
         Message archivo2 = new Message(new Client(),
-                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\UPLOADER.txt", "\\", new FTPFile());
+                Message.LOW_PRIORITY, c.getDownloadPath() + "UPLOADER.crypto", "\\UPLOADER.crypto", new FTPFile());
+        
+        Message archivo7 = new Message(new Client(),
+                Message.LOW_PRIORITY, c.getDownloadPath() + "hola-mundo-texto.crypto", "\\hola-mundo-texto.crypto", new FTPFile());
 
-        BinaryHeap<Message> pila = new BinaryHeap<>();
+//        BinaryHeap<Message> pila = new BinaryHeap<>();
         SimpleList<Message> transferir = new SimpleList<>();
         transferir.addInOrder(archivo);
         transferir.addInOrder(archivo1);
         transferir.addInOrder(archivo2);
         transferir.addInOrder(archivo3);
         transferir.addInOrder(archivo4);
+        transferir.addInOrder(archivo5);
+        transferir.addInOrder(archivo6);
+        transferir.addInOrder(archivo7);
         
 //        BinaryHeap<Message> pila2 = new BinaryHeap<>();
-        pila.insert(archivo3);
-        pila.insert(archivo);
-        pila.insert(archivo2);
-        pila.insert(archivo1);
-        pila.insert(archivo4);
-        
-        DateScheduler date = new DateScheduler(18, 53, 0, 13, DateScheduler.DECEMBER, 2012);
+//        pila.insert(archivo3);
+//        pila.insert(archivo);
+//        pila.insert(archivo2);
+//        pila.insert(archivo1);
+//        pila.insert(archivo4);
+//        
+        DateScheduler date = new DateScheduler(9, 19, 0, 15, DateScheduler.DECEMBER, 2012);
         Works w = new Works();
-        w.transferFiles(transferir, date);
-
+//        w.transferFiles(transferir, date);
+//        w.downloadFiles(transferir, date);
+        w.decryptFiles(transferir);
+//
         /*Properties props = new Properties();
          props.setProperty("mail.smtp.host", "smtp.gmail.com");
          props.setProperty("mail.smtp.starttls.enable", "true");
@@ -215,10 +253,10 @@ public class Tester {
          Mail m = builder.getMail();*/
 
 //        SchedulerFactory sf = new StdSchedulerFactory();
-////
-//////        InputScheduler s = new InputScheduler(config, pila, m);
-//////        s.setScheduler(sf.getScheduler());
-//////        s.setDateScheduler(date);
+//
+//        InputScheduler s = new InputScheduler(config, pila, m);
+//        s.setScheduler(sf.getScheduler());
+//        s.setDateScheduler(date);
 //        OutputScheduler se = new OutputScheduler(config, pila, m);
 //        se.setScheduler(sf.getScheduler());
 //        se.setDateScheduler(date);
@@ -276,11 +314,22 @@ public class Tester {
 //            System.out.println("No existe");
 //        }
 //        
-        //crypto.keyGenerateRSA(publicName, privateName);
+        Crypto cr = new Crypto();
+        String publicName = "C:\\Key\\key1.public";
+        String privateName = "C:\\Key\\key1.private";
+//        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\dynamic.txt";
+//        String cryptoFile = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\dynamic.crypto";
+        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\retrieve.txt";
+        String cryptoFile = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\retrieve.crypto";
+        
+//        String partida = "C:\\ServerDownloads\\dynamic.txt";
+//        String cryptoFile = "C:\\ServerDownloads\\dynamic.crypto";
+//        
+//        cr.keyGenerateRSA(publicName, privateName);
 
-        //crypto.encryptRSA(partida, cyptoFile, publicName);
+//        cr.encryptRSA(partida, cryptoFile, publicName);
 
-        //crypto.decryptRSA(cyptoFile, partida, privateName);
+//        cr.decryptRSA(cryptoFile, partida, privateName);
 
 //        RouterRetrieve list = new RouterRetrieve(config);
 //        FTPFile[] files = list.getFiles("/");

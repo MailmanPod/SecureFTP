@@ -10,20 +10,25 @@ import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.NoSuchPaddingException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.Crypto;
 import org.comcast.crypto.CryptoData;
 import org.comcast.crypto.CryptoProvider;
 import org.comcast.exceptions.EmptyHashTableException;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.exceptions.InvalidEntryException;
 import org.comcast.exceptions.ListPointerOutOfBoundsException;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
+import org.comcast.schedulers.InputScheduler;
 import org.comcast.schedulers.OutputScheduler;
 import org.comcast.structures.BinaryHeap;
 import org.comcast.structures.LocalIterator;
@@ -42,26 +47,34 @@ public class Works implements InterfaceWorks {
 
     private Loader loader;
     private Crypto crypto;
-    private OutputScheduler se;
+    private OutputScheduler os;
+    private InputScheduler is;
+    private Client client;
 
     public Works() {
-        this.loader = LoaderProvider.getInstance();
-        this.crypto = CryptoProvider.getInstance();
+        try {
+            this.loader = LoaderProvider.getInstance();
+            this.crypto = CryptoProvider.getInstance();
+            this.client = loader.getClientConfiguration();
+        } catch (Exception ex) {
+        }
     }
 
     private CryptoData stringParts(Message full) {
         String partida = full.getLocalPath();
+        String general = "key" + 1;
 
         String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
         String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
         String ex = partida.substring(partida.lastIndexOf(".") + 1, partida.length());
 
-        String pn = aux + ".public";
-        String pv = aux + ".private";
+        String pn = general + ".public";
+        String pv = general + ".private";
         String cryp = aux + ".crypto";
 
-        String publicName = "C:\\Key\\" + pn;
-        String privateName = "C:\\Key\\" + pv;
+//        "C:\\Key\\" 
+        String publicName = client.getPublicStorage() + pn;
+        String privateName = client.getPrivateStorage() + pv;
         String cryptoFile = particion + cryp;
 
 //        System.out.println("FileName: " + aux);
@@ -86,16 +99,14 @@ public class Works implements InterfaceWorks {
         return data;
     }
 
-    private boolean isLoadable(String remoteDestination) throws ParserConfigurationException, SAXException,
-            IOException, TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException, InvalidEntryException {
+    private boolean isLoadable(String remoteDestination) throws Exception {
 
         CryptoData data = loader.getCryptoData(remoteDestination);
 
         return (data != null) ? false : true;
     }
 
-    private Properties getEncryptedFiles(SimpleList<Message> plainFiles) throws ParserConfigurationException, SAXException,
-            IOException, TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException, InvalidEntryException {
+    private Properties getEncryptedFiles(SimpleList<Message> plainFiles) throws Exception {
 
         LocalIterator<Message> iter = plainFiles.getIterador();
         SimpleList<Message> encrypted = new SimpleList<>();
@@ -121,16 +132,17 @@ public class Works implements InterfaceWorks {
         return props;
     }
 
-    private SimpleList<Message> encryptFiles(SimpleList<Message> plainFiles) throws ParserConfigurationException, SAXException,
-            IOException, TransformerConfigurationException, TransformerException, URISyntaxException, EmptyHashTableException,
-            InvalidEntryException, ListPointerOutOfBoundsException, NoSuchAlgorithmException, ClassNotFoundException,
-            NoSuchPaddingException, InvalidKeyException, GeneralSecurityException {
+    private SimpleList<Message> encryptFiles(SimpleList<Message> plainFiles) throws Exception {
 
         Properties props = getEncryptedFiles(plainFiles);
         SimpleList<Message> encrypted = (SimpleList<Message>) props.get("encrypted");
         SimpleList<CryptoData> data = (SimpleList<CryptoData>) props.get("data");
+        int i = 0;
 
         LocalIterator<CryptoData> dataIter = data.getIterador();
+
+        i += encrypted.size();
+        crypto.keyGenerateRSA("C:\\Key\\key" + 1 + ".public", "C:\\Key\\key" + 1 + ".private", i);
 
         while (dataIter.hasMoreElements()) {
             boolean flagOrigi = false;
@@ -168,7 +180,6 @@ public class Works implements InterfaceWorks {
                 System.out.println("\n\n\n");
 
                 loader.appendCryptoData(aux);
-                crypto.keyGenerateRSA(aux.getPublicKey(), aux.getPrivateKey());
                 crypto.encryptRSA(ori.getLocalPath(), cry.getLocalPath(), aux.getPublicKey());
             } else {
                 System.out.println("Error");
@@ -180,7 +191,6 @@ public class Works implements InterfaceWorks {
 
     @Override
     public void transferFiles(SimpleList<Message> toTransfer, DateScheduler date) throws Exception {
-
 
         SimpleList<Message> ready = encryptFiles(toTransfer);
         BinaryHeap<Message> heap = new BinaryHeap<>();
@@ -197,16 +207,16 @@ public class Works implements InterfaceWorks {
         Mail m = loader.getMail();
         SchedulerFactory sf = new StdSchedulerFactory();
 
-        se = new OutputScheduler(config, heap, m);
-        se.setScheduler(sf.getScheduler());
-        se.setDateScheduler(date);
+        os = new OutputScheduler(config, heap, m);
+        os.setScheduler(sf.getScheduler());
+        os.setDateScheduler(date);
 
-        se.start();
+        os.start();
     }
 
     public boolean isTaskAlive() {
         try {
-            if (se.isAlive()) {
+            if (os.isAlive() || is.isAlive()) {
                 return true;
             }
         } catch (NullPointerException e) {
@@ -217,10 +227,78 @@ public class Works implements InterfaceWorks {
 
     public void cancelTask() {
         try {
-            if (se.isAlive()) {
-                se.interrupt();
+            if (os.isAlive() || is.isAlive()) {
+                os.interrupt();
             }
         } catch (NullPointerException ex) {
         }
+    }
+
+    @Override
+    public void downloadFiles(SimpleList<Message> toDownload, DateScheduler date) throws Exception {
+
+        BinaryHeap<Message> heap = new BinaryHeap<>();
+
+        LocalIterator<Message> iter = toDownload.getIterador();
+
+        while (iter.hasMoreElements()) {
+            Message aux = iter.returnElement();
+
+            heap.insert(aux);
+        }
+
+        ServerConfig config = loader.getServerConfiguration();
+        Mail m = loader.getMail();
+        SchedulerFactory sf = new StdSchedulerFactory();
+
+        is = new InputScheduler(config, heap, m);
+        is.setScheduler(sf.getScheduler());
+        is.setDateScheduler(date);
+
+        is.start();
+    }
+
+    public void decryptFiles(SimpleList<Message> toDownload) throws Exception {
+
+        LocalIterator<Message> iter = toDownload.getIterador();
+        while (iter.hasMoreElements()) {
+            System.out.println("Previo a desencriptar");
+            Message aux = iter.returnElement();
+
+            decrypt(aux);
+        }
+    }
+
+    private void decrypt(Message toDecrypt) throws Exception {
+        String toNative = prepareStrings(toDecrypt);
+        CryptoData data = loader.getCryptoData(toDecrypt.getRemotePath());
+
+        if (toNative != null && data != null) {
+            System.out.println("Desencriptando");
+            System.out.println(toDecrypt.getLocalPath());
+            System.out.println(toNative);
+            System.out.println(data.getPrivateKey());
+            System.out.println("\n\n");
+            crypto.decryptRSA(toDecrypt.getLocalPath(), toNative, data.getPrivateKey());
+        } else {
+            System.out.println("Error");
+        }
+    }
+
+    private String prepareStrings(Message toPrepare) throws Exception {
+        CryptoData data = loader.getCryptoData(toPrepare.getRemotePath());
+        String finalMessage = null;
+
+        if (data != null) {
+            String partida = toPrepare.getLocalPath();
+            String download = partida.substring(0, partida.lastIndexOf("\\") + 1);
+            String file = data.getFileName() + "." + data.getOriginalExtension();
+
+            finalMessage = download + file;
+        } else {
+            System.out.println("Error");
+        }
+
+        return finalMessage;
     }
 }

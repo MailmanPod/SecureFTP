@@ -69,7 +69,6 @@ public class OutputScheduler extends Thread implements SchedulerInterface {
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
 
         String aux = advice.getMailText();
-        DateFormat format = DateFormat.getDateInstance();
         String form = "\n" + "Datos de fecha: " + runTime;
         advice.setMailText(aux + form);
 
@@ -108,7 +107,7 @@ public class OutputScheduler extends Thread implements SchedulerInterface {
             // wait 65 seconds to show job
             long end = runTime.getTime();
             long start = System.currentTimeMillis();
-            long res = end - start;
+            long res = (end - start);
             System.out.println("------- Waiting " + res + " seconds... -------------");
             sleep(res);
             // executing...

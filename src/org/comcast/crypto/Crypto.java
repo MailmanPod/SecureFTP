@@ -37,9 +37,11 @@ public class Crypto {
     public Crypto() {
     }
 
-    public void keyGenerateRSA(String pathPublic, String pathPrivate) throws NoSuchAlgorithmException, FileNotFoundException, IOException {
+    public void keyGenerateRSA(String pathPublic, String pathPrivate, int numbBytes) throws NoSuchAlgorithmException, FileNotFoundException, IOException {
         KeyPairGenerator pairgen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = new SecureRandom();
+        byte[] generateSeed = random.generateSeed(numbBytes);
+        random.setSeed(generateSeed);
 
         pairgen.initialize(KEYSIZE, random);
         KeyPair keyPair = pairgen.generateKeyPair();

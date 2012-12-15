@@ -15,4 +15,6 @@ import org.comcast.structures.SimpleList;
 public interface InterfaceWorks {
 
     public void transferFiles(SimpleList<Message> toTransfer, DateScheduler date) throws Exception;
+
+    public void downloadFiles(SimpleList<Message> toDownload, DateScheduler date) throws Exception;
 }

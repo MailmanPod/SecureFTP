@@ -51,12 +51,12 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         this.advice = mail;
         this.serverSender = new Server(mess, config);
     }
-    
-    public void setScheduler(Scheduler s){
+
+    public void setScheduler(Scheduler s) {
         this.scheduler = s;
     }
-    
-    public void setDateScheduler(DateScheduler ds){
+
+    public void setDateScheduler(DateScheduler ds) {
         this.date = ds;
     }
 
@@ -65,7 +65,7 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         System.out.println("------- Initializing ----------------------");
 
         // First we must get a reference to a scheduler
-        
+
         //scheduler = sf.getScheduler();
 
         System.out.println("------- Initialization Complete -----------");
@@ -74,10 +74,9 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         //Date runTime = evenMinuteDate(new Date());
 //        Date runTime = dateOf(20, 54, 00, 9, DECEMBER, 2012);
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
-        
+
         String aux = advice.getMailText();
-        DateFormat format = DateFormat.getDateInstance();
-        String form = "\n" + "Datos de fecha: " + format.format(runTime);
+        String form = "\n" + "Datos de fecha: " + runTime;
         advice.setMailText(aux + form);
 
         System.out.println("------- Scheduling Job  -------------------");
@@ -98,8 +97,8 @@ public class InputScheduler extends Thread implements SchedulerInterface {
                 .withIdentity("trigger1_download", "download")
                 .startAt(runTime)
                 .build();
-       
-        
+
+
         // Tell quartz to schedule the job using our trigger
         scheduler.scheduleJob(job, trigger);
         System.out.println(job.getKey() + " will run at: " + runTime);
@@ -112,13 +111,13 @@ public class InputScheduler extends Thread implements SchedulerInterface {
 
         // wait long enough so that the scheduler as an opportunity to 
         // run the job!
-        
+
         try {
             // wait 65 seconds to show job
             long end = runTime.getTime();
             long start = System.currentTimeMillis();
             long res = end - start;
-            System.out.println("------- Waiting "+ res +" seconds... -------------");
+            System.out.println("------- Waiting " + res + " seconds... -------------");
             sleep(res);
             // executing...
         } catch (InterruptedException ex) {
@@ -134,12 +133,12 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
     }
-    
+
     @Override
-    public void run(){
+    public void run() {
         try {
             startJob();
-            
+
             stopJob();
         } catch (SchedulerException ex) {
             System.out.println("Exception: " + ex.toString());

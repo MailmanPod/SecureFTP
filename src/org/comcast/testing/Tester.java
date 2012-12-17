@@ -52,6 +52,9 @@ import org.comcast.proxy.DownloadHandler;
 import org.comcast.proxy.InterfaceWorks;
 import org.comcast.proxy.UploadHandler;
 import org.comcast.proxy.Works;
+import org.comcast.strategy.FileListing;
+import org.comcast.strategy.ListingStrategy;
+import org.comcast.strategy.NameListing;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.comcast.xml.XMLConfiguration;
@@ -161,7 +164,7 @@ public class Tester {
         Loader l = LoaderProvider.getInstance();
         ServerConfig config = l.getServerConfiguration();
         Client c = l.getClientConfiguration();
-        Mail m = l.getMail();
+//        Mail m = l.getMail();
 //        System.out.println(config.toString());
 //        System.out.println(m.toString());
 //        System.out.println(c.toString());
@@ -191,28 +194,28 @@ public class Tester {
 //                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\hola-mundo-texto.txt", "\\", new FTPFile());
         
         Message archivo = new Message(new Client(),
-                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPrivate.crypto", "\\RSAPrivate.crypto", new FTPFile());
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPrivate.crypto", "\\RSAPrivate.crypto");
 
         Message archivo1 = new Message(new Client(),
-                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPublic.crypto", "\\RSAPublic.crypto", new FTPFile());
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPublic.crypto", "\\RSAPublic.crypto");
         
         Message archivo5 = new Message(new Client(),
-                Message.HIGH_PRIORITY, c.getDownloadPath() + "serverConfigValid.crypto", "\\serverConfigValid.crypto", new FTPFile());
+                Message.HIGH_PRIORITY, c.getDownloadPath() + "serverConfigValid.crypto", "\\serverConfigValid.crypto");
 
         Message archivo3 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, c.getDownloadPath() + "retrieve.crypto", "\\retrieve.crypto", new FTPFile());
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "retrieve.crypto", "\\retrieve.crypto");
 
         Message archivo4 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.crypto", "\\dynamic.crypto", new FTPFile());
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.crypto", "\\dynamic.crypto");
         
         Message archivo6 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, c.getDownloadPath() + "serverconfig.crypto", "\\serverconfig.crypto", new FTPFile());
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "serverconfig.crypto", "\\serverconfig.crypto");
 
         Message archivo2 = new Message(new Client(),
-                Message.LOW_PRIORITY, c.getDownloadPath() + "UPLOADER.crypto", "\\UPLOADER.crypto", new FTPFile());
+                Message.LOW_PRIORITY, c.getDownloadPath() + "UPLOADER.crypto", "\\UPLOADER.crypto");
         
         Message archivo7 = new Message(new Client(),
-                Message.LOW_PRIORITY, c.getDownloadPath() + "hola-mundo-texto.crypto", "\\hola-mundo-texto.crypto", new FTPFile());
+                Message.LOW_PRIORITY, c.getDownloadPath() + "hola-mundo-texto.crypto", "\\hola-mundo-texto.crypto");
 
 //        BinaryHeap<Message> pila = new BinaryHeap<>();
         SimpleList<Message> transferir = new SimpleList<>();
@@ -232,25 +235,25 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-        DateScheduler date = new DateScheduler(16, 59, 0, 15, DateScheduler.DECEMBER, 2012);
-        InterfaceWorks w = new Works();
-        
+//        DateScheduler date = new DateScheduler(16, 59, 0, 15, DateScheduler.DECEMBER, 2012);
+//        InterfaceWorks w = new Works();
+//        
+////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+////                w.getClass().getInterfaces(), new UploadHandler(w));
+//        
+////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+////                w.getClass().getInterfaces(), new DownloadHandler(w));
+//        
 //        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-//                w.getClass().getInterfaces(), new UploadHandler(w));
-        
-//        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-//                w.getClass().getInterfaces(), new DownloadHandler(w));
-        
-        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-                w.getClass().getInterfaces(), new DecryptHandler(w));
-        
-        try{
-//            behind.transferFiles(transferir, date);
-//            behind.downloadFiles(transferir, date);
-            behind.decryptFiles(transferir);
-        }catch (Exception e){
-            System.out.println(e.getLocalizedMessage());
-        }
+//                w.getClass().getInterfaces(), new DecryptHandler(w));
+//        
+//        try{
+////            behind.transferFiles(transferir, date);
+////            behind.downloadFiles(transferir, date);
+//            behind.decryptFiles(transferir);
+//        }catch (Exception e){
+//            System.out.println(e.getLocalizedMessage());
+//        }
 //        w.transferFiles(transferir, date);
 //        w.downloadFiles(transferir, date);
 //        w.decryptFiles(transferir);
@@ -434,5 +437,20 @@ public class Tester {
         /*if(Validator.isTextEmpty("WTF (Walter Trae Fideos)")){
          System.out.println("Es texto + " + empty.toString());
          }*/
+        
+//        FileListing list = new FileListing();
+//        list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
+//        Message[] localMessage = list.getLocalMessage("D:\\Cache\\EoF 1");
+//        Message[] localMessage = list.getRemoteMessages("\\");
+        RouterRetrieve ret = new RouterRetrieve(config);
+        String[] dirNames = ret.getDirNamesCurrent("/testing");
+        
+        for(String aux: dirNames){
+            System.out.println("Dir Name: " + aux);
+        }
+        
+//        for(Message aux: localMessage){
+//            System.out.println(aux.getLocalFile().getName() + "++++++++++++++" + aux.getFileType());
+//        }
     }
 }

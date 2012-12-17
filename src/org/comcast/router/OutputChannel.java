@@ -25,4 +25,6 @@ public interface OutputChannel extends Serializable {
     public void downloadMessages() throws SocketException, IOException, UnderflowException;
 
     public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException;
+    
+    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException;
 }

@@ -4,6 +4,7 @@
  */
 package org.comcast.router;
 
+import java.io.File;
 import java.io.Serializable;
 import org.apache.commons.net.ftp.FTPFile;
 import org.comcast.exceptions.NullObjectParameterException;
@@ -22,14 +23,14 @@ public class Message implements Serializable, Comparable<Message> {
     private String localPath;
     private String remotePath;
     private String fileType;
-    private FTPFile encapsulation;
+    private FTPFile ftpFile;
+    private File localFile;
 
-    public Message(InputChannel source, int priority, String localPath, String remotePath, FTPFile en) {
+    public Message(InputChannel source, int priority, String localPath, String remotePath) {
         this.source = source;
         this.priority = priority;
         this.localPath = localPath;
         this.remotePath = remotePath;
-        this.encapsulation = en;
         this.fileType = "unknown";
     }
 
@@ -98,20 +99,6 @@ public class Message implements Serializable, Comparable<Message> {
     }
 
     /**
-     * @return the encapsulation
-     */
-    public FTPFile getEncapsulation() {
-        return encapsulation;
-    }
-
-    /**
-     * @param encapsulation the encapsulation to set
-     */
-    public void setEncapsulation(FTPFile encapsulation) {
-        this.encapsulation = encapsulation;
-    }
-
-    /**
      * @return the fileType
      */
     public String getFileType() {
@@ -123,5 +110,33 @@ public class Message implements Serializable, Comparable<Message> {
      */
     public void setFileType(String fileType) {
         this.fileType = fileType;
+    }
+
+    /**
+     * @return the ftpFile
+     */
+    public FTPFile getFtpFile() {
+        return ftpFile;
+    }
+
+    /**
+     * @param ftpFile the ftpFile to set
+     */
+    public void setFtpFile(FTPFile ftpFile) {
+        this.ftpFile = ftpFile;
+    }
+
+    /**
+     * @return the localFile
+     */
+    public File getLocalFile() {
+        return localFile;
+    }
+
+    /**
+     * @param localFile the localFile to set
+     */
+    public void setLocalFile(File localFile) {
+        this.localFile = localFile;
     }
 }

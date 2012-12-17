@@ -8,6 +8,8 @@ package org.comcast.testing;
  *
  * @author Quality of Service
  */
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 
 
@@ -52,6 +54,12 @@ public class Principal extends JFrame {
         }
         add(new JScrollPane(explorador));
     }
+    
+    private void centrarPantalla() {
+        Dimension tamFrame = this.getSize();//para obtener las dimensiones del frame
+        Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla
+        setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);//para posicionar
+    }
 
     public void agregarHijos(DefaultMutableTreeNode padre) throws NullPointerException {
         if (padre != Raiz) {
@@ -75,9 +83,13 @@ public class Principal extends JFrame {
     }
 
     public static void main(String[] args) {
+        JFrame f = new JFrame();
+        Dimension tamFrame = f.getSize();//para obtener las dimensiones del frame
+        Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla
+        
         Principal p = new Principal();
         p.setVisible(true);
-        p.setBounds(0, 0, 400, 400);
+        p.setBounds((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2, 400, 400);
         p.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }

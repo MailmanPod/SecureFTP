@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -60,30 +61,25 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public String[] getDirNames(String dir) throws SocketException, IOException {
-        Message[] array = this.getAllFilesDir(dir).toArray(Message.class);
+    public String[] getDirNamesCurrent(String path) throws SocketException, IOException{
+        FTPFile[] retrieveMesseges = this.server.retrieveDirectories(path);
         int count = 0;
-
-        for (Message m : array) {
-            FTPFile ff = m.getEncapsulation();
-            if (ff.isDirectory()) {
+        for(FTPFile f : retrieveMesseges){
+            if(f.isDirectory()){
                 count++;
             }
         }
-
-        String[] names = new String[count];
-
-        for (int i = 0, j = 0; i < array.length; i++) {
-            Message aux = array[i];
-            FTPFile ff = aux.getEncapsulation();
-
-            if (ff.isDirectory()) {
-                names[j] = aux.getRemotePath();
-                j++;
+        
+        String[] s = new String[count];
+        int i = 0;
+        
+        for(FTPFile f : retrieveMesseges){
+            if(f.isDirectory()){
+                s[i] = f.getName();
+                i++;
             }
         }
-
-        return names;
+        return s;
     }
 
     /**
@@ -99,7 +95,8 @@ public class RouterRetrieve {
         FTPFile[] ftp = getFiles(dir);
 
         for (FTPFile file : ftp) {
-            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName(), file);
+            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());
+            aux.setFtpFile(file);
 
             if (file.isFile()) {
                 server.downloadSingle(aux);
@@ -114,7 +111,7 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae los archivos del directorio actual. Construir la tabla.
+     * Este trae los archivos del directorio actual del Servidor. Construir la tabla.
      *
      * @param dir
      * @return
@@ -128,7 +125,9 @@ public class RouterRetrieve {
         for (FTPFile file : ftp) {
 
             if (file.isFile()) {
-                Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName(), file);
+                Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());
+                aux.setFtpFile(file);
+                aux.setLocalFile(new File(aux.getLocalPath()));
                 server.downloadSingle(aux);
                 String x = getType(aux.getLocalPath());
                 aux.setFileType(x);
@@ -170,7 +169,8 @@ public class RouterRetrieve {
     private void storeFileDir(FTPFile file, String dir) throws SocketException, IOException {
 
         if (file.isFile()) {
-            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName(), file);
+            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());
+            aux.setFtpFile(file);
             server.downloadSingle(aux);
             String x = getType(aux.getLocalPath());
             aux.setFileType(x);
@@ -179,7 +179,8 @@ public class RouterRetrieve {
 
         if (file.isDirectory()) {
             String dire = dir + file.getName() + "/";
-            Message auxi = new Message(new Client(), Message.NORMAL_PRIORITY, "", dire, file);
+            Message auxi = new Message(new Client(), Message.NORMAL_PRIORITY, "", dire);
+            auxi.setFtpFile(file);
             this.recursiveDir.addInOrder(auxi);
 
             FTPFile[] p = getFiles(dire);
@@ -221,7 +222,8 @@ public class RouterRetrieve {
     private void storeFiles(FTPFile file, String dir) throws SocketException, IOException {
 
         if (file.isFile()) {
-            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName(), file);
+            Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());
+            aux.setFtpFile(file);
             server.downloadSingle(aux);
             String x = getType(aux.getLocalPath());
             aux.setFileType(x);
@@ -265,42 +267,23 @@ public class RouterRetrieve {
         return type;
     }
 
-    public SimpleList<File> getLocalFiles(String pathName) {
+    private SimpleList<File> getLocalFiles(String pathName) {
         File f = new File(pathName);
         SimpleList<File> list = new SimpleList<>();
 
         if (f.isDirectory()) {
             File[] array = f.listFiles();
-            SimpleList<File> buffer = new SimpleList<>();
-
-            list = buffer.toSimpleList(array);
+            for (File aux : array) {
+                list.addInOrder(aux);
+            }
         }
 
         return list;
     }
-
-    public SimpleList<File> getLocalFiles(String pathName, FileFilter filter) {
-        File f = new File(pathName);
-        SimpleList<File> list = new SimpleList<>();
-
-        if (f.isDirectory()) {
-            File[] array = f.listFiles(filter);
-            SimpleList<File> buffer = new SimpleList<>();
-
-            list = buffer.toSimpleList(array);
-        }
-
-        return list;
-    }
-
-    public SimpleList<Message> getLocalMessages(String pathName, String destin, FileFilter filter) throws IOException {
+    
+    public SimpleList<Message> getLocalMessages(String pathName) throws IOException {
         SimpleList<Message> list = new SimpleList<>();
-        SimpleList<File> fileList = null;
-        if (filter != null) {
-            fileList = getLocalFiles(pathName, filter);
-        } else {
-            fileList = getLocalFiles(pathName);
-        }
+        SimpleList<File> fileList = getLocalFiles(pathName);
 
         LocalIterator<File> iter = fileList.getIterador();
 
@@ -308,7 +291,30 @@ public class RouterRetrieve {
             File aux = iter.returnElement();
 
             if (aux.isFile()) {
-                Message mes = new Message(new Client(), Message.NORMAL_PRIORITY, aux.getAbsolutePath(), destin + aux.getName(), new FTPFile());
+                Message mes = new Message(new Client(), Message.NORMAL_PRIORITY, aux.getAbsolutePath(), "");
+                mes.setFtpFile(new FTPFile());
+                mes.setLocalFile(aux);
+                mes.setFileType(getType(aux.getAbsolutePath()));
+                list.addLast(mes);
+            }
+        }
+
+        return list;
+    }
+
+    public SimpleList<Message> getLocalMessages(String pathName, String destin) throws IOException {
+        SimpleList<Message> list = new SimpleList<>();
+        SimpleList<File> fileList = getLocalFiles(pathName);
+
+        LocalIterator<File> iter = fileList.getIterador();
+
+        while (iter.hasMoreElements()) {
+            File aux = iter.returnElement();
+
+            if (aux.isFile()) {
+                Message mes = new Message(new Client(), Message.NORMAL_PRIORITY, aux.getAbsolutePath(), destin + aux.getName());
+                mes.setFtpFile(new FTPFile());
+                mes.setLocalFile(aux);
                 mes.setFileType(getType(aux.getAbsolutePath()));
                 list.addLast(mes);
             }

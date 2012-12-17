@@ -177,4 +177,15 @@ public class Server implements Comparable<Server>, OutputChannel {
     public void setServerPriority(int serverPriority) {
         this.serverPriority = serverPriority;
     }
+
+    @Override
+    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException {
+        openConnection();
+
+        FTPFile[] buffer = client.listDirectories(dir);
+
+        closeConnection();
+
+        return buffer;
+    }
 }

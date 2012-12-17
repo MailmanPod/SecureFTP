@@ -54,7 +54,7 @@ public class Works implements InterfaceWorks {
 
         String pn = general + ".public";
         String pv = general + ".private";
-        String cryp = aux + ".crypto";
+        String cryp = aux + ".ftp";
 
 //        "C:\\Key\\" 
         String publicName = client.getPublicStorage() + pn;
@@ -101,7 +101,8 @@ public class Works implements InterfaceWorks {
             CryptoData cd = stringParts(aux, serialID);
 
             if (isLoadable(cd.getDestination())) {
-                Message transfer = new Message(aux.getSource(), aux.getPriority(), cd.getCryptoFile(), cd.getDestination(), aux.getEncapsulation());
+                Message transfer = new Message(aux.getSource(), aux.getPriority(), cd.getCryptoFile(), cd.getDestination());
+                transfer.setFtpFile(aux.getFtpFile());
                 encrypted.addInOrder(transfer);
                 cf.addInOrder(cd);
             } else {

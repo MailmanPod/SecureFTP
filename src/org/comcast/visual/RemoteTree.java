@@ -193,10 +193,10 @@ public class RemoteTree extends javax.swing.JDialog {
     }
     
     private void sortRemoteTable(FileListing list){
-        String selection = (String) this.boxSort.getSelectedItem();
+        int selection = this.boxSort.getSelectedIndex();
         
         switch(selection){
-            case "Nombre":
+            case 0:
                 if(radioMenor.isSelected()){
                     list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
                 }else{
@@ -206,7 +206,7 @@ public class RemoteTree extends javax.swing.JDialog {
                 }
                 break;
                 
-            case "Tipo de Archivo":
+            case 1:
                 if(radioMenor.isSelected()){
                     list.setListingStrategy(new FileTypeListing(config, ListingStrategy.ASC));
                 }else{
@@ -216,7 +216,7 @@ public class RemoteTree extends javax.swing.JDialog {
                 }
                 break;
                 
-            case "Tamaño":
+            case 2:
                 if(radioMenor.isSelected()){
                     list.setListingStrategy(new SizeListing(config, ListingStrategy.ASC));
                 }else{

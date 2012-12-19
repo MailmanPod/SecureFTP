@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,19 +28,23 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.comcast.logic.FileFinder;
 import org.comcast.logic.ServerConfig;
+import org.comcast.logic.Validator;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
 import org.comcast.strategy.FileTypeListing;
 import org.comcast.strategy.ListingStrategy;
 import org.comcast.strategy.NameListing;
 import org.comcast.strategy.SizeListing;
+import org.comcast.structures.SimpleList;
 import org.comcast.tableModels.LocalFileTableModel;
 import org.comcast.tableModels.RemoteFileTableModel;
 import org.comcast.wizards.DownloadWizard;
 import org.comcast.wizards.UploadWizard;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
+import sun.java2d.pipe.ValidatePipe;
 
 /**
  *
@@ -99,7 +104,7 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
     }
-    
+
     private void initRemoteTable(String pathName) {
         try {
             FileListing list = new FileListing();
@@ -109,36 +114,36 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
     }
-    
-    private void sortTable(FileListing list){
-        String selection = (String) this.boxSort.getSelectedItem();
-        
-        switch(selection){
-            case "Nombre":
-                if(radioMenor.isSelected()){
+
+    private void sortTable(FileListing list) {
+        int selection = this.boxSort.getSelectedIndex();
+
+        switch (selection) {
+            case 0:
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
                     }
                 }
                 break;
-                
-            case "Tipo de Archivo":
-                if(radioMenor.isSelected()){
+
+            case 1:
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new FileTypeListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new FileTypeListing(config, ListingStrategy.DESC));
                     }
                 }
                 break;
-                
-            case "Tamaño":
-                if(radioMenor.isSelected()){
+
+            case 2:
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new SizeListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new SizeListing(config, ListingStrategy.DESC));
                     }
                 }
@@ -188,6 +193,7 @@ public class Main extends javax.swing.JFrame {
         radioAprox = new javax.swing.JRadioButton();
         radioExtension = new javax.swing.JRadioButton();
         txtBusqueda = new javax.swing.JTextField();
+        btnBuscarArchivos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
@@ -448,7 +454,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(radioMenor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioMayor)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 15, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(boxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -470,13 +476,20 @@ public class Main extends javax.swing.JFrame {
         buttonGroup2.add(radioExtension);
         radioExtension.setText("Extension");
 
+        btnBuscarArchivos.setText("Buscar");
+        btnBuscarArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarArchivosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(radioExacto)
@@ -484,9 +497,11 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(radioAprox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(radioExtension)
-                        .addGap(40, 40, 40)
-                        .addComponent(boxBusqueda, 0, 215, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addComponent(boxBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscarArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -497,7 +512,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(radioAprox)
                     .addComponent(radioExtension))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarArchivos))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -518,7 +535,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tabbed))
                 .addContainerGap())
         );
@@ -765,18 +782,122 @@ public class Main extends javax.swing.JFrame {
 
     private void boxSortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxSortItemStateChanged
         initLocalTable(this.lblFileSelected.getText());
+        if (lblFileSelectedRemote.getText() == "") {
+            this.lblFileSelectedRemote.setText("/");
+        }
         initRemoteTable(this.lblFileSelectedRemote.getText());
     }//GEN-LAST:event_boxSortItemStateChanged
 
     private void radioMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMenorActionPerformed
         initLocalTable(this.lblFileSelected.getText());
+        if (lblFileSelectedRemote.getText() == "") {
+            this.lblFileSelectedRemote.setText("/");
+        }
         initRemoteTable(this.lblFileSelectedRemote.getText());
     }//GEN-LAST:event_radioMenorActionPerformed
 
     private void radioMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMayorActionPerformed
         initLocalTable(this.lblFileSelected.getText());
+        if (lblFileSelectedRemote.getText() == "") {
+            this.lblFileSelectedRemote.setText("/");
+        }
         initRemoteTable(this.lblFileSelectedRemote.getText());
     }//GEN-LAST:event_radioMayorActionPerformed
+
+    private void searchTable(String search) throws Exception {
+        int selection = this.boxBusqueda.getSelectedIndex();
+        FileFinder finder = new FileFinder(config);
+
+        switch (selection) {
+            case 0:
+                if (radioExacto.isSelected()) {
+                    Message localExactName = finder.getLocalExactName(this.lblFileSelected.getText(), search);
+                    if (localExactName != null) {
+                        Message[] only = new Message[1];
+                        only[0] = localExactName;
+
+                        this.tableLocal.setModel(new LocalFileTableModel(only));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    if (radioAprox.isSelected()) {
+                        SimpleList<Message> localNameAprox = finder.getLocalNameAprox(this.lblFileSelected.getText(), search);
+
+                        if (!localNameAprox.isEmpty()) {
+                            Message[] only = localNameAprox.toArray(Message.class);
+                            this.tableLocal.setModel(new LocalFileTableModel(only));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                    } else {
+                        if (radioExtension.isSelected()) {
+                            SimpleList<Message> localNameAprox = finder.getLocalExtAprox(this.lblFileSelected.getText(), search);
+
+                            if (!localNameAprox.isEmpty()) {
+                                Message[] only = localNameAprox.toArray(Message.class);
+                                this.tableLocal.setModel(new LocalFileTableModel(only));
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case 1:
+                if (radioExacto.isSelected()) {
+                    Message remoteExactName = finder.getRemoteExactName(this.lblFileSelectedRemote.getText(), search);
+                    if (remoteExactName != null) {
+                        Message[] only = new Message[1];
+                        only[0] = remoteExactName;
+
+                        this.tableRemote.setModel(new RemoteFileTableModel(only));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    if (radioAprox.isSelected()) {
+                        SimpleList<Message> remoteNameAprox = finder.getRemoteNameAprox(this.lblFileSelectedRemote.getText(), search);
+
+                        if (!remoteNameAprox.isEmpty()) {
+                            Message[] only = remoteNameAprox.toArray(Message.class);
+                            this.tableRemote.setModel(new RemoteFileTableModel(only));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                    } else {
+                        if (radioExtension.isSelected()) {
+                            SimpleList<Message> remoteNameAprox = finder.getRemoteExtAprox(this.lblFileSelectedRemote.getText(), search);
+
+                            if (!remoteNameAprox.isEmpty()) {
+                                Message[] only = remoteNameAprox.toArray(Message.class);
+                                this.tableRemote.setModel(new RemoteFileTableModel(only));
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void btnBuscarArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarArchivosActionPerformed
+        String search = this.txtBusqueda.getText();
+
+        if (Validator.isTextEmpty(search) && search.startsWith(" ")) {
+            JOptionPane.showMessageDialog(this, "Campo de texto vacio", "Campo vacio", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                searchTable(search);
+            } catch (Exception ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnBuscarArchivosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -821,6 +942,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox boxBusqueda;
     private javax.swing.JComboBox boxSort;
+    private javax.swing.JButton btnBuscarArchivos;
     private javax.swing.JButton btnDownload;
     private javax.swing.JButton btnFileSelection;
     private javax.swing.JButton btnFileSelectionRemote;

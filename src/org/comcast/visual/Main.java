@@ -30,8 +30,10 @@ import javax.swing.table.TableModel;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
+import org.comcast.strategy.FileTypeListing;
 import org.comcast.strategy.ListingStrategy;
 import org.comcast.strategy.NameListing;
+import org.comcast.strategy.SizeListing;
 import org.comcast.tableModels.LocalFileTableModel;
 import org.comcast.tableModels.RemoteFileTableModel;
 import org.comcast.wizards.DownloadWizard;
@@ -91,10 +93,56 @@ public class Main extends javax.swing.JFrame {
     private void initLocalTable(String pathName) {
         try {
             FileListing list = new FileListing();
-            list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
+            sortTable(list);
             Message[] localMessage = list.getLocalMessage(pathName);
             this.tableLocal.setModel(new LocalFileTableModel(localMessage));
         } catch (Exception ex) {
+        }
+    }
+    
+    private void initRemoteTable(String pathName) {
+        try {
+            FileListing list = new FileListing();
+            sortTable(list);
+            Message[] localMessage = list.getRemoteMessages(pathName);
+            this.tableRemote.setModel(new RemoteFileTableModel(localMessage));
+        } catch (Exception ex) {
+        }
+    }
+    
+    private void sortTable(FileListing list){
+        String selection = (String) this.boxSort.getSelectedItem();
+        
+        switch(selection){
+            case "Nombre":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
+                
+            case "Tipo de Archivo":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new FileTypeListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new FileTypeListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
+                
+            case "Tamaño":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new SizeListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new SizeListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
         }
     }
 
@@ -359,12 +407,27 @@ public class Main extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ordenar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
         boxSort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Tipo de Archivo", "Tamaño" }));
+        boxSort.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxSortItemStateChanged(evt);
+            }
+        });
 
         buttonGroup1.add(radioMayor);
         radioMayor.setText("Mayor a Menor");
+        radioMayor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMayorActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(radioMenor);
         radioMenor.setText("Menor a Mayor");
+        radioMenor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMenorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -618,7 +681,7 @@ public class Main extends javax.swing.JFrame {
     private void btnFileSelectionRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionRemoteActionPerformed
         try {
             UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-            RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote);
+            RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote, this.boxSort, this.radioMenor, this.radioMayor);
             r.setVisible(true);
 
         } catch (UnsupportedLookAndFeelException ex) {
@@ -700,6 +763,21 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSeleccionRemotaActionPerformed
 
+    private void boxSortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxSortItemStateChanged
+        initLocalTable(this.lblFileSelected.getText());
+        initRemoteTable(this.lblFileSelectedRemote.getText());
+    }//GEN-LAST:event_boxSortItemStateChanged
+
+    private void radioMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMenorActionPerformed
+        initLocalTable(this.lblFileSelected.getText());
+        initRemoteTable(this.lblFileSelectedRemote.getText());
+    }//GEN-LAST:event_radioMenorActionPerformed
+
+    private void radioMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMayorActionPerformed
+        initLocalTable(this.lblFileSelected.getText());
+        initRemoteTable(this.lblFileSelectedRemote.getText());
+    }//GEN-LAST:event_radioMayorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -729,6 +807,7 @@ public class Main extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());

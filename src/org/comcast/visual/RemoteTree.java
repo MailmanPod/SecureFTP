@@ -4,9 +4,12 @@
  */
 package org.comcast.visual;
 
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,8 +18,10 @@ import javax.swing.tree.TreeNode;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
+import org.comcast.strategy.FileTypeListing;
 import org.comcast.strategy.ListingStrategy;
 import org.comcast.strategy.NameListing;
+import org.comcast.strategy.SizeListing;
 import org.comcast.tableModels.RemoteFileTableModel;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
@@ -25,30 +30,37 @@ import org.comcast.xml.LoaderProvider;
  *
  * @author Quality of Service
  */
-public class RemoteTree extends javax.swing.JFrame {
+public class RemoteTree extends javax.swing.JDialog {
 
     private Loader loader;
     private ServerConfig config;
     private DefaultTreeModel model;
     private JLabel lbl;
     private JTable remote;
+    private JComboBox boxSort;
+    private JRadioButton radioMenor;
+    private JRadioButton radioMayor;
 
     /**
      * Creates new form RemoteTree
      */
-    public RemoteTree(JLabel lbl, JTable r) {
+    public RemoteTree(JLabel lbl, JTable r, JComboBox sort, JRadioButton menor, JRadioButton mayor) {
         initComponents();
         initElements();
         centrarPantalla();
         setImageIconFrame();
         this.lbl = lbl;
         this.remote = r;
+        this.boxSort = sort;
+        this.radioMenor = menor;
+        this.radioMayor = mayor;
     }
 
     private void centrarPantalla() {
         Dimension tamFrame = this.getSize();//para obtener las dimensiones del frame
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla
         setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);//para posicionar
+        setModalityType(ModalityType.APPLICATION_MODAL);
     }
 
     private void setImageIconFrame() {
@@ -79,7 +91,8 @@ public class RemoteTree extends javax.swing.JFrame {
         treeRemote = new javax.swing.JTree();
 
         setTitle("Carpetas Remotas");
-        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setAlwaysOnTop(true);
+        setModalExclusionType(null);
         setResizable(false);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("/");
@@ -172,10 +185,46 @@ public class RemoteTree extends javax.swing.JFrame {
     private void initRemoteTable(String pathName) {
         try {
             FileListing list = new FileListing();
-            list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
+            sortRemoteTable(list);
             Message[] localMessage = list.getRemoteMessages(pathName);
             this.remote.setModel(new RemoteFileTableModel(localMessage));
         } catch (Exception ex) {
+        }
+    }
+    
+    private void sortRemoteTable(FileListing list){
+        String selection = (String) this.boxSort.getSelectedItem();
+        
+        switch(selection){
+            case "Nombre":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
+                
+            case "Tipo de Archivo":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new FileTypeListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new FileTypeListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
+                
+            case "Tamaño":
+                if(radioMenor.isSelected()){
+                    list.setListingStrategy(new SizeListing(config, ListingStrategy.ASC));
+                }else{
+                    if(radioMayor.isSelected()){
+                        list.setListingStrategy(new SizeListing(config, ListingStrategy.DESC));
+                    }
+                }
+                break;
         }
     }
 

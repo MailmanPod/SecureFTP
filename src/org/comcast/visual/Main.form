@@ -456,6 +456,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="boxSortItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="radioMayor">
               <Properties>
@@ -464,6 +467,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Mayor a Menor"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioMayorActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="radioMenor">
               <Properties>
@@ -472,6 +478,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Menor a Mayor"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioMenorActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

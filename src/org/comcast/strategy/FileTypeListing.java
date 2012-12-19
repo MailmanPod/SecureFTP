@@ -18,23 +18,23 @@ import org.comcast.structures.SimpleList;
  *
  * @author Quality of Service
  */
-public class NameListing implements ListingStrategy{
-    
+public class FileTypeListing implements ListingStrategy{
+
     private int orderType;
     private RouterRetrieve results;
-
-    public NameListing(ServerConfig c, int orderType) {
+    
+    public FileTypeListing(ServerConfig c, int orderType) {
         this.orderType = orderType;
         results = new RouterRetrieve(c);
     }
-
+    
     @Override
     public Message[] listLocalMessages(String pathName) {
         try {
             SimpleList<Message> localMessages = results.getLocalMessages(pathName);
             Message[] unsorted = localMessages.toArray(Message.class);
             
-            Message[] sorted = localMessages.quickSort(unsorted, new NameComparator());
+            Message[] sorted = localMessages.quickSort(unsorted, new FileTypeComparator());
             
             return sorted;
             
@@ -50,7 +50,7 @@ public class NameListing implements ListingStrategy{
             SimpleList<Message> localMessages = results.getSimpleListCurrent(pathName);
             Message[] unsorted = localMessages.toArray(Message.class);
             
-            Message[] sorted = localMessages.quickSort(unsorted, new NameComparator());
+            Message[] sorted = localMessages.quickSort(unsorted, new FileTypeComparator());
             
             return sorted;
             
@@ -70,16 +70,15 @@ public class NameListing implements ListingStrategy{
         }
     }
     
-    private class NameComparator implements Comparator<Message>{
+    private class FileTypeComparator implements Comparator<Message>{
 
         private Collator textComparator = Collator.getInstance();
         
         @Override
         public int compare(Message o1, Message o2) {
             
-            return (orderType == ListingStrategy.ASC)? textComparator.compare(o1.getLocalFile().getName(), o2.getLocalFile().getName()): 
-                    textComparator.compare(o2.getLocalFile().getName(), o1.getLocalFile().getName());
+            return (orderType == ListingStrategy.ASC)? textComparator.compare(o1.getFileType(), o2.getFileType()): 
+                    textComparator.compare(o2.getFileType(), o1.getFileType());
         }
-        
     }
 }

@@ -18,23 +18,23 @@ import org.comcast.structures.SimpleList;
  *
  * @author Quality of Service
  */
-public class NameListing implements ListingStrategy{
-    
+public class SizeListing implements ListingStrategy{
+
     private int orderType;
     private RouterRetrieve results;
-
-    public NameListing(ServerConfig c, int orderType) {
+    
+    public SizeListing(ServerConfig c, int orderType) {
         this.orderType = orderType;
         results = new RouterRetrieve(c);
     }
-
+    
     @Override
     public Message[] listLocalMessages(String pathName) {
         try {
             SimpleList<Message> localMessages = results.getLocalMessages(pathName);
             Message[] unsorted = localMessages.toArray(Message.class);
             
-            Message[] sorted = localMessages.quickSort(unsorted, new NameComparator());
+            Message[] sorted = localMessages.quickSort(unsorted, new SizeComparator());
             
             return sorted;
             
@@ -50,7 +50,7 @@ public class NameListing implements ListingStrategy{
             SimpleList<Message> localMessages = results.getSimpleListCurrent(pathName);
             Message[] unsorted = localMessages.toArray(Message.class);
             
-            Message[] sorted = localMessages.quickSort(unsorted, new NameComparator());
+            Message[] sorted = localMessages.quickSort(unsorted, new SizeComparator());
             
             return sorted;
             
@@ -70,16 +70,34 @@ public class NameListing implements ListingStrategy{
         }
     }
     
-    private class NameComparator implements Comparator<Message>{
-
-        private Collator textComparator = Collator.getInstance();
+    private class SizeComparator implements Comparator<Message>{
         
         @Override
         public int compare(Message o1, Message o2) {
             
-            return (orderType == ListingStrategy.ASC)? textComparator.compare(o1.getLocalFile().getName(), o2.getLocalFile().getName()): 
-                    textComparator.compare(o2.getLocalFile().getName(), o1.getLocalFile().getName());
+            if(o1.getLocalFile() != null && o2.getLocalFile() != null){
+                int result = 0;
+                if(orderType == ASC){
+                    result = (int) (o1.getLocalFile().length() - o2.getLocalFile().length());
+                }else{
+                    result = (int) (o2.getLocalFile().length() - o1.getLocalFile().length());
+                }
+                
+                return result;
+            }
+            
+            if(o1.getFtpFile() != null && o2.getFtpFile() != null){
+                int result = 0;
+                if(orderType == ASC){
+                    result = (int) (o1.getFtpFile().getSize() - o2.getFtpFile().getSize());
+                }else{
+                    result = (int) (o2.getFtpFile().getSize() - o1.getFtpFile().getSize());
+                }
+                
+                return result;
+            }
+            
+            return 0;
         }
-        
     }
 }

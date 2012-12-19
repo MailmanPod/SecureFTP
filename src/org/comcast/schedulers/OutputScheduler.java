@@ -30,7 +30,7 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  * @author Quality of Service
  */
-public class OutputScheduler extends Thread implements SchedulerInterface {
+public class OutputScheduler implements SchedulerInterface {
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -109,7 +109,7 @@ public class OutputScheduler extends Thread implements SchedulerInterface {
             long start = System.currentTimeMillis();
             long res = (end - start);
             System.out.println("------- Waiting " + res + " seconds... -------------");
-            sleep(res);
+            Thread.sleep(res);
             // executing...
         } catch (InterruptedException ex) {
             System.out.println("Exception: \n" + ex.toString());
@@ -123,17 +123,5 @@ public class OutputScheduler extends Thread implements SchedulerInterface {
         System.out.println("------- Shutting Down ---------------------");
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
-    }
-
-    @Override
-    public void run() {
-        try {
-            startJob();
-
-            stopJob();
-        } catch (SchedulerException ex) {
-            System.out.println("Exception: " + ex.toString());
-            ex.printStackTrace();
-        }
     }
 }

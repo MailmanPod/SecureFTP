@@ -16,8 +16,8 @@ import org.comcast.exceptions.NullObjectParameterException;
 public class Message implements Serializable, Comparable<Message> {
 
     public static final int HIGH_PRIORITY = 1;
-    public static final int NORMAL_PRIORITY = 5;
-    public static final int LOW_PRIORITY = 10;
+    public static final int NORMAL_PRIORITY = 2;
+    public static final int LOW_PRIORITY = 3;
     private InputChannel source;
     private int priority;
     private String localPath;
@@ -138,5 +138,12 @@ public class Message implements Serializable, Comparable<Message> {
      */
     public void setLocalFile(File localFile) {
         this.localFile = localFile;
+    }
+
+    /**
+     * @param priority the priority to set
+     */
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

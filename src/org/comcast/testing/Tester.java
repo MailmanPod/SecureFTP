@@ -36,6 +36,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import javax.crypto.NoSuchPaddingException;
 
 import org.apache.tika.metadata.Metadata;
@@ -235,7 +236,11 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-//        DateScheduler date = new DateScheduler(16, 59, 0, 15, DateScheduler.DECEMBER, 2012);
+        DateScheduler date = new DateScheduler(24, 59, 0, 3, DateScheduler.DECEMBER, 2012);
+        Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
+        long t = (runTime.getTime() - System.nanoTime());
+        
+        System.out.println(t);
 //        InterfaceWorks w = new Works();
 //        
 ////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
@@ -442,12 +447,12 @@ public class Tester {
 //        list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
 //        Message[] localMessage = list.getLocalMessage("D:\\Cache\\EoF 1");
 //        Message[] localMessage = list.getRemoteMessages("\\");
-        RouterRetrieve ret = new RouterRetrieve(config);
-        String[] dirNames = ret.getDirNamesCurrent("/testing");
-        
-        for(String aux: dirNames){
-            System.out.println("Dir Name: " + aux);
-        }
+//        RouterRetrieve ret = new RouterRetrieve(config);
+//        String[] dirNames = ret.getDirNamesCurrent("/testing");
+//        
+//        for(String aux: dirNames){
+//            System.out.println("Dir Name: " + aux);
+//        }
         
 //        for(Message aux: localMessage){
 //            System.out.println(aux.getLocalFile().getName() + "++++++++++++++" + aux.getFileType());

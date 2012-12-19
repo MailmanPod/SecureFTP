@@ -52,7 +52,7 @@ public class RemoteTree extends javax.swing.JFrame {
     }
 
     private void setImageIconFrame() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/Mac-32.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png")));
     }
 
     private void initElements() {

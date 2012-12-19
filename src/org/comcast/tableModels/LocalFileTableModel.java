@@ -8,6 +8,7 @@ import org.comcast.router.Message;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
+ *
  * @author Federico Bruera TSB 2010.
  * @version 1.0
  * @since 1.6
@@ -19,22 +20,22 @@ public class LocalFileTableModel implements TableModel {
         "Nombre", "Tamaño", "Path", "Tipo de Archivo"
     };
     Class[] types = new Class[]{
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
     boolean[] canEdit = new boolean[]{
-        false, false, false, false
+        false, false, false, false, false
     };
 
     public LocalFileTableModel(Message[] sample) throws IOException {
-        datos = new Object[sample.length][4];
+        datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public LocalFileTableModel(Message[] sample, int rows) throws IOException {
-        datos = new Object[rows][4];
+        datos = new Object[rows][5];
         reload(sample);
     }
-    
+
     private void reload(Message[] sample) throws IOException {
         int i = 0;
         for (Message aux : sample) {
@@ -52,9 +53,13 @@ public class LocalFileTableModel implements TableModel {
                     case 2:
                         setValueAt(aux.getLocalFile().getAbsolutePath(), i, j);
                         break;
-                        
-                    case 3: 
+
+                    case 3:
                         setValueAt(aux.getFileType(), i, j);
+                        break;
+
+                    case 4:
+                        setValueAt(aux, i, j);
                         break;
                 }
             }

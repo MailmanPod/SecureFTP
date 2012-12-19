@@ -59,7 +59,7 @@ public class Server implements Comparable<Server>, OutputChannel {
 
         try {
             FileInputStream fis = null;
-            
+
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
 
@@ -72,7 +72,7 @@ public class Server implements Comparable<Server>, OutputChannel {
             client.noop();
 
             fis.close();
-            
+
         } catch (SocketException ex) {
             closeConnection();
             throw new SocketException(ex.getLocalizedMessage());
@@ -85,14 +85,14 @@ public class Server implements Comparable<Server>, OutputChannel {
     @Override
     public synchronized void uploadMessages() throws SocketException, IOException, UnderflowException {
         Message toSend = null;
-        
+
         openConnection();
 
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             uploadMessage(toSend);
         }
-        
+
         closeConnection();
     }
 
@@ -135,12 +135,12 @@ public class Server implements Comparable<Server>, OutputChannel {
         Message toSend = null;
 
         openConnection();
-        
+
         while (!this.messageToSend.isEmpty()) {
             toSend = this.messageToSend.deleteMin();
             downloadMessage(toSend);
         }
-        
+
         closeConnection();
     }
 

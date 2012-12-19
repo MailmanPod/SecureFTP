@@ -5,6 +5,7 @@
 package org.comcast.proxy;
 
 import java.util.Properties;
+import javax.swing.JOptionPane;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.Crypto;
@@ -48,7 +49,7 @@ public class Works implements InterfaceWorks {
         String partida = full.getLocalPath();
         String general = "key" + serialID;
 
-        String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.indexOf("."));
+        String aux = partida.substring(partida.lastIndexOf("\\") + 1, partida.lastIndexOf("."));
         String particion = partida.substring(0, partida.lastIndexOf("\\") + 1);
         String ex = partida.substring(partida.lastIndexOf(".") + 1, partida.length());
 
@@ -106,7 +107,10 @@ public class Works implements InterfaceWorks {
                 encrypted.addInOrder(transfer);
                 cf.addInOrder(cd);
             } else {
-                throw new UnsupportedOperationException("Aqui va un mensaje de error porque uno de los archivos ya se subio");
+                int op = JOptionPane.showConfirmDialog(null, "El siguiente archivo\n" + aux.getLocalPath() + "\n ya se encuentra en el servidor\n Desea Continuar?", "Archivo duplicado", JOptionPane.WARNING_MESSAGE);
+                if (op == JOptionPane.NO_OPTION) {
+                    break;
+                }
             }
         }
 
@@ -197,27 +201,8 @@ public class Works implements InterfaceWorks {
         os.setScheduler(sf.getScheduler());
         os.setDateScheduler(date);
 
-        os.start();
-    }
-
-    public boolean isTaskAlive() {
-        try {
-            if (os.isAlive() || is.isAlive()) {
-                return true;
-            }
-        } catch (NullPointerException e) {
-        }
-
-        return false;
-    }
-
-    public void cancelTask() {
-        try {
-            if (os.isAlive() || is.isAlive()) {
-                os.interrupt();
-            }
-        } catch (NullPointerException ex) {
-        }
+        os.startJob();
+        os.stopJob();
     }
 
     @Override

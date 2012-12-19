@@ -4,23 +4,16 @@
  */
 package org.comcast.wizards;
 
-import com.jtattoo.plaf.BaseScrollBarUI;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Proxy;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -32,7 +25,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.CryptoData;
@@ -42,10 +34,8 @@ import org.comcast.proxy.InterfaceWorks;
 import org.comcast.proxy.UploadHandler;
 import org.comcast.proxy.Works;
 import org.comcast.router.Message;
-import org.comcast.schedulers.OutputScheduler;
 import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
-import org.comcast.visual.RemoteTree;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.netbeans.api.wizard.WizardDisplayer;
@@ -56,7 +46,6 @@ import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
-import sun.awt.VariableGridLayout;
 
 /**
  *
@@ -72,7 +61,6 @@ public class UploadWizard {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    properties.put("key", "string value");
 
                     WizardProvider mp = new WizardProvider();
                     Wizard wizard = mp.createWizard();
@@ -114,18 +102,9 @@ class WizardProvider extends WizardPanelProvider {
         String pv = general + ".private";
         String cryp = aux + ".ftp";
 
-//        "C:\\Key\\" 
         String publicName = client.getPublicStorage() + pn;
         String privateName = client.getPrivateStorage() + pv;
         String cryptoFile = particion + cryp;
-
-//        System.out.println("FileName: " + aux);
-//        System.out.println("Public: " + publicName);
-//        System.out.println("Private: " + privateName);
-//        System.out.println("Original: " + partida);
-//        System.out.println("CryptoFile: " + cryptoFile);
-//        System.out.println("Extension: " + ex);
-//        System.out.println("Destination: "+ full.getRemotePath()+ cryp);
 
         String[] args = new String[8];
         args[0] = aux; //FILE NAME
@@ -332,7 +311,7 @@ class WizardProvider extends WizardPanelProvider {
                     JLabel host = new JLabel("SMTP Host");
                     JLabel tls = new JLabel("Uso de TLS");
                     JLabel port = new JLabel("Puerto de servicio SMNP");
-                    JLabel autenti = new JLabel("Se requiere autenticacion?");
+                    JLabel autenti = new JLabel("Usuario");
 
                     JTextField txtHost = new JTextField(40);
                     txtHost.setEnabled(false);
@@ -348,7 +327,7 @@ class WizardProvider extends WizardPanelProvider {
 
                     JTextField txtAut = new JTextField(40);
                     txtAut.setEnabled(false);
-                    txtAut.setText(mailC.getProperties().getProperty("mail.smtp.auth"));
+                    txtAut.setText(mailC.getMailUserName());
 
                     JButton validar = new JButton("Validar");
                     validar.addActionListener(new ActionListener() {

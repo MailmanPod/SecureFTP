@@ -19,19 +19,19 @@ public class RemoteFileTableModel implements TableModel {
         "Nombre", "Tamaño", "Path", "Tipo de Archivo"
     };
     Class[] types = new Class[]{
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
     boolean[] canEdit = new boolean[]{
-        false, false, false, false
+        false, false, false, false, false
     };
 
     public RemoteFileTableModel(Message[] sample) throws IOException {
-        datos = new Object[sample.length][4];
+        datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public RemoteFileTableModel(Message[] sample, int rows) throws IOException {
-        datos = new Object[rows][4];
+        datos = new Object[rows][5];
         reload(sample);
     }
     
@@ -55,6 +55,10 @@ public class RemoteFileTableModel implements TableModel {
                         
                     case 3: 
                         setValueAt(aux.getFileType(), i, j);
+                        break;
+                        
+                    case 4:
+                        setValueAt(aux, i, j);
                         break;
                 }
             }

@@ -207,7 +207,7 @@ public class Tester {
                 Message.NORMAL_PRIORITY, c.getDownloadPath() + "retrieve.crypto", "\\retrieve.crypto");
 
         Message archivo4 = new Message(new Client(),
-                Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.crypto", "\\dynamic.crypto");
+                Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.ftp", "/dynamic.ftp");
         
         Message archivo6 = new Message(new Client(),
                 Message.NORMAL_PRIORITY, c.getDownloadPath() + "serverconfig.crypto", "\\serverconfig.crypto");
@@ -220,14 +220,14 @@ public class Tester {
 
 //        BinaryHeap<Message> pila = new BinaryHeap<>();
         SimpleList<Message> transferir = new SimpleList<>();
-        transferir.addInOrder(archivo);
-        transferir.addInOrder(archivo1);
-        transferir.addInOrder(archivo2);
-        transferir.addInOrder(archivo3);
+//        transferir.addInOrder(archivo);
+//        transferir.addInOrder(archivo1);
+//        transferir.addInOrder(archivo2);
+//        transferir.addInOrder(archivo3);
         transferir.addInOrder(archivo4);
-        transferir.addInOrder(archivo5);
-        transferir.addInOrder(archivo6);
-        transferir.addInOrder(archivo7);
+//        transferir.addInOrder(archivo5);
+//        transferir.addInOrder(archivo6);
+//        transferir.addInOrder(archivo7);
         
 //        BinaryHeap<Message> pila2 = new BinaryHeap<>();
 //        pila.insert(archivo3);
@@ -236,29 +236,30 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-        DateScheduler date = new DateScheduler(24, 59, 0, 3, DateScheduler.DECEMBER, 2012);
+        DateScheduler date = new DateScheduler(4, 51, 0, 19, DateScheduler.DECEMBER, 2012);
         Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
         long t = (runTime.getTime() - System.nanoTime());
         
         System.out.println(t);
-//        InterfaceWorks w = new Works();
+        InterfaceWorks w = new Works();
 //        
 ////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
 ////                w.getClass().getInterfaces(), new UploadHandler(w));
 //        
-////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-////                w.getClass().getInterfaces(), new DownloadHandler(w));
+        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+                w.getClass().getInterfaces(), new DownloadHandler(w));
 //        
 //        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
 //                w.getClass().getInterfaces(), new DecryptHandler(w));
 //        
-//        try{
-////            behind.transferFiles(transferir, date);
-////            behind.downloadFiles(transferir, date);
+        try{
+//            behind.transferFiles(transferir, date);
+            behind.downloadFiles(transferir, date);
 //            behind.decryptFiles(transferir);
-//        }catch (Exception e){
+        }catch (Exception e){
 //            System.out.println(e.getLocalizedMessage());
-//        }
+            e.printStackTrace();
+        }
 //        w.transferFiles(transferir, date);
 //        w.downloadFiles(transferir, date);
 //        w.decryptFiles(transferir);

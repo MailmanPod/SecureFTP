@@ -36,7 +36,7 @@ import org.quartz.impl.triggers.CronTriggerImpl;
  *
  * @author Quality of Service
  */
-public class InputScheduler extends Thread implements SchedulerInterface {
+public class InputScheduler implements SchedulerInterface {
 
     private static Scheduler scheduler;
     private ServerConfig configuration;
@@ -98,7 +98,7 @@ public class InputScheduler extends Thread implements SchedulerInterface {
                 .startAt(runTime)
                 .build();
 
-
+        System.out.println("Pasa por IMPUT SCHEDULER");
         // Tell quartz to schedule the job using our trigger
         scheduler.scheduleJob(job, trigger);
         System.out.println(job.getKey() + " will run at: " + runTime);
@@ -118,7 +118,7 @@ public class InputScheduler extends Thread implements SchedulerInterface {
             long start = System.currentTimeMillis();
             long res = end - start;
             System.out.println("------- Waiting " + res + " seconds... -------------");
-            sleep(res);
+            Thread.sleep(res);
             // executing...
         } catch (InterruptedException ex) {
             System.out.println("Exception: \n" + ex.toString());
@@ -132,17 +132,5 @@ public class InputScheduler extends Thread implements SchedulerInterface {
         System.out.println("------- Shutting Down ---------------------");
         scheduler.shutdown(true);
         System.out.println("------- Shutdown Complete -----------------");
-    }
-
-    @Override
-    public void run() {
-        try {
-            startJob();
-
-            stopJob();
-        } catch (SchedulerException ex) {
-            System.out.println("Exception: " + ex.toString());
-            ex.printStackTrace();
-        }
     }
 }

@@ -25,6 +25,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
@@ -32,6 +34,7 @@ import org.comcast.strategy.ListingStrategy;
 import org.comcast.strategy.NameListing;
 import org.comcast.tableModels.LocalFileTableModel;
 import org.comcast.tableModels.RemoteFileTableModel;
+import org.comcast.wizards.DownloadWizard;
 import org.comcast.wizards.UploadWizard;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
@@ -45,6 +48,7 @@ public class Main extends javax.swing.JFrame {
     private ServerConfig config;
     private Loader loader;
     private Map settings;
+    private Map download;
 
     /**
      * Creates new form Main
@@ -78,6 +82,7 @@ public class Main extends javax.swing.JFrame {
             loader = LoaderProvider.getInstance();
             config = loader.getServerConfiguration();
             settings = new HashMap();
+            download = new HashMap();
         } catch (Exception ex) {
             JOptionPane.showConfirmDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
@@ -118,10 +123,9 @@ public class Main extends javax.swing.JFrame {
         panelSeleccionArchivo1 = new javax.swing.JPanel();
         lblFileSelectedRemote = new javax.swing.JLabel();
         btnFileSelectionRemote = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSeleccionRemota = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRemote = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnUpload = new javax.swing.JButton();
         btnDownload = new javax.swing.JButton();
@@ -257,7 +261,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Guardar Seleccion");
+        btnSeleccionRemota.setText("Guardar Seleccion");
+        btnSeleccionRemota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionRemotaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelSeleccionArchivo1Layout = new javax.swing.GroupLayout(panelSeleccionArchivo1);
         panelSeleccionArchivo1.setLayout(panelSeleccionArchivo1Layout);
@@ -269,7 +278,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnFileSelectionRemote)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnSeleccionRemota)
                 .addContainerGap())
         );
         panelSeleccionArchivo1Layout.setVerticalGroup(
@@ -277,7 +286,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panelSeleccionArchivo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnFileSelectionRemote)
-                .addComponent(jButton2))
+                .addComponent(btnSeleccionRemota))
         );
 
         tableRemote.setModel(new javax.swing.table.DefaultTableModel(
@@ -318,19 +327,6 @@ public class Main extends javax.swing.JFrame {
 
         tabbed.addTab("Listado Archivos Remotos", jPanel6);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 981, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 447, Short.MAX_VALUE)
-        );
-
-        tabbed.addTab("Tareas Programadas", jPanel2);
-
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
@@ -351,6 +347,11 @@ public class Main extends javax.swing.JFrame {
         btnDownload.setFocusable(false);
         btnDownload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDownload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDownload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnDownload);
 
         jSplitPane1.setDividerLocation(350);
@@ -585,43 +586,6 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowIconified
 
-    private void btnFileSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionActionPerformed
-        try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-            String p = lblFileSelected.getText();
-            JFileChooser jfc = new JFileChooser();
-            if (p != null) {
-                File sel = new File(p);
-                jfc = new JFileChooser(sel);
-            }
-
-
-            jfc.setApproveButtonText("Seleccionar");
-            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            jfc.setMultiSelectionEnabled(false);
-            int response = jfc.showOpenDialog(this);
-
-            if (response == JFileChooser.APPROVE_OPTION) {
-                File selectedFiles = jfc.getSelectedFile();
-                this.lblFileSelected.setText(selectedFiles.getAbsolutePath());
-                initLocalTable(selectedFiles.getAbsolutePath());
-            }
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnFileSelectionActionPerformed
-
-    private void btnFileSelectionRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionRemoteActionPerformed
-        try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-            RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote);
-            r.setVisible(true);
-
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnFileSelectionRemoteActionPerformed
-
     private void prepareDestination() {
         System.out.println(lblFileSelectedRemote.getText());
 
@@ -634,6 +598,33 @@ public class Main extends javax.swing.JFrame {
         UploadWizard up = new UploadWizard();
         up.main(settings);
     }//GEN-LAST:event_btnUploadActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        try {
+            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+        try {
+            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowDeactivated
+
+    private void btnFileSelectionRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionRemoteActionPerformed
+        try {
+            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote);
+            r.setVisible(true);
+
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnFileSelectionRemoteActionPerformed
 
     private void btnSeleccionLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionLocalActionPerformed
         int[] selectedRows = this.tableLocal.getSelectedRows();
@@ -655,24 +646,59 @@ public class Main extends javax.swing.JFrame {
                 btnFileSelectionActionPerformed(evt);
             }
         }
-
     }//GEN-LAST:event_btnSeleccionLocalActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+    private void btnFileSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionActionPerformed
         try {
             UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_formWindowActivated
+            String p = lblFileSelected.getText();
+            JFileChooser jfc = new JFileChooser();
+            if (p != null) {
+                File sel = new File(p);
+                jfc = new JFileChooser(sel);
+            }
 
-    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-        try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            jfc.setApproveButtonText("Seleccionar");
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            jfc.setMultiSelectionEnabled(false);
+            int response = jfc.showOpenDialog(this);
+
+            if (response == JFileChooser.APPROVE_OPTION) {
+                File selectedFiles = jfc.getSelectedFile();
+                this.lblFileSelected.setText(selectedFiles.getAbsolutePath());
+                initLocalTable(selectedFiles.getAbsolutePath());
+            }
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_formWindowDeactivated
+    }//GEN-LAST:event_btnFileSelectionActionPerformed
+
+    private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
+        DownloadWizard dw = new DownloadWizard();
+        dw.main(download);
+    }//GEN-LAST:event_btnDownloadActionPerformed
+
+    private void btnSeleccionRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionRemotaActionPerformed
+        int[] selectedRows = this.tableRemote.getSelectedRows();
+        Message[] toTransefer = new Message[selectedRows.length];
+
+        int i = 0;
+        if (selectedRows.length != 0) {
+            for (int aux : selectedRows) {
+                Message valueAt = (Message) this.tableRemote.getModel().getValueAt(aux, 4);
+                toTransefer[i] = valueAt;
+                i++;
+            }
+            download.remove("selectedFiles");
+            download.put("selectedFiles", toTransefer);
+        } else {
+            int op = JOptionPane.showConfirmDialog(this, "No ha seleccionado ningun archivo", "Sin archivos", JOptionPane.WARNING_MESSAGE);
+
+            if (op == JOptionPane.OK_OPTION && this.tableRemote.getModel().getRowCount() == 0) {
+                btnFileSelectionRemoteActionPerformed(evt);
+            }
+        }
+    }//GEN-LAST:event_btnSeleccionRemotaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -720,13 +746,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnFileSelection;
     private javax.swing.JButton btnFileSelectionRemote;
     private javax.swing.JButton btnSeleccionLocal;
+    private javax.swing.JButton btnSeleccionRemota;
     private javax.swing.JButton btnUpload;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

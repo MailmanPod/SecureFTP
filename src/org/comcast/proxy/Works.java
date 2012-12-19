@@ -208,6 +208,7 @@ public class Works implements InterfaceWorks {
     @Override
     public void downloadFiles(SimpleList<Message> toDownload, DateScheduler date) throws Exception {
 
+        System.out.println("Pasa por WORKS");
         BinaryHeap<Message> heap = new BinaryHeap<>();
 
         LocalIterator<Message> iter = toDownload.getIterador();
@@ -226,7 +227,8 @@ public class Works implements InterfaceWorks {
         is.setScheduler(sf.getScheduler());
         is.setDateScheduler(date);
 
-        is.start();
+        is.startJob();
+        is.stopJob();
     }
 
     @Override

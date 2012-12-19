@@ -49,26 +49,22 @@ public class RouterInput implements Job {
             Message aux = iter.returnElement();
             show.append("\n").append(aux.getLocalPath());
         }
-
-        new RouterWorkerThread(server, show, mail, serverConfig);
+        Worker routerWorkerThread = new Worker(server, show, mail, serverConfig);
+        routerWorkerThread.run();
     }
 
-    private class RouterWorkerThread implements Runnable {
+    private class Worker{
 
         private Server server;
         private StringBuilder showUploadFiles;
         private Mail mail;
         private ServerConfig config;
-        private Thread runner;
 
-        public RouterWorkerThread(Server server, StringBuilder m, Mail k, ServerConfig c) {
+        public Worker(Server server, StringBuilder m, Mail k, ServerConfig c) {
             this.server = server;
             this.showUploadFiles = m;
             this.config = c;
             this.mail = k;
-
-            runner = new Thread(this);
-            runner.start();
         }
 
         private void confirmMail() {
@@ -102,9 +98,9 @@ public class RouterInput implements Job {
             }
         }
 
-        @Override
         public void run() {
             try {
+                System.out.println("Pasa por ROUTER INPUT");
                 server.downloadMessages();
 
                 confirmMail();

@@ -114,6 +114,9 @@ public class Server implements Comparable<Server>, OutputChannel {
 
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
+            
+            System.out.println(local);
+            System.out.println(remote);
 
             fos = new FileOutputStream(local);
             client.retrieveFile(remote, fos);
@@ -136,7 +139,14 @@ public class Server implements Comparable<Server>, OutputChannel {
 
         openConnection();
 
+        if(this.messageToSend.isEmpty()){
+            System.out.println("Ojo esta vacia la cola");
+        }else{
+            System.out.println("HOLA PASO POR SERVIDOR");
+        }
+        
         while (!this.messageToSend.isEmpty()) {
+            System.out.println("HOLA PASO POR BUCLE WHILE SERVIDOR");
             toSend = this.messageToSend.deleteMin();
             downloadMessage(toSend);
         }

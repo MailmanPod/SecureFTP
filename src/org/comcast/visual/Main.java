@@ -72,7 +72,6 @@ public class Main extends javax.swing.JFrame {
         Dimension tamFrame = this.getSize();//para obtener las dimensiones del frame
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla
         setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);//para posicionar
-//        setSize(tamPantalla.width / 2, tamPantalla.height / 2);
     }
 
     private void setImageIconFrame() {
@@ -163,17 +162,17 @@ public class Main extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         tabbed = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        panelListadoLocal = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableLocal = new javax.swing.JTable();
-        panelSeleccionArchivo = new javax.swing.JPanel();
+        panelSeleccionArchivoLocal = new javax.swing.JPanel();
         lblFileSelected = new javax.swing.JLabel();
         btnFileSelection = new javax.swing.JButton();
         btnSeleccionLocal = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
+        panelListadoRemoto = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        panelSeleccionArchivo1 = new javax.swing.JPanel();
+        panelSeleccionArchivoRemoto = new javax.swing.JPanel();
         lblFileSelectedRemote = new javax.swing.JLabel();
         btnFileSelectionRemote = new javax.swing.JButton();
         btnSeleccionRemota = new javax.swing.JButton();
@@ -182,12 +181,13 @@ public class Main extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btnUpload = new javax.swing.JButton();
         btnDownload = new javax.swing.JButton();
+        btnSettings = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel3 = new javax.swing.JPanel();
+        panelOrdenarPor = new javax.swing.JPanel();
         boxSort = new javax.swing.JComboBox();
         radioMayor = new javax.swing.JRadioButton();
         radioMenor = new javax.swing.JRadioButton();
-        jPanel4 = new javax.swing.JPanel();
+        panelBuscarPor = new javax.swing.JPanel();
         boxBusqueda = new javax.swing.JComboBox();
         radioExacto = new javax.swing.JRadioButton();
         radioAprox = new javax.swing.JRadioButton();
@@ -195,11 +195,10 @@ public class Main extends javax.swing.JFrame {
         txtBusqueda = new javax.swing.JTextField();
         btnBuscarArchivos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuArchivo = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Secure FTP");
+        setTitle("SECURE FTP");
         setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -239,7 +238,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
         );
 
-        panelSeleccionArchivo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Local Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelSeleccionArchivoLocal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Local Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
 
         lblFileSelected.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         lblFileSelected.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -259,50 +258,51 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout panelSeleccionArchivoLayout = new javax.swing.GroupLayout(panelSeleccionArchivo);
-        panelSeleccionArchivo.setLayout(panelSeleccionArchivoLayout);
-        panelSeleccionArchivoLayout.setHorizontalGroup(
-            panelSeleccionArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSeleccionArchivoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelSeleccionArchivoLocalLayout = new javax.swing.GroupLayout(panelSeleccionArchivoLocal);
+        panelSeleccionArchivoLocal.setLayout(panelSeleccionArchivoLocalLayout);
+        panelSeleccionArchivoLocalLayout.setHorizontalGroup(
+            panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSeleccionArchivoLocalLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnFileSelection)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSeleccionLocal))
+                .addGap(26, 26, 26)
+                .addComponent(btnSeleccionLocal)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panelSeleccionArchivoLayout.setVerticalGroup(
-            panelSeleccionArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSeleccionArchivoLayout.createSequentialGroup()
-                .addGroup(panelSeleccionArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelSeleccionArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panelSeleccionArchivoLocalLayout.setVerticalGroup(
+            panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSeleccionArchivoLocalLayout.createSequentialGroup()
+                .addGroup(panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnFileSelection)
-                        .addComponent(btnSeleccionLocal))
-                    .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSeleccionLocal)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelSeleccionArchivo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelListadoLocalLayout = new javax.swing.GroupLayout(panelListadoLocal);
+        panelListadoLocal.setLayout(panelListadoLocalLayout);
+        panelListadoLocalLayout.setHorizontalGroup(
+            panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListadoLocalLayout.createSequentialGroup()
+                .addGroup(panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(panelSeleccionArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+        panelListadoLocalLayout.setVerticalGroup(
+            panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelListadoLocalLayout.createSequentialGroup()
+                .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabbed.addTab("Listados de Archivos Locales", jPanel1);
+        tabbed.addTab("Listados de Archivos Locales", panelListadoLocal);
 
-        panelSeleccionArchivo1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Remoto  Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelSeleccionArchivoRemoto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Remoto  Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
 
         lblFileSelectedRemote.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         lblFileSelectedRemote.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -322,11 +322,11 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout panelSeleccionArchivo1Layout = new javax.swing.GroupLayout(panelSeleccionArchivo1);
-        panelSeleccionArchivo1.setLayout(panelSeleccionArchivo1Layout);
-        panelSeleccionArchivo1Layout.setHorizontalGroup(
-            panelSeleccionArchivo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSeleccionArchivo1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelSeleccionArchivoRemotoLayout = new javax.swing.GroupLayout(panelSeleccionArchivoRemoto);
+        panelSeleccionArchivoRemoto.setLayout(panelSeleccionArchivoRemotoLayout);
+        panelSeleccionArchivoRemotoLayout.setHorizontalGroup(
+            panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSeleccionArchivoRemotoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -335,10 +335,10 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnSeleccionRemota)
                 .addContainerGap())
         );
-        panelSeleccionArchivo1Layout.setVerticalGroup(
-            panelSeleccionArchivo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelSeleccionArchivoRemotoLayout.setVerticalGroup(
+            panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(panelSeleccionArchivo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addGroup(panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnFileSelectionRemote)
                 .addComponent(btnSeleccionRemota))
         );
@@ -357,35 +357,35 @@ public class Main extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelSeleccionArchivo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane2)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addComponent(panelSeleccionArchivo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelListadoRemotoLayout = new javax.swing.GroupLayout(panelListadoRemoto);
+        panelListadoRemoto.setLayout(panelListadoRemotoLayout);
+        panelListadoRemotoLayout.setHorizontalGroup(
+            panelListadoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelListadoRemotoLayout.setVerticalGroup(
+            panelListadoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        tabbed.addTab("Listado Archivos Remotos", jPanel6);
+        tabbed.addTab("Listado Archivos Remotos", panelListadoRemoto);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         btnUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Apple Red_48.png"))); // NOI18N
-        btnUpload.setToolTipText("Subir Archivos a un Servidor FTP");
+        btnUpload.setToolTipText("Sube archivos al servidor FTP");
         btnUpload.setFocusable(false);
         btnUpload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnUpload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -397,7 +397,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnUpload);
 
         btnDownload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Apple Blue_48.png"))); // NOI18N
-        btnDownload.setToolTipText("Descargar Archivos a un Servidor FTP");
+        btnDownload.setToolTipText("Descarga archivos desde un Servidor FTP");
         btnDownload.setFocusable(false);
         btnDownload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDownload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -408,9 +408,20 @@ public class Main extends javax.swing.JFrame {
         });
         jToolBar1.add(btnDownload);
 
+        btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Android-Settings-48.png"))); // NOI18N
+        btnSettings.setFocusable(false);
+        btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingsActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnSettings);
+
         jSplitPane1.setDividerLocation(350);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ordenar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelOrdenarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ordenar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
         boxSort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Tipo de Archivo", "Tamaño" }));
         boxSort.addItemListener(new java.awt.event.ItemListener() {
@@ -435,35 +446,35 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelOrdenarPorLayout = new javax.swing.GroupLayout(panelOrdenarPor);
+        panelOrdenarPor.setLayout(panelOrdenarPorLayout);
+        panelOrdenarPorLayout.setHorizontalGroup(
+            panelOrdenarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelOrdenarPorLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addComponent(boxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelOrdenarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(radioMayor)
                     .addComponent(radioMenor))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelOrdenarPorLayout.setVerticalGroup(
+            panelOrdenarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelOrdenarPorLayout.createSequentialGroup()
                 .addComponent(radioMenor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioMayor)
                 .addGap(0, 15, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(panelOrdenarPorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(boxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setLeftComponent(jPanel3);
+        jSplitPane1.setLeftComponent(panelOrdenarPor);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelBuscarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
         boxBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Archivos Locales", "Archivos Remotos" }));
 
@@ -471,7 +482,7 @@ public class Main extends javax.swing.JFrame {
         radioExacto.setText("Nombre Exacto");
 
         buttonGroup2.add(radioAprox);
-        radioAprox.setText("Nombre por Aprox");
+        radioAprox.setText("Nombre Aprox");
 
         buttonGroup2.add(radioExtension);
         radioExtension.setText("Extension");
@@ -483,15 +494,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelBuscarPorLayout = new javax.swing.GroupLayout(panelBuscarPor);
+        panelBuscarPor.setLayout(panelBuscarPorLayout);
+        panelBuscarPorLayout.setHorizontalGroup(
+            panelBuscarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBuscarPorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelBuscarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(panelBuscarPorLayout.createSequentialGroup()
                         .addComponent(radioExacto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(radioAprox)
@@ -501,27 +512,24 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(boxBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscarArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panelBuscarPorLayout.setVerticalGroup(
+            panelBuscarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBuscarPorLayout.createSequentialGroup()
+                .addGroup(panelBuscarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(radioExacto)
                     .addComponent(radioAprox)
                     .addComponent(radioExtension))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelBuscarPorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarArchivos))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setRightComponent(jPanel4);
-
-        menuArchivo.setText("Archivo");
-        jMenuBar1.add(menuArchivo);
+        jSplitPane1.setRightComponent(panelBuscarPor);
 
         menuAyuda.setText("Ayuda");
         jMenuBar1.add(menuAyuda);
@@ -533,10 +541,10 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(tabbed))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -899,6 +907,16 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarArchivosActionPerformed
 
+    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
+        try {
+            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            Settings set = new Settings();
+            set.setVisible(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSettingsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -948,15 +966,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnFileSelectionRemote;
     private javax.swing.JButton btnSeleccionLocal;
     private javax.swing.JButton btnSeleccionRemota;
+    private javax.swing.JButton btnSettings;
     private javax.swing.JButton btnUpload;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -964,10 +979,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblFileSelected;
     private javax.swing.JLabel lblFileSelectedRemote;
-    private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
-    private javax.swing.JPanel panelSeleccionArchivo;
-    private javax.swing.JPanel panelSeleccionArchivo1;
+    private javax.swing.JPanel panelBuscarPor;
+    private javax.swing.JPanel panelListadoLocal;
+    private javax.swing.JPanel panelListadoRemoto;
+    private javax.swing.JPanel panelOrdenarPor;
+    private javax.swing.JPanel panelSeleccionArchivoLocal;
+    private javax.swing.JPanel panelSeleccionArchivoRemoto;
     private javax.swing.JRadioButton radioAprox;
     private javax.swing.JRadioButton radioExacto;
     private javax.swing.JRadioButton radioExtension;

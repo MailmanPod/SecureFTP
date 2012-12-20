@@ -179,4 +179,18 @@ public class Mail {
         t.connect(this.mailUserName, this.mailUserPassword);
         t.sendMessage(message, message.getAllRecipients());
     }
+    
+    public Properties getContent(){
+        Properties p = new Properties();
+        
+        p.setProperty("comcast.from", from);
+        p.setProperty("comcast.recipient", recipient);
+        p.setProperty("comcast.subject", subject);
+        p.setProperty("comcast.protocol", sendProtocol);
+        p.setProperty("comcast.text", mailText);
+        p.setProperty("comcast.user", mailUserName);
+        p.setProperty("comcast.password", mailUserPassword);
+        
+        return p;
+    }
 }

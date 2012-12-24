@@ -6,6 +6,7 @@ package org.comcast.schedulers;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.comcast.builder.Mail;
@@ -26,6 +27,7 @@ import org.quartz.Trigger;
 import static org.quartz.TriggerBuilder.newTrigger;
 import org.quartz.impl.StdSchedulerFactory;
 
+
 /**
  *
  * @author Quality of Service
@@ -33,6 +35,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class OutputScheduler implements SchedulerInterface {
 
     private static Scheduler scheduler;
+    private ResourceBundle outputScheduler_es_ES = ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES");
     private ServerConfig configuration;
     private BinaryHeap<Message> uploadFiles;
     private Mail advice;
@@ -69,7 +72,7 @@ public class OutputScheduler implements SchedulerInterface {
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
 
         String aux = advice.getMailText();
-        String form = "\n" + "Datos de fecha: " + runTime;
+        String form = java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES").getString("\\N" + "DATOS DE FECHA: {0}"), new Object[] {runTime});
         advice.setMailText(aux + form);
 
         System.out.println("------- Scheduling Job  -------------------");
@@ -112,11 +115,10 @@ public class OutputScheduler implements SchedulerInterface {
             Thread.sleep(res);
             // executing...
         } catch (InterruptedException ex) {
-            System.out.println("Exception: \n" + ex.toString());
+            System.out.println(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES").getString("EXCEPTION: " + "\\N{0}"), new Object[] {ex.toString()}));
             scheduler.shutdown(true);
         }
     }
-
     @Override
     public final void stopJob() throws SchedulerException {
         // shut down the scheduler

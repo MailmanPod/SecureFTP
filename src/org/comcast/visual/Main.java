@@ -682,6 +682,11 @@ public class Main extends javax.swing.JFrame {
 
     private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
         prepareDestination();
+        
+        if(!this.settings.containsKey("selectedFiles")){
+            JOptionPane.showMessageDialog(this, "No hay Archivos Seleccionados.\nPor favor seleccione los archivos y guarde la seleccion", "Sin seleccion", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         UploadWizard up = new UploadWizard();
         up.main(settings);
@@ -689,27 +694,27 @@ public class Main extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowDeactivated
 
     private void btnFileSelectionRemoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionRemoteActionPerformed
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote, this.boxSort, this.radioMenor, this.radioMayor);
             r.setVisible(true);
 
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnFileSelectionRemoteActionPerformed
@@ -738,7 +743,7 @@ public class Main extends javax.swing.JFrame {
 
     private void btnFileSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileSelectionActionPerformed
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             String p = lblFileSelected.getText();
             JFileChooser jfc = new JFileChooser();
             if (p != null) {
@@ -756,7 +761,7 @@ public class Main extends javax.swing.JFrame {
                 this.lblFileSelected.setText(selectedFiles.getAbsolutePath());
                 initLocalTable(selectedFiles.getAbsolutePath());
             }
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnFileSelectionActionPerformed
@@ -815,6 +820,7 @@ public class Main extends javax.swing.JFrame {
     private void searchTable(String search) throws Exception {
         int selection = this.boxBusqueda.getSelectedIndex();
         FileFinder finder = new FileFinder(config);
+        System.out.println(search);
 
         switch (selection) {
             case 0:
@@ -842,6 +848,7 @@ public class Main extends javax.swing.JFrame {
                     } else {
                         if (radioExtension.isSelected()) {
                             SimpleList<Message> localNameAprox = finder.getLocalExtAprox(this.lblFileSelected.getText(), search);
+                            System.out.println(localNameAprox.isEmpty());
 
                             if (!localNameAprox.isEmpty()) {
                                 Message[] only = localNameAprox.toArray(Message.class);
@@ -909,10 +916,10 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             Settings set = new Settings();
             set.setVisible(true);
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSettingsActionPerformed
@@ -949,9 +956,9 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     new Main().setVisible(true);
-                } catch (UnsupportedLookAndFeelException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

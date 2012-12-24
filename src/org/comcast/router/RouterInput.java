@@ -6,7 +6,9 @@ package org.comcast.router;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.ResourceBundle;
 import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
 import org.comcast.builder.Mail;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
@@ -18,6 +20,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
 
 /**
  *
@@ -52,6 +55,7 @@ public class RouterInput implements Job {
         Worker routerWorkerThread = new Worker(server, show, mail, serverConfig);
         routerWorkerThread.run();
     }
+    private ResourceBundle routerInput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterInput_es_ES");
 
     private class Worker{
 
@@ -70,7 +74,7 @@ public class RouterInput implements Job {
         private void confirmMail() {
             try {
                 String buffer = mail.getMailText();
-                mail.setMailText(buffer + "\nArchivos descargados del servidor: " + config.getHostName() + "\n" + showUploadFiles.toString());
+                mail.setMailText(buffer + java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterInput_es_ES").getString("\\NARCHIVOS DESCARGADOS DEL SERVIDOR: {0}\\N{1}"), new Object[] {config.getHostName(), showUploadFiles.toString()}));
 
                 mail.initSession();
                 mail.createMail();
@@ -78,23 +82,19 @@ public class RouterInput implements Job {
 
             } catch (MessagingException ex) {
                 //JOptionPane
-                System.out.println("Exception: " + ex.toString());
-                System.exit(1);
+                JOptionPane.showMessageDialog(null, java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterInput_es_ES").getString("EXCEPTION: {0}"), new Object[] {ex.toString()}), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
         private void confirmMail(String s) {
             try {
-                mail.setMailText("Error al descargar los archivos del servidor \n\n" + s);
+                mail.setMailText(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterInput_es_ES").getString("ERROR AL DESCARGAR LOS ARCHIVOS DEL SERVIDOR \\N\\N{0}"), new Object[] {s}));
 
                 mail.initSession();
                 mail.createMail();
                 mail.sendMail();
 
             } catch (MessagingException ex) {
-                //JOptionPane
-                System.out.println("Exception: " + ex.toString());
-                System.exit(1);
+                JOptionPane.showMessageDialog(null, java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterInput_es_ES").getString("EXCEPTION: {0}"), new Object[] {ex.toString()}), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 

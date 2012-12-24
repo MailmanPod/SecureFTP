@@ -1,6 +1,7 @@
 package org.comcast.tableModels;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import org.apache.commons.io.FileUtils;
@@ -14,10 +15,11 @@ import org.comcast.router.Message;
  * @since 1.6
  */
 public class LocalFileTableModel implements TableModel {
+    private ResourceBundle localFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalFileTM_es_ES");
 
     Object[][] datos;
     final String[] columnas = {
-        "Nombre", "Tamaño", "Path", "Tipo de Archivo"
+        localFileTM_es_ES.getString("NOMBRE"), localFileTM_es_ES.getString("TAMAÑO"), localFileTM_es_ES.getString("PATH"), localFileTM_es_ES.getString("TIPO DE ARCHIVO")
     };
     Class[] types = new Class[]{
         java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
@@ -26,17 +28,17 @@ public class LocalFileTableModel implements TableModel {
         false, false, false, false, false
     };
 
-    public LocalFileTableModel(Message[] sample) throws IOException {
+    public LocalFileTableModel(Message[] sample) throws Exception {
         datos = new Object[sample.length][5];
         reload(sample);
     }
 
-    public LocalFileTableModel(Message[] sample, int rows) throws IOException {
+    public LocalFileTableModel(Message[] sample, int rows) throws Exception {
         datos = new Object[rows][5];
         reload(sample);
     }
 
-    private void reload(Message[] sample) throws IOException {
+    private void reload(Message[] sample) throws Exception {
         int i = 0;
         for (Message aux : sample) {
 

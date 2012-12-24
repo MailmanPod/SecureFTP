@@ -5,6 +5,7 @@
 package org.comcast.proxy;
 
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
@@ -29,7 +30,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * @author Quality of Service
  */
 public class Works implements InterfaceWorks {
-
+    private ResourceBundle works_es_ES = ResourceBundle.getBundle("org/comcast/locale/Works_es_ES");
     private Loader loader;
     private Crypto crypto;
     private OutputScheduler os;
@@ -107,7 +108,9 @@ public class Works implements InterfaceWorks {
                 encrypted.addInOrder(transfer);
                 cf.addInOrder(cd);
             } else {
-                int op = JOptionPane.showConfirmDialog(null, "El siguiente archivo\n" + aux.getLocalPath() + "\n ya se encuentra en el servidor\n Desea Continuar?", "Archivo duplicado", JOptionPane.WARNING_MESSAGE);
+                String primero = works_es_ES.getString("EL ARCHIVO YA ES ENCUENTRA EN EL SERVIDOR.");
+                String segundo = works_es_ES.getString("ARCHIVO DUPLICADO");
+                int op = JOptionPane.showConfirmDialog(null, primero, segundo, JOptionPane.YES_NO_OPTION);
                 if (op == JOptionPane.NO_OPTION) {
                     break;
                 }
@@ -172,7 +175,7 @@ public class Works implements InterfaceWorks {
                 loader.appendCryptoData(aux);
                 crypto.encryptRSA(ori.getLocalPath(), cry.getLocalPath(), aux.getPublicKey());
             } else {
-                System.out.println("Error");
+                JOptionPane.showMessageDialog(null, works_es_ES.getString("ERROR DE ENCRIPTACION"), works_es_ES.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -255,7 +258,7 @@ public class Works implements InterfaceWorks {
             System.out.println("\n\n");
             crypto.decryptRSA(toDecrypt.getLocalPath(), toNative, data.getPrivateKey());
         } else {
-            System.out.println("Error");
+            throw new Exception(works_es_ES.getString("ERROR EN EL DESENCRIPTADO"));
         }
     }
 
@@ -270,7 +273,7 @@ public class Works implements InterfaceWorks {
 
             finalMessage = download + file;
         } else {
-            System.out.println("Error");
+            throw new Exception(works_es_ES.getString("ERROR EN LOS STRING DE DESCARGA"));
         }
 
         return finalMessage;

@@ -4,12 +4,14 @@
  */
 package org.comcast.wizards;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Proxy;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,9 +24,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.CryptoData;
@@ -36,6 +41,8 @@ import org.comcast.proxy.Works;
 import org.comcast.router.Message;
 import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
+import org.comcast.tableModels.LocalFileTableModel;
+import org.comcast.tableModels.LocalWizardTableModel;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.netbeans.api.wizard.WizardDisplayer;
@@ -83,7 +90,7 @@ public class UploadWizard {
 class WizardProvider extends WizardPanelProvider {
 
     WizardProvider() {
-        super("Asistente para la subida de archivos",
+        super("Asistente subir archivos",
                 new String[]{"bienvenido", "servidor", "cliente", "mail", "archivosSubir", "destino"},
                 new String[]{"Bienvenido", "Verificar Servidor", "Configuracion Cliente", "Verificar Mail", "Archivos a Subir", "Destino Remoto"});
     }
@@ -136,8 +143,10 @@ class WizardProvider extends WizardPanelProvider {
             case "bienvenido":
 
                 JLabel lbl = new JLabel();
+                JLabel lbl1 = new JLabel();
                 JLabel lbl2 = new JLabel();
                 lbl.setText("Bienvenido al asistente para subir archivos.");
+                lbl1.setText("Este asistente lo guiará durante el proceso de subir archivos a un Servidor FTP");
                 lbl2.setText("Presione next para empezar");
 
                 JPanel pn1 = new JPanel();
@@ -146,10 +155,14 @@ class WizardProvider extends WizardPanelProvider {
                 JPanel pn2 = new JPanel();
                 pn2.add(lbl2);
 
+                JPanel pn3 = new JPanel();
+                pn3.add(lbl1);
+
                 JPanel bienvenido = new JPanel();
-                bienvenido.setLayout(new GridLayout(2, 10));
-                bienvenido.add(pn1, 0);
-                bienvenido.add(pn2, 1);
+                bienvenido.setLayout(new GridLayout(3, 1));
+                bienvenido.add(pn1);
+                bienvenido.add(pn3);
+                bienvenido.add(pn2);
                 return bienvenido;
 
             case "servidor":
@@ -217,7 +230,8 @@ class WizardProvider extends WizardPanelProvider {
                     return servidor;
 
                 } catch (Exception ex) {
-                    wc.setProblem("Se ha producido un error " + ex.toString());
+                    String a = ("Se ha producido un error ");
+                    wc.setProblem(a + ex.toString());
                     chUser.setEnabled(false);
                     chServer.setEnabled(false);
                     chIP.setEnabled(false);
@@ -290,7 +304,8 @@ class WizardProvider extends WizardPanelProvider {
                     return cliente;
 
                 } catch (Exception ex) {
-                    wc.setProblem("Se ha producido un error " + ex.toString());
+                    String a = ("Se ha producido un error ");
+                    wc.setProblem(a + ex.toString());
                     chLocale.setEnabled(false);
                     chPrivate.setEnabled(false);
                     chPublic.setEnabled(false);
@@ -374,7 +389,8 @@ class WizardProvider extends WizardPanelProvider {
                     return mail;
 
                 } catch (Exception ex) {
-                    wc.setProblem("Se ha producido un error " + ex.toString());
+                    String a = ("Se ha producido un error ");
+                    wc.setProblem(a + ex.toString());
                     chHost.setEnabled(false);
                     chTLS.setEnabled(false);
                     chPort.setEnabled(false);
@@ -385,9 +401,7 @@ class WizardProvider extends WizardPanelProvider {
             case "archivosSubir":
                 JPanel archivosSubir = new JPanel();
                 archivosSubir.setLayout(new GridLayout(4, 1));
-                JTextArea area = new JTextArea();
-                area.setAutoscrolls(true);
-                area.setEditable(false);
+                final JTable area = new JTable();
                 JScrollPane kk = new JScrollPane(area);
                 StringBuilder builder = new StringBuilder();
                 try {
@@ -398,40 +412,51 @@ class WizardProvider extends WizardPanelProvider {
                         for (int i = 0; i < selectedItems.length; i++) {
                             Message aux = selectedItems[i];
                             CryptoData cd = stringParts(aux, System.nanoTime());
-                            System.out.println(aux);
-                            System.out.println(cd);
 
                             if (!isLoadable(cd.getDestination())) {
-                                wc.setProblem("El archivo " + aux.getLocalFile().getName() + " ya se encuentra registrado");
-                            } else {
-                                builder.append(area.getText()).append("\n" + "Archivo #").append(i + 1).append(": ").append(aux.getLocalFile().getAbsolutePath());
-
+                                String a = "El Archivo ";
+                                String b = " ya se encuentra registrado. Eliminalo de la seleccion.";
+                                wc.setProblem(a + aux.getLocalFile().getName() + b);
+                                break;
                             }
                         }
+
+                        area.setModel(new LocalWizardTableModel(selectedItems));
+                        alineacion(area);
                     } else {
                         builder.append("No hay archivos seleccionados");
                         wc.setProblem("No hay archivos seleccionados");
                     }
                     JLabel p = new JLabel("Asignar Prioridades a los archivos");
+                    
                     final JComboBox archivos = getArchivos(selectedItems);
                     final JComboBox prioridades = getPrioridades();
+                    
                     JButton añadir = new JButton("Añadir");
                     añadir.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            Integer sel = (Integer) archivos.getSelectedItem();
-                            int prio = prioridades.getSelectedIndex();
+                            try {
+                                Integer sel = (Integer) archivos.getSelectedItem();
+                                int prio = prioridades.getSelectedIndex();
 
-                            System.out.println("Antes: " + selectedItems[sel - 1].getPriority());
+                                selectedItems[sel - 1].setPriority(prio + 1);
 
-                            selectedItems[sel - 1].setPriority(prio + 1);
+                                String z = "Archivo: ";
+                                String y = "cambio de prioridad a ";
+                                String x = "Cambios de prioridad";
 
-                            System.out.println("Despues: " + selectedItems[sel - 1].getPriority());
-                            System.out.println("\n");
-
-                            JOptionPane.showMessageDialog(null,
-                                    "Archivo: " + selectedItems[sel - 1].getLocalPath() + "\n cambio de prioridad a \n" + prioridades.getSelectedItem(),
-                                    "Cambios", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null,
+                                        z + selectedItems[sel - 1].getLocalPath() + "\n" + y + "\n" + prioridades.getSelectedItem(),
+                                        x, JOptionPane.INFORMATION_MESSAGE);
+                                
+                                area.setModel(new LocalWizardTableModel(selectedItems));
+                                alineacion(area);
+                                
+                            } catch (Exception ex) {
+                                String a = ("Problema al cargar los archivos: ");
+                                wc.setProblem(a + ex.toString());
+                            }
                         }
                     });
                     wc.setProblem("No ha finalizado las modificaciones");
@@ -453,7 +478,6 @@ class WizardProvider extends WizardPanelProvider {
                     panel.add(añadir);
 
                     JPanel one = new JPanel();
-                    area.setText(builder.toString());
                     javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(one);
                     one.setLayout(jPanel9Layout);
                     jPanel9Layout.setHorizontalGroup(
@@ -471,7 +495,8 @@ class WizardProvider extends WizardPanelProvider {
                     return archivosSubir;
 
                 } catch (Exception ex) {
-                    wc.setProblem("Problema al cargar los archivos: " + ex.toString());
+                    String a = ("Problema al cargar los archivos: ");
+                    wc.setProblem(a + ex.toString());
                     ex.printStackTrace();
                     return archivosSubir;
                 }
@@ -481,6 +506,8 @@ class WizardProvider extends WizardPanelProvider {
                 JLabel desc = new JLabel("Ubicacion remota elegida: ");
                 final JLabel selec = new JLabel();
 
+                final JButton buildScheduler = new JButton("Armar Horario");
+                buildScheduler.setEnabled(false);
                 JButton ingresar = new JButton("....");
                 ingresar.addActionListener(new ActionListener() {
                     @Override
@@ -488,30 +515,38 @@ class WizardProvider extends WizardPanelProvider {
                         String get = (String) map.get("destination");
 
                         if (get == null || get.equalsIgnoreCase("")) {
-                            JOptionPane.showMessageDialog(null, "Debe seleccionar una ruta remota valida", "Ruta Remota", JOptionPane.WARNING_MESSAGE);
+                            String s = "Debe seleccionar una ruta remota valida";
+                            String g = "Ruta Remota";
+                            
+                            JOptionPane.showMessageDialog(null, s, g, JOptionPane.WARNING_MESSAGE);
                             wc.setProblem("Debe seleccionar una ruta remota valida");
                         } else {
                             selec.setText(get);
 //                            wc.setProblem(null);
+                            buildScheduler.setEnabled(true);
                         }
                     }
                 });
 
-                JLabel tarea = new JLabel("DD/MM/YYYY HH:MM");
+                JLabel tarea = new JLabel("DD/MM/YYYY HH:MM:SS");
                 JLabel titulo = new JLabel("Configurar Tarea");
                 titulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
                 final JComboBox dias = getDias();
                 final JComboBox meses = getMeses();
-                final JTextField años = new JTextField("2012");
+                
+                Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                final JTextField años = new JTextField();
+                años.setText(String.valueOf(year));
                 años.setEnabled(false);
 
                 final JComboBox hora = getHoras();
                 final JComboBox minutos = getMinutos();
-                final JTextField segundos = new JTextField("00");
+                final JTextField segundos = new JTextField();
+                segundos.setText("00");
                 segundos.setEnabled(false);
-
-                JButton buildScheduler = new JButton("Armar Horario");
+                
                 buildScheduler.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -534,7 +569,9 @@ class WizardProvider extends WizardPanelProvider {
                             } else {
                                 wc.setProblem(null);
                                 map.put("dateScheduler", date);
-                                JOptionPane.showMessageDialog(null, "La tarea fue programada para ejecutarse en: \n" + runTime, "Tarea Subir Archivo", JOptionPane.INFORMATION_MESSAGE);
+                                String k = "La tarea fue programada para ejecutarse en:" ;
+                                String h = "Tarea Subir Archivo";
+                                JOptionPane.showMessageDialog(null, k + "\n" + runTime, h, JOptionPane.INFORMATION_MESSAGE);
                             }
                         } catch (Exception ex) {
                             wc.setProblem("La fecha seleccionada debe ser valida");
@@ -638,6 +675,16 @@ class WizardProvider extends WizardPanelProvider {
         return new JComboBox(stgr);
     }
 
+    private void alineacion(JTable table) {
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+        tcr.setHorizontalAlignment(SwingConstants.CENTER);
+        int count = table.getColumnCount();
+        
+        for(int i = 0; i < count; i++){
+            table.getColumnModel().getColumn(i).setCellRenderer(tcr);
+        }
+    }
+
     @Override
     protected Object finish(Map settings) throws WizardException {
         System.out.println("finish called");
@@ -708,17 +755,20 @@ class Result extends DeferredWizardResult {
         Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(),
                 date.getDay(), date.getMonth(), date.getYear());
 
-        StringBuilder builder = new StringBuilder();
         LocalIterator<Message> iterador = transfer.getIterador();
 
+        String[] items = new String[iterador.size() + 2];
+        int i = 0;
+        items[i] = "Tarea Realizada: " + runTime;
+        i++;
+        items[i] = "Destino remoto: " + (String) settings.get("destination");
+        
         while (iterador.hasMoreElements()) {
+            i++;
             Message aux = iterador.returnElement();
-            builder.append("\nArchivo Transferido: " + aux.getLocalFile());
+            String d = "Archivo Transferido: ";
+            items[i] = d + aux.getLocalPath();
         }
-
-        String[] items = new String[2];
-        items[0] = "Tarea Realizada: " + runTime;
-        items[1] = builder.toString();
 
         // Replace null with an object reference to have this object returned
         // from the showWizard() method.

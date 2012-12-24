@@ -9,58 +9,60 @@ import org.comcast.router.Message;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
+ *
  * @author Federico Bruera TSB 2010.
  * @version 1.0
  * @since 1.6
  */
-public class RemoteFileTableModel implements TableModel {
-    private ResourceBundle remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_es_ES");
-//    private ResourceBundle remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_en_US");
-
+public class LocalWizardTableModel implements TableModel {
     Object[][] datos;
     final String[] columnas = {
-        remoteFileTM_es_ES.getString("NOMBRE"), remoteFileTM_es_ES.getString("TAMAÑO"), remoteFileTM_es_ES.getString("PATH"), remoteFileTM_es_ES.getString("TIPO DE ARCHIVO")
+        "#", "Nombre", "Tamaño", "Prioridad", "Tipo de Archivo"
     };
     Class[] types = new Class[]{
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
     boolean[] canEdit = new boolean[]{
-        false, false, false, false, false
+        false, false, false, false, false, false
     };
 
-    public RemoteFileTableModel(Message[] sample) throws Exception {
-        datos = new Object[sample.length][5];
+    public LocalWizardTableModel(Message[] sample) throws Exception {
+        datos = new Object[sample.length][6];
         reload(sample);
     }
 
-    public RemoteFileTableModel(Message[] sample, int rows) throws Exception {
-        datos = new Object[rows][5];
+    public LocalWizardTableModel(Message[] sample, int rows) throws Exception {
+        datos = new Object[rows][6];
         reload(sample);
     }
-    
+
     private void reload(Message[] sample) throws Exception {
         int i = 0;
         for (Message aux : sample) {
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 6; j++) {
                 switch (j) {
                     case 0:
-                        setValueAt(aux.getFtpFile().getName(), i, j);
+                        setValueAt(i + 1, i, j);
                         break;
-
+                        
                     case 1:
-                        setValueAt(FileUtils.byteCountToDisplaySize(aux.getFtpFile().getSize()), i, j);
+                        setValueAt(aux.getLocalFile().getName(), i, j);
                         break;
 
                     case 2:
-                        setValueAt(aux.getRemotePath(), i, j);
+                        setValueAt(FileUtils.byteCountToDisplaySize(aux.getLocalFile().length()), i, j);
                         break;
-                        
-                    case 3: 
+
+                    case 3:
+                        setValueAt(aux.getPriorityString(), i, j);
+                        break;
+
+                    case 4:
                         setValueAt(aux.getFileType(), i, j);
                         break;
-                        
-                    case 4:
+
+                    case 5:
                         setValueAt(aux, i, j);
                         break;
                 }

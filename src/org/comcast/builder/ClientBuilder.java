@@ -5,6 +5,7 @@
 package org.comcast.builder;
 
 import java.io.File;
+import java.util.ResourceBundle;
 import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.Validator;
 
@@ -21,6 +22,7 @@ public class ClientBuilder {
     public static final int DOWNLOAD_PATH = 16;
     public static final int PUBLIC_STORAGE = 32;
     public static final int PRIVATE_STORAGE = 64;
+    private ResourceBundle clientBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/ClientBuilder_es_ES");
     private Client client;
     private int requiredElements;
 
@@ -112,7 +114,7 @@ public class ClientBuilder {
         }
 
         if (this.requiredElements > 0) {
-            throw new InformationRequiredException("Faltan datos requeridos para construir el Cliente");
+            throw new InformationRequiredException(clientBuilder_es_ES.getString("FALTAN DATOS REQUERIDOS PARA CONSTRUIR EL CLIENTE"));
         }
 
         return this.client;

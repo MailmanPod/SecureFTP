@@ -146,4 +146,18 @@ public class Message implements Serializable, Comparable<Message> {
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
+    public String getPriorityString() {
+
+        switch (this.getPriority()) {
+            case HIGH_PRIORITY:
+                return "High";
+            case NORMAL_PRIORITY:
+                return "Normal";
+            case LOW_PRIORITY:
+                return "Low";
+            default:
+                return "null";
+        }
+    }
 }

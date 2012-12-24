@@ -6,7 +6,9 @@ package org.comcast.router;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.ResourceBundle;
 import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
 import org.comcast.builder.Mail;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
@@ -18,6 +20,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
 
 /**
  *
@@ -52,6 +55,7 @@ public class RouterOutput implements Job {
         Worker routerWorkerThread = new Worker(server, show, mail, serverConfig);
         routerWorkerThread.run();
     }
+    private ResourceBundle routerOutput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES");
 
     private class Worker {
 
@@ -70,34 +74,29 @@ public class RouterOutput implements Job {
         private void confirmMail() {
             try {
                 String buffer = mail.getMailText();
-                mail.setMailText(buffer + "\n\nArchivos enviados al servidor: " + config.getHostName() + "\n\n" + showUploadFiles.toString());
+                mail.setMailText(buffer + java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES").getString("\\N\\NARCHIVOS ENVIADOS AL SERVIDOR: {0}\\N\\N{1}"), new Object[] {config.getHostName(), showUploadFiles.toString()}));
 
                 mail.initSession();
                 mail.createMail();
                 mail.sendMail();
 
             } catch (MessagingException ex) {
-                //JOptionPane
-                System.out.println("Exception: " + ex.toString());
-                System.exit(1);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
         private void confirmMail(String s) {
             try {
-                mail.setMailText("\n\nError al enviar los archivos al servidor \n\n" + s);
+                mail.setMailText(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES").getString("\\N\\NERROR AL ENVIAR LOS ARCHIVOS AL SERVIDOR \\N\\N{0}"), new Object[] {s}));
 
                 mail.initSession();
                 mail.createMail();
                 mail.sendMail();
 
             } catch (MessagingException ex) {
-                //JOptionPane
-                System.out.println("Exception: " + ex.toString());
-                System.exit(1);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
         public void run() {
             try {
                 server.uploadMessages();

@@ -17,8 +17,8 @@ import org.comcast.exceptions.UnderflowException;
 public interface OutputChannel extends Serializable {
 
     public static final int MAX_PRIORITY = 1;
-    public static final int NORMAL_PRIORITY = 5;
-    public static final int LOW_PRIORITY = 10;
+    public static final int NORMAL_PRIORITY = 2;
+    public static final int LOW_PRIORITY = 3;
 
     public void uploadMessages() throws SocketException, IOException, UnderflowException;
 

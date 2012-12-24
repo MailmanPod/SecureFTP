@@ -7,12 +7,14 @@ package org.comcast.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 /**
  *
  * @author Quality of Service
  */
 public class DownloadHandler implements InvocationHandler {
+    private ResourceBundle downloadHandler_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadHandler_es_ES");
 
     private InterfaceWorks works;
 
@@ -31,6 +33,6 @@ public class DownloadHandler implements InvocationHandler {
             return null;
         }
 
-        throw new IllegalAccessException("No tienes permisos para la ejecucion. Consulte a su administrador");
+        throw new IllegalAccessException(downloadHandler_es_ES.getString("NO TIENES PERMISOS PARA LA EJECUCION. DESCARGAR ARCHIVO"));
     }
 }

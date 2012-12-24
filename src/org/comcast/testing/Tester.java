@@ -224,7 +224,7 @@ public class Tester {
 //        transferir.addInOrder(archivo1);
 //        transferir.addInOrder(archivo2);
 //        transferir.addInOrder(archivo3);
-        transferir.addInOrder(archivo4);
+//        transferir.addInOrder(archivo4);
 //        transferir.addInOrder(archivo5);
 //        transferir.addInOrder(archivo6);
 //        transferir.addInOrder(archivo7);
@@ -236,30 +236,30 @@ public class Tester {
 //        pila.insert(archivo1);
 //        pila.insert(archivo4);
 //        
-        DateScheduler date = new DateScheduler(4, 51, 0, 19, DateScheduler.DECEMBER, 2012);
-        Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
-        long t = (runTime.getTime() - System.nanoTime());
-        
-        System.out.println(t);
-        InterfaceWorks w = new Works();
+//        DateScheduler date = new DateScheduler(4, 51, 0, 19, DateScheduler.DECEMBER, 2012);
+//        Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
+//        long t = (runTime.getTime() - System.nanoTime());
 //        
-////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-////                w.getClass().getInterfaces(), new UploadHandler(w));
-//        
-        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-                w.getClass().getInterfaces(), new DownloadHandler(w));
-//        
+//        System.out.println(t);
+//        InterfaceWorks w = new Works();
+////        
+//////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+//////                w.getClass().getInterfaces(), new UploadHandler(w));
+////        
 //        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
-//                w.getClass().getInterfaces(), new DecryptHandler(w));
-//        
-        try{
-//            behind.transferFiles(transferir, date);
-            behind.downloadFiles(transferir, date);
-//            behind.decryptFiles(transferir);
-        }catch (Exception e){
-//            System.out.println(e.getLocalizedMessage());
-            e.printStackTrace();
-        }
+//                w.getClass().getInterfaces(), new DownloadHandler(w));
+////        
+////        InterfaceWorks behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(), 
+////                w.getClass().getInterfaces(), new DecryptHandler(w));
+////        
+//        try{
+////            behind.transferFiles(transferir, date);
+//            behind.downloadFiles(transferir, date);
+////            behind.decryptFiles(transferir);
+//        }catch (Exception e){
+////            System.out.println(e.getLocalizedMessage());
+//            e.printStackTrace();
+//        }
 //        w.transferFiles(transferir, date);
 //        w.downloadFiles(transferir, date);
 //        w.decryptFiles(transferir);
@@ -308,6 +308,9 @@ public class Tester {
         //s.stopJob();
         //se.stopJob();
 
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.YEAR));
+        
 //        Crypto crypto = CryptoProvider.getInstance();
 
 //        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";

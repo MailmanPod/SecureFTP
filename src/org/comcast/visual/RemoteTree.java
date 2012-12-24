@@ -4,15 +4,15 @@
  */
 package org.comcast.visual;
 
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import org.comcast.logic.ServerConfig;
@@ -77,7 +77,7 @@ public class RemoteTree extends javax.swing.JDialog {
             ex.printStackTrace();
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -97,6 +97,7 @@ public class RemoteTree extends javax.swing.JDialog {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("/");
         treeRemote.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        treeRemote.setCellRenderer(null);
         treeRemote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 treeRemoteMouseClicked(evt);

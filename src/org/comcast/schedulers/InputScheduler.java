@@ -9,8 +9,10 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.comcast.builder.Mail;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.Server;
@@ -32,6 +34,7 @@ import static org.quartz.DateBuilder.*;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.impl.triggers.CronTriggerImpl;
 
+
 /**
  *
  * @author Quality of Service
@@ -39,6 +42,7 @@ import org.quartz.impl.triggers.CronTriggerImpl;
 public class InputScheduler implements SchedulerInterface {
 
     private static Scheduler scheduler;
+    private ResourceBundle inputScheduler_es_ES = ResourceBundle.getBundle("org/comcast/locale/InputScheduler_es_ES");
     private ServerConfig configuration;
     private BinaryHeap<Message> downloadFiles;
     private Mail advice;
@@ -76,7 +80,7 @@ public class InputScheduler implements SchedulerInterface {
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
 
         String aux = advice.getMailText();
-        String form = "\n" + "Datos de fecha: " + runTime;
+        String form = java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/InputScheduler_es_ES").getString("\\N" + "DATOS DE FECHA: {0}"), new Object[] {runTime});
         advice.setMailText(aux + form);
 
         System.out.println("------- Scheduling Job  -------------------");
@@ -121,11 +125,10 @@ public class InputScheduler implements SchedulerInterface {
             Thread.sleep(res);
             // executing...
         } catch (InterruptedException ex) {
-            System.out.println("Exception: \n" + ex.toString());
+            JOptionPane.showMessageDialog(null, java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/InputScheduler_es_ES").getString("EXCEPTION: \\N{0}"), new Object[] {ex.toString()}), "Error", JOptionPane.ERROR_MESSAGE);
             scheduler.shutdown(true);
         }
     }
-
     @Override
     public final void stopJob() throws SchedulerException {
         // shut down the scheduler

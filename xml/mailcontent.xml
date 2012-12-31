@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<mail>
-  <content>
-    <from key="comcast.from">noreply_ftpserver@gmail.com</from>
-    <recipient key="comcast.recipient">brueradamian@gmail.com</recipient>
-    <subject key="comcast.subject">Resultados</subject>
-    <protocol key="comcast.protocol">smtp</protocol>
-    <text key="comcast.text">Tareas Realizadas</text>
-    <user key="comcast.user">brueradamian@gmail.com</user>
-    <password key="comcast.password">MiCOntraseña0988</password>
-  </content>
-</mail>
+<?xml version="1.0" encoding="utf-8" standalone="no"?><mail><content><from key="comcast.from">noreply_ftpserver@gmail.com</from><recipient key="comcast.recipient">brueradamian@gmail.com</recipient><subject key="comcast.subject">Resultados</subject><protocol key="comcast.protocol">smtp</protocol><text key="comcast.text">Tareas Realizadas</text><user key="comcast.user">brueradamian@gmail.com</user><password key="comcast.password">MiCOntraseña0988</password></content></mail>

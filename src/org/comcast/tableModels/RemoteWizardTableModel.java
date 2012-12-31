@@ -14,11 +14,11 @@ import org.comcast.router.Message;
  * @version 1.0
  * @since 1.6
  */
-public class LocalWizardTableModel implements TableModel {
-    private ResourceBundle localWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_es_ES");
+public class RemoteWizardTableModel implements TableModel {
+    private ResourceBundle remoteWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteWizardTM_es_ES");
     Object[][] datos;
     final String[] columnas = {
-        "#", localWizardTM_es_ES.getString("NOMBRE"), localWizardTM_es_ES.getString("TAMAÑO"), localWizardTM_es_ES.getString("PRIORIDAD"), localWizardTM_es_ES.getString("TIPO DE ARCHIVO")
+        "#", remoteWizardTM_es_ES.getString("NOMBRE"), remoteWizardTM_es_ES.getString("TAMAÑO"), remoteWizardTM_es_ES.getString("PRIORIDAD"), remoteWizardTM_es_ES.getString("TIPO DE ARCHIVO")
     };
     Class[] types = new Class[]{
         java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
@@ -27,12 +27,12 @@ public class LocalWizardTableModel implements TableModel {
         false, false, false, false, false, false
     };
 
-    public LocalWizardTableModel(Message[] sample) throws Exception {
+    public RemoteWizardTableModel(Message[] sample) throws Exception {
         datos = new Object[sample.length][6];
         reload(sample);
     }
 
-    public LocalWizardTableModel(Message[] sample, int rows) throws Exception {
+    public RemoteWizardTableModel(Message[] sample, int rows) throws Exception {
         datos = new Object[rows][6];
         reload(sample);
     }
@@ -48,11 +48,11 @@ public class LocalWizardTableModel implements TableModel {
                         break;
                         
                     case 1:
-                        setValueAt(aux.getLocalFile().getName(), i, j);
+                        setValueAt(aux.getFtpFile().getName(), i, j);
                         break;
 
                     case 2:
-                        setValueAt(FileUtils.byteCountToDisplaySize(aux.getLocalFile().length()), i, j);
+                        setValueAt(FileUtils.byteCountToDisplaySize(aux.getFtpFile().getSize()), i, j);
                         break;
 
                     case 3:

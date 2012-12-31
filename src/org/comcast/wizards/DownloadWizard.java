@@ -10,8 +10,10 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Proxy;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -22,9 +24,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.CryptoData;
@@ -33,12 +37,11 @@ import org.comcast.logic.ServerConfig;
 import org.comcast.proxy.DecryptHandler;
 import org.comcast.proxy.DownloadHandler;
 import org.comcast.proxy.InterfaceWorks;
-import org.comcast.proxy.UploadHandler;
 import org.comcast.proxy.Works;
 import org.comcast.router.Message;
-import org.comcast.schedulers.InputScheduler;
 import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
+import org.comcast.tableModels.RemoteWizardTableModel;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 import org.netbeans.api.wizard.WizardDisplayer;
@@ -50,11 +53,13 @@ import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 
+
 /**
  *
  * @author Quality of Service
  */
 public class DownloadWizard {
+    private ResourceBundle downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
 
     public void main(Map args) {
         final Map properties = args;
@@ -88,9 +93,9 @@ public class DownloadWizard {
     class WizardDownload extends WizardPanelProvider {
 
         WizardDownload() {
-            super("Asistente para la descarga de archivos",
+            super(downloadWizard_es_ES.getString("ASISTENTE PARA LA DESCARGA DE ARCHIVOS"),
                     new String[]{"bienvenido", "servidor", "cliente", "mail", "archivosDescarga", "destino"},
-                    new String[]{"Bienvenido", "Verificar Servidor", "Configuracion Cliente", "Verificar Mail", "Archivos a Descargar", "Origen Remoto"});
+                    new String[]{downloadWizard_es_ES.getString("BIENVENIDO"), downloadWizard_es_ES.getString("VERIFICAR SERVIDOR"), downloadWizard_es_ES.getString("CONFIGURACION CLIENTE"), downloadWizard_es_ES.getString("VERIFICAR MAIL"), downloadWizard_es_ES.getString("ARCHIVOS A DESCARGAR"), downloadWizard_es_ES.getString("ORIGEN REMOTO")});
         }
 
         private CryptoData stringParts(Message full, long serialID) throws Exception {
@@ -141,9 +146,11 @@ public class DownloadWizard {
                 case "bienvenido":
 
                     JLabel lbl = new JLabel();
+                    JLabel lbl1 = new JLabel();
                     JLabel lbl2 = new JLabel();
-                    lbl.setText("Bienvenido al asistente para la descarga de archivos.");
-                    lbl2.setText("Presione next para empezar");
+                    lbl.setText(downloadWizard_es_ES.getString("BIENVENIDO AL ASISTENTE PARA LA DESCARGA DE ARCHIVOS."));
+                    lbl1.setText(downloadWizard_es_ES.getString("ESTE ASISTENTE LO GUIARÁ DURANTE EL PROCESO DE DESCARGAR ARCHIVOS DE UN SERVIDOR FTP"));
+                    lbl2.setText(downloadWizard_es_ES.getString("PRESIONE NEXT PARA EMPEZAR"));
 
                     JPanel pn1 = new JPanel();
                     pn1.add(lbl);
@@ -151,10 +158,14 @@ public class DownloadWizard {
                     JPanel pn2 = new JPanel();
                     pn2.add(lbl2);
 
+                    JPanel pn3 = new JPanel();
+                    pn3.add(lbl1);
+
                     JPanel bienvenido = new JPanel();
-                    bienvenido.setLayout(new GridLayout(2, 10));
-                    bienvenido.add(pn1, 0);
-                    bienvenido.add(pn2, 1);
+                    bienvenido.setLayout(new GridLayout(3, 1));
+                    bienvenido.add(pn1);
+                    bienvenido.add(pn3);
+                    bienvenido.add(pn2);
                     return bienvenido;
 
                 case "servidor":
@@ -164,12 +175,12 @@ public class DownloadWizard {
                     final JPanel servidor = new JPanel();
 
                     try {
-                        wc.setProblem("Debe Verificar los datos");
+                        wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
 
                         ServerConfig config = l.getServerConfiguration();
-                        JLabel server = new JLabel("Nombre Servidor");
-                        JLabel user = new JLabel("Nombre Usuario");
-                        JLabel ip = new JLabel("Numero Ip");
+                        JLabel server = new JLabel(downloadWizard_es_ES.getString("NOMBRE SERVIDOR"));
+                        JLabel user = new JLabel(downloadWizard_es_ES.getString("NOMBRE USUARIO"));
+                        JLabel ip = new JLabel(downloadWizard_es_ES.getString("NUMERO IP"));
 
                         JTextField txtServer = new JTextField(40);
                         txtServer.setEnabled(false);
@@ -183,14 +194,14 @@ public class DownloadWizard {
                         txtIP.setEnabled(false);
                         txtIP.setText(config.getIpAddress());
 
-                        JButton validar = new JButton("Validar");
+                        JButton validar = new JButton(downloadWizard_es_ES.getString("VALIDAR"));
                         validar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (chServer.isSelected() && chUser.isSelected() && chIP.isSelected()) {
                                     wc.setProblem(null);
                                 } else {
-                                    wc.setProblem("Debe Verificar los datos");
+                                    wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
                                 }
                             }
                         });
@@ -222,7 +233,8 @@ public class DownloadWizard {
                         return servidor;
 
                     } catch (Exception ex) {
-                        wc.setProblem("Se ha producido un error " + ex.toString());
+                        String a = downloadWizard_es_ES.getString("SE HA PRODUCIDO UN ERROR ");
+                        wc.setProblem(a + ex.toString());
                         chUser.setEnabled(false);
                         chServer.setEnabled(false);
                         chIP.setEnabled(false);
@@ -237,13 +249,13 @@ public class DownloadWizard {
                     final JPanel cliente = new JPanel();
 
                     try {
-                        wc.setProblem("Debe Verificar los datos");
+                        wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
 
                         Client c = l.getClientConfiguration();
 
-                        JLabel locale = new JLabel("Descarga");
-                        JLabel publicStorage = new JLabel("Directorio de llave publica");
-                        JLabel privateStorage = new JLabel("Directorio de llave privada");
+                        JLabel locale = new JLabel(downloadWizard_es_ES.getString("DESCARGA"));
+                        JLabel publicStorage = new JLabel(downloadWizard_es_ES.getString("DIRECTORIO DE LLAVE PUBLICA"));
+                        JLabel privateStorage = new JLabel(downloadWizard_es_ES.getString("DIRECTORIO DE LLAVE PRIVADA"));
 
                         JTextField txtLocale = new JTextField(40);
                         txtLocale.setEnabled(false);
@@ -257,14 +269,14 @@ public class DownloadWizard {
                         txtPrivate.setEnabled(false);
                         txtPrivate.setText(c.getPrivateStorage());
 
-                        JButton validar = new JButton("Validar");
+                        JButton validar = new JButton(downloadWizard_es_ES.getString("VALIDAR"));
                         validar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (chLocale.isSelected() && chPublic.isSelected() && chPrivate.isSelected()) {
                                     wc.setProblem(null);
                                 } else {
-                                    wc.setProblem("Debe Verificar los datos");
+                                    wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
                                 }
                             }
                         });
@@ -295,7 +307,8 @@ public class DownloadWizard {
                         return cliente;
 
                     } catch (Exception ex) {
-                        wc.setProblem("Se ha producido un error " + ex.toString());
+                        String a = downloadWizard_es_ES.getString("SE HA PRODUCIDO UN ERROR ");
+                        wc.setProblem(a + ex.toString());
                         chLocale.setEnabled(false);
                         chPrivate.setEnabled(false);
                         chPublic.setEnabled(false);
@@ -309,14 +322,14 @@ public class DownloadWizard {
                     final JCheckBox chAuthentication = new JCheckBox();
                     final JPanel mail = new JPanel();
                     try {
-                        wc.setProblem("Debe Verificar los datos");
+                        wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
 
                         Mail mailC = l.getMail();
 
-                        JLabel host = new JLabel("SMTP Host");
-                        JLabel tls = new JLabel("Uso de TLS");
-                        JLabel port = new JLabel("Puerto de servicio SMNP");
-                        JLabel autenti = new JLabel("Usuario");
+                        JLabel host = new JLabel(downloadWizard_es_ES.getString("SMTP HOST"));
+                        JLabel tls = new JLabel(downloadWizard_es_ES.getString("USO DE TLS"));
+                        JLabel port = new JLabel(downloadWizard_es_ES.getString("PUERTO DE SERVICIO SMNP"));
+                        JLabel autenti = new JLabel(downloadWizard_es_ES.getString("USUARIO"));
 
                         JTextField txtHost = new JTextField(40);
                         txtHost.setEnabled(false);
@@ -334,14 +347,14 @@ public class DownloadWizard {
                         txtAut.setEnabled(false);
                         txtAut.setText(mailC.getMailUserName());
 
-                        JButton validar = new JButton("Validar");
+                        JButton validar = new JButton(downloadWizard_es_ES.getString("VALIDAR"));
                         validar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (chHost.isSelected() && chTLS.isSelected() && chPort.isSelected() && chAuthentication.isSelected()) {
                                     wc.setProblem(null);
                                 } else {
-                                    wc.setProblem("Debe Verificar los datos");
+                                    wc.setProblem(downloadWizard_es_ES.getString("DEBE VERIFICAR LOS DATOS"));
                                 }
                             }
                         });
@@ -379,7 +392,8 @@ public class DownloadWizard {
                         return mail;
 
                     } catch (Exception ex) {
-                        wc.setProblem("Se ha producido un error " + ex.toString());
+                        String a = downloadWizard_es_ES.getString("SE HA PRODUCIDO UN ERROR ");
+                        wc.setProblem(a + ex.toString());
                         chHost.setEnabled(false);
                         chTLS.setEnabled(false);
                         chPort.setEnabled(false);
@@ -390,59 +404,67 @@ public class DownloadWizard {
                 case "archivosDescarga":
                     JPanel archivosSubir = new JPanel();
                     archivosSubir.setLayout(new GridLayout(4, 1));
-                    JTextArea area = new JTextArea();
-                    area.setAutoscrolls(true);
-                    area.setEditable(false);
+                    final JTable area = new JTable();
                     JScrollPane kk = new JScrollPane(area);
                     StringBuilder builder = new StringBuilder();
                     try {
 //                    wc.setProblem("Debe Verificar los datos");
                         final Message[] selectedItems = (Message[]) map.get("selectedFiles");
-                        JButton finalizar = new JButton("Finalizar Modificaciones");
+                        JButton finalizar = new JButton(downloadWizard_es_ES.getString("FINALIZAR MODIFICACIONES"));
 
                         if (selectedItems != null) {
                             for (int i = 0; i < selectedItems.length; i++) {
                                 Message aux = selectedItems[i];
                                 CryptoData cd = stringParts(aux, System.nanoTime());
-                                System.out.println(aux);
-                                System.out.println(cd);
 
                                 if (isLoadable(aux.getRemotePath())) {
-                                    wc.setProblem("El archivo " + aux.getLocalFile().getName() + " no es un archivo encriptado ");
+                                    String a = downloadWizard_es_ES.getString("EL ARCHIVO ");
+                                    String b = downloadWizard_es_ES.getString(" NO ES UN ARCHIVO ENCRIPTADO. ELIMINALO DE LA SELECCION.");
+                                    wc.setProblem(a + aux.getLocalFile().getName() + b);
                                     finalizar.setEnabled(false);
                                     break;
-                                } else {
-                                    builder.append(area.getText()).append("\n" + "Archivo #").append(i + 1).append(": ").append(aux.getRemotePath());
-                                    wc.setProblem("No ha finalizado las modificaciones");
                                 }
                             }
+
+                            area.setModel(new RemoteWizardTableModel(selectedItems));
+                            alineacion(area);
                         } else {
-                            builder.append("No hay archivos seleccionados");
-                            wc.setProblem("No hay archivos seleccionados");
+                            builder.append(downloadWizard_es_ES.getString("NO HAY ARCHIVOS SELECCIONADOS"));
+                            wc.setProblem(downloadWizard_es_ES.getString("NO HAY ARCHIVOS SELECCIONADOS"));
                         }
-                        JLabel p = new JLabel("Asignar Prioridades a los archivos");
+                        JLabel p = new JLabel(downloadWizard_es_ES.getString("ASIGNAR PRIORIDADES A LOS ARCHIVOS"));
                         final JComboBox archivos = getArchivos(selectedItems);
                         final JComboBox prioridades = getPrioridades();
-                        JButton añadir = new JButton("Añadir");
+                        JButton añadir = new JButton(downloadWizard_es_ES.getString("AÑADIR"));
                         añadir.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                Integer sel = (Integer) archivos.getSelectedItem();
-                                int prio = prioridades.getSelectedIndex();
+                                try {
+                                    Integer sel = (Integer) archivos.getSelectedItem();
+                                    int prio = prioridades.getSelectedIndex();
 
-                                System.out.println("Antes: " + selectedItems[sel - 1].getPriority());
+                                    selectedItems[sel - 1].setPriority(prio + 1);
 
-                                selectedItems[sel - 1].setPriority(prio + 1);
+                                    String z = downloadWizard_es_ES.getString("ARCHIVO: ");
+                                    String y = downloadWizard_es_ES.getString("CAMBIO DE PRIORIDAD A ");
+                                    String x = downloadWizard_es_ES.getString("CAMBIOS DE PRIORIDAD");
 
-                                System.out.println("Despues: " + selectedItems[sel - 1].getPriority());
-                                System.out.println("\n");
+                                    JOptionPane.showMessageDialog(null,
+                                            z + selectedItems[sel - 1].getRemotePath() + "\n" + y + "\n" + prioridades.getSelectedItem(),
+                                            x, JOptionPane.INFORMATION_MESSAGE);
 
-                                JOptionPane.showMessageDialog(null,
-                                        "Archivo: " + selectedItems[sel - 1].getLocalPath() + "\n cambio de prioridad a \n" + prioridades.getSelectedItem(),
-                                        "Cambios", JOptionPane.INFORMATION_MESSAGE);
+                                    area.setModel(new RemoteWizardTableModel(selectedItems));
+                                    alineacion(area);
+
+                                } catch (Exception ex) {
+                                    String a = (downloadWizard_es_ES.getString("PROBLEMA AL CARGAR LOS ARCHIVOS: "));
+                                    wc.setProblem(a + ex.toString());
+                                }
                             }
                         });
-                        
+
+                        wc.setProblem(downloadWizard_es_ES.getString("NO HA FINALIZADO LAS MODIFICACIONES"));
+
                         finalizar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -460,7 +482,7 @@ public class DownloadWizard {
                         panel.add(añadir);
 
                         JPanel one = new JPanel();
-                        area.setText(builder.toString());
+
                         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(one);
                         one.setLayout(jPanel9Layout);
                         jPanel9Layout.setHorizontalGroup(
@@ -478,15 +500,19 @@ public class DownloadWizard {
                         return archivosSubir;
 
                     } catch (Exception ex) {
-                        wc.setProblem("Problema al cargar los archivos: " + ex.toString());
-                        ex.printStackTrace();
+                        String a = (downloadWizard_es_ES.getString("PROBLEMA AL CARGAR LOS ARCHIVOS: "));
+                        wc.setProblem(a + ex.toString());
                         return archivosSubir;
                     }
 
                 case "destino":
-                    wc.setProblem("Ruta local no valida o fecha no valida");
-                    JLabel desc = new JLabel("Ubicacion local elegida: ");
+                    wc.setProblem(downloadWizard_es_ES.getString("RUTA LOCAL NO VALIDA O FECHA NO VALIDA"));
+
+                    JLabel desc = new JLabel(downloadWizard_es_ES.getString("UBICACION LOCAL ELEGIDA: "));
                     final JLabel selec = new JLabel();
+
+                    final JButton buildScheduler = new JButton(downloadWizard_es_ES.getString("ARMAR HORARIO"));
+                    buildScheduler.setEnabled(false);
 
                     JButton ingresar = new JButton("....");
                     ingresar.addActionListener(new ActionListener() {
@@ -495,30 +521,40 @@ public class DownloadWizard {
                             String get = (String) map.get("destination");
 
                             if (get == null || get.equalsIgnoreCase("")) {
-                                JOptionPane.showMessageDialog(null, "Debe seleccionar una ruta local valida", "Ruta local", JOptionPane.WARNING_MESSAGE);
-                                wc.setProblem("Debe seleccionar una ruta local valida");
+                                String s = downloadWizard_es_ES.getString("DEBE SELECCIONAR UNA RUTA LOCAL VALIDA");
+                                String g = downloadWizard_es_ES.getString("RUTA LOCAL");
+
+                                JOptionPane.showMessageDialog(null, s, g, JOptionPane.WARNING_MESSAGE);
+
+                                wc.setProblem(downloadWizard_es_ES.getString("DEBE SELECCIONAR UNA RUTA LOCAL VALIDA"));
                             } else {
                                 selec.setText(get);
-//                            wc.setProblem(null);
+                                buildScheduler.setEnabled(true);
                             }
                         }
                     });
 
                     JLabel tarea = new JLabel("DD/MM/YYYY HH:MM");
-                    JLabel titulo = new JLabel("Configurar Tarea");
+                    JLabel titulo = new JLabel(downloadWizard_es_ES.getString("CONFIGURAR TAREA"));
                     titulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
                     final JComboBox dias = getDias();
                     final JComboBox meses = getMeses();
-                    final JTextField años = new JTextField("2012");
+
+
+                    Calendar c = Calendar.getInstance();
+                    int year = c.get(Calendar.YEAR);
+                    final JTextField años = new JTextField(5);
+                    años.setText(String.valueOf(year));
                     años.setEnabled(false);
 
                     final JComboBox hora = getHoras();
                     final JComboBox minutos = getMinutos();
-                    final JTextField segundos = new JTextField("00");
+                    final JTextField segundos = new JTextField(3);
+                    segundos.setText("00");
                     segundos.setEnabled(false);
 
-                    JButton buildScheduler = new JButton("Armar Horario");
+
                     buildScheduler.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -541,10 +577,13 @@ public class DownloadWizard {
                                 } else {
                                     wc.setProblem(null);
                                     map.put("dateScheduler", date);
-                                    JOptionPane.showMessageDialog(null, "La tarea fue programada para ejecutarse en: \n" + runTime, "Tarea Subir Archivo", JOptionPane.INFORMATION_MESSAGE);
+
+                                    String k = downloadWizard_es_ES.getString("LA TAREA FUE PROGRAMADA PARA EJECUTARSE EN:");
+                                    String h = downloadWizard_es_ES.getString("TAREA SUBIR ARCHIVO");
+                                    JOptionPane.showMessageDialog(null, k + "\n" + runTime, h, JOptionPane.INFORMATION_MESSAGE);
                                 }
                             } catch (Exception ex) {
-                                wc.setProblem("La fecha seleccionada debe ser valida");
+                                wc.setProblem(downloadWizard_es_ES.getString("LA FECHA SELECCIONADA DEBE SER VALIDA"));
                             }
                         }
                     });
@@ -641,8 +680,18 @@ public class DownloadWizard {
         }
 
         private JComboBox getPrioridades() {
-            String[] stgr = new String[]{"HIGH", "MEDIUM", "LOW"};
+            String[] stgr = new String[]{"HIGH", "NORMAL", "LOW"};
             return new JComboBox(stgr);
+        }
+
+        private void alineacion(JTable table) {
+            DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+            tcr.setHorizontalAlignment(SwingConstants.CENTER);
+            int count = table.getColumnCount();
+
+            for (int i = 0; i < count; i++) {
+                table.getColumnModel().getColumn(i).setCellRenderer(tcr);
+            }
         }
 
         @Override
@@ -659,8 +708,8 @@ public class DownloadWizard {
         }
     }
 }
-
 class ResultDownload extends DeferredWizardResult {
+    private ResourceBundle downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
 
     public ResultDownload() {
         // Uncomment the following line to make it possible to close the dialog
@@ -674,8 +723,8 @@ class ResultDownload extends DeferredWizardResult {
         SimpleList<Message> transfer = null;
         InterfaceWorks behind = null;
         InterfaceWorks dec = null;
-        
-        progress.setProgress("Preparar Archivos", 0, 4);
+
+        progress.setProgress(downloadWizard_es_ES.getString("PREPARAR ARCHIVOS"), 0, 4);
         try {
             for (Message aux : selectedItems) {
                 String destination = (String) settings.get("destination");
@@ -686,12 +735,12 @@ class ResultDownload extends DeferredWizardResult {
         } catch (InterruptedException ie) {
         }
 
-        progress.setProgress("Preparar tarea", 1, 4);
+        progress.setProgress(downloadWizard_es_ES.getString("PREPARAR TAREA"), 1, 4);
         try {
             InterfaceWorks w = new Works();
             behind = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(),
                     w.getClass().getInterfaces(), new DownloadHandler(w));
-            
+
             dec = (InterfaceWorks) Proxy.newProxyInstance(w.getClass().getClassLoader(),
                     w.getClass().getInterfaces(), new DecryptHandler(w));
 
@@ -702,7 +751,7 @@ class ResultDownload extends DeferredWizardResult {
         } catch (InterruptedException ie) {
         }
 
-        progress.setProgress("Descargar Archivos", 2, 4);
+        progress.setProgress(downloadWizard_es_ES.getString("DESCARGAR ARCHIVOS"), 2, 4);
         try {
 
             DateScheduler date = (DateScheduler) settings.get("dateScheduler");
@@ -717,8 +766,8 @@ class ResultDownload extends DeferredWizardResult {
         } catch (Exception ie) {
             ie.printStackTrace();
         }
-        
-        progress.setProgress("Desencriptar Archivos", 3, 4);
+
+        progress.setProgress(downloadWizard_es_ES.getString("DESENCRIPTAR ARCHIVOS"), 3, 4);
         try {
 
             DateScheduler date = (DateScheduler) settings.get("dateScheduler");
@@ -738,17 +787,26 @@ class ResultDownload extends DeferredWizardResult {
         Date runTime = org.quartz.DateBuilder.dateOf(date.getHour(), date.getMinute(), date.getSecond(),
                 date.getDay(), date.getMonth(), date.getYear());
 
-        StringBuilder builder = new StringBuilder();
         LocalIterator<Message> iterador = transfer.getIterador();
 
-        while (iterador.hasMoreElements()) {
-            Message aux = iterador.returnElement();
-            builder.append("\nArchivo Transferido: " + aux.getLocalFile());
-        }
+        String[] items = new String[iterador.size() + 2];
+        int i = 0;
 
-        String[] items = new String[2];
-        items[0] = "Tarea Realizada: " + runTime;
-        items[1] = builder.toString();
+        String y = downloadWizard_es_ES.getString("TAREA REALIZADA: ");
+        items[i] = y + runTime;
+
+        i++;
+
+        String h = downloadWizard_es_ES.getString("DESTINO REMOTO: ");
+        items[i] = h + (String) settings.get("destination");
+
+        while (iterador.hasMoreElements()) {
+            i++;
+            Message aux = iterador.returnElement();
+
+            String d = downloadWizard_es_ES.getString("ARCHIVO TRANSFERIDO: ");
+            items[i] = d + aux.getLocalPath();
+        }
 
         // Replace null with an object reference to have this object returned
         // from the showWizard() method.

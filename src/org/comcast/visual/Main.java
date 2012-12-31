@@ -957,6 +957,12 @@ public class Main extends javax.swing.JFrame {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    File exist = new File("C:\\Temp\\");
+                    
+                    if(!exist.exists()){
+                        exist.mkdir();
+                    }
+                    
                     new Main().setVisible(true);
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

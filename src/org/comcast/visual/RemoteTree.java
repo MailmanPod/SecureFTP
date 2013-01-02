@@ -4,17 +4,19 @@
  */
 package org.comcast.visual;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import org.apache.commons.io.FileUtils;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
@@ -40,6 +42,8 @@ public class RemoteTree extends javax.swing.JDialog {
     private JComboBox boxSort;
     private JRadioButton radioMenor;
     private JRadioButton radioMayor;
+    private JLabel lblTotalesRemotos;
+    private JLabel lblSeleccionTotalRemoto;
 
     /**
      * Creates new form RemoteTree
@@ -74,8 +78,13 @@ public class RemoteTree extends javax.swing.JDialog {
             model = new DefaultTreeModel((TreeNode) this.treeRemote.getModel().getRoot());
             this.treeRemote.setModel(model);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void setLabelTotal(JLabel totales, JLabel seleccion){
+        this.lblTotalesRemotos = totales;
+        this.lblSeleccionTotalRemoto = seleccion;
     }
     
     /**
@@ -109,11 +118,11 @@ public class RemoteTree extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -184,12 +193,32 @@ public class RemoteTree extends javax.swing.JDialog {
     }
 
     private void initRemoteTable(String pathName) {
+        String o = "Cantidad de Archivos: ";
+        String p = "Tamaño total: ";
+        
         try {
+            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             FileListing list = new FileListing();
             sortRemoteTable(list);
             Message[] localMessage = list.getRemoteMessages(pathName);
+            
+            long count = 0L;
+
+            for (Message aux : localMessage) {
+                count += aux.getLocalFile().length();
+            }
+
+            lblTotalesRemotos.setText(o + localMessage.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
+            lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+            
             this.remote.setModel(new RemoteFileTableModel(localMessage));
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         } catch (Exception ex) {
+            this.remote.setModel(new DefaultTableModel());
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            
+            lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+            lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
         }
     }
     

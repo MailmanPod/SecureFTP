@@ -243,7 +243,7 @@ public class RouterRetrieve {
     private String getType(String fileName) throws IOException {
 
         FileInputStream is = null;
-        String type = "unknown";
+        String type = "application/unregistered";
         try {
             File f = new File(fileName);
             is = new FileInputStream(f);

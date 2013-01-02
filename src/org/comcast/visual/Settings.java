@@ -7,7 +7,6 @@ package org.comcast.visual;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -18,7 +17,6 @@ import org.comcast.builder.Client;
 import org.comcast.builder.ClientBuilder;
 import org.comcast.builder.Mail;
 import org.comcast.builder.MailBuilder;
-import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
 import org.comcast.xml.Loader;
@@ -69,30 +67,35 @@ public class Settings extends javax.swing.JDialog {
     }
 
     private void initAll() {
-        this.txtNombreServidor.setText(config.getHostName());
-        this.txtNombreUsuario.setText(config.getUserLogin());
-        this.txtIPServidor.setText(config.getIpAddress());
+        try {
+            this.txtNombreServidor.setText(config.getHostName());
+            this.txtNombreUsuario.setText(config.getUserLogin());
+            this.txtIPServidor.setText(config.getIpAddress());
 
-        this.txtHost.setText(m.getProperties().getProperty("mail.smtp.host"));
-        this.txtTLS.setText(m.getProperties().getProperty("mail.smtp.starttls.enable"));
-        this.txtPuerto.setText(m.getProperties().getProperty("mail.smtp.port"));
-        this.txtUsuario.setText(m.getProperties().getProperty("mail.smtp.user"));
-        this.txtAutenticacion.setText(m.getProperties().getProperty("mail.smtp.auth"));
+            this.txtHost.setText(m.getProperties().getProperty("mail.smtp.host"));
+            this.txtTLS.setText(m.getProperties().getProperty("mail.smtp.starttls.enable"));
+            this.txtPuerto.setText(m.getProperties().getProperty("mail.smtp.port"));
+            this.txtUsuario.setText(m.getProperties().getProperty("mail.smtp.user"));
+            this.txtAutenticacion.setText(m.getProperties().getProperty("mail.smtp.auth"));
 
-        this.txtFrom.setText(m.getFrom());
-        this.txtRecipient.setText(m.getRecipient());
-        this.txtSubject.setText(m.getSubject());
-        this.txtProtocolo.setText(m.getSendProtocol());
-        this.txtAreaCuerpo.setText(m.getMailText());
-        this.txtUsuarioMail.setText(m.getMailUserName());
+            this.txtFrom.setText(m.getFrom());
+            this.txtRecipient.setText(m.getRecipient());
+            this.txtSubject.setText(m.getSubject());
+            this.txtProtocolo.setText(m.getSendProtocol());
+            this.txtAreaCuerpo.setText(m.getMailText());
+            this.txtUsuarioMail.setText(m.getMailUserName());
 
-        this.txtNombreCliente.setText(c.getClientName());
-        this.txtApellidoCliente.setText(c.getClientLastName());
-        this.txtOrganizacion.setText(c.getOrganization());
-        this.txtDescarga.setText(c.getDownloadPath());
-        this.txtPublica.setText(c.getPublicStorage());
-        this.txtPrivada.setText(c.getPrivateStorage());
-        this.comboLocale.setSelectedItem(c.getLocalization());
+            this.txtNombreCliente.setText(c.getClientName());
+            this.txtApellidoCliente.setText(c.getClientLastName());
+            this.txtOrganizacion.setText(c.getOrganization());
+            this.txtDescarga.setText(c.getDownloadPath());
+            this.txtPublica.setText(c.getPublicStorage());
+            this.txtPrivada.setText(c.getPrivateStorage());
+            this.comboLocale.setSelectedItem(c.getLocalization());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -625,6 +628,7 @@ public class Settings extends javax.swing.JDialog {
                 }
             }
         } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarServidorActionPerformed
 
@@ -685,7 +689,7 @@ public class Settings extends javax.swing.JDialog {
 
     private void btnDescargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargaActionPerformed
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFileChooser jfc = new JFileChooser();
 
             jfc.setApproveButtonText("Seleccionar");
@@ -697,14 +701,14 @@ public class Settings extends javax.swing.JDialog {
                 File selectedFiles = jfc.getSelectedFile();
                 this.txtDescarga.setText(selectedFiles.getAbsolutePath() + "\\");
             }
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDescargaActionPerformed
 
     private void btnKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeysActionPerformed
         try {
-            UIManager.setLookAndFeel(new com.jtattoo.plaf.hifi.HiFiLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFileChooser jfc = new JFileChooser();
 
             jfc.setApproveButtonText("Seleccionar");
@@ -717,8 +721,8 @@ public class Settings extends javax.swing.JDialog {
                 this.txtPublica.setText(selectedFiles.getAbsolutePath() + "\\");
                 this.txtPrivada.setText(selectedFiles.getAbsolutePath() + "\\");
             }
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnKeysActionPerformed
 //    /**

@@ -5,6 +5,7 @@
 package org.comcast.visual;
 
 import java.awt.AWTException;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -17,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,9 +25,8 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import org.apache.commons.io.FileUtils;
 import org.comcast.logic.FileFinder;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
@@ -44,7 +43,6 @@ import org.comcast.wizards.DownloadWizard;
 import org.comcast.wizards.UploadWizard;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
-import sun.java2d.pipe.ValidatePipe;
 
 /**
  *
@@ -81,6 +79,14 @@ public class Main extends javax.swing.JFrame {
     private void initElements() {
         this.radioMenor.setSelected(true);
         this.radioExacto.setSelected(true);
+
+        String o = "Cantidad de Archivos: ";
+        String p = "Tamaño total: ";
+        lblTotales.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+        lblSeleccionTotal.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+
+        lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+        lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
     }
 
     private void initObjects() {
@@ -95,22 +101,63 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void initLocalTable(String pathName) {
+        String o = "Cantidad de Archivos: ";
+        String p = "Tamaño total: ";
+
         try {
+            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             FileListing list = new FileListing();
             sortTable(list);
             Message[] localMessage = list.getLocalMessage(pathName);
+            long count = 0L;
+
+            for (Message aux : localMessage) {
+                count += aux.getLocalFile().length();
+            }
+
+            lblTotales.setText(o + localMessage.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
+            lblSeleccionTotal.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+
             this.tableLocal.setModel(new LocalFileTableModel(localMessage));
+            this.tableLocal.getTableHeader().setReorderingAllowed(false);
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         } catch (Exception ex) {
+            this.tableLocal.setModel(new DefaultTableModel());
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+            lblTotales.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+            lblSeleccionTotal.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
         }
     }
 
     private void initRemoteTable(String pathName) {
+        String o = "Cantidad de Archivos: ";
+        String p = "Tamaño total: ";
+
         try {
+            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             FileListing list = new FileListing();
             sortTable(list);
             Message[] localMessage = list.getRemoteMessages(pathName);
+
+            long count = 0L;
+
+            for (Message aux : localMessage) {
+                count += aux.getLocalFile().length();
+            }
+
+            lblTotalesRemotos.setText(o + localMessage.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
+            lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+
             this.tableRemote.setModel(new RemoteFileTableModel(localMessage));
+            this.tableRemote.getTableHeader().setReorderingAllowed(false);
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         } catch (Exception ex) {
+            this.tableRemote.setModel(new DefaultTableModel());
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+            lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+            lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
         }
     }
 
@@ -166,6 +213,8 @@ public class Main extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableLocal = new javax.swing.JTable();
+        lblTotales = new javax.swing.JLabel();
+        lblSeleccionTotal = new javax.swing.JLabel();
         panelSeleccionArchivoLocal = new javax.swing.JPanel();
         lblFileSelected = new javax.swing.JLabel();
         btnFileSelection = new javax.swing.JButton();
@@ -178,6 +227,8 @@ public class Main extends javax.swing.JFrame {
         btnSeleccionRemota = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRemote = new javax.swing.JTable();
+        lblSeleccionTotalRemoto = new javax.swing.JLabel();
+        lblTotalesRemotos = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         btnUpload = new javax.swing.JButton();
         btnDownload = new javax.swing.JButton();
@@ -225,6 +276,11 @@ public class Main extends javax.swing.JFrame {
         ));
         tableLocal.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tableLocal.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tableLocal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableLocalMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableLocal);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -232,10 +288,22 @@ public class Main extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(lblTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(116, 116, 116)
+                .addComponent(lblSeleccionTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSeleccionTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         panelSeleccionArchivoLocal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Local Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
@@ -351,6 +419,11 @@ public class Main extends javax.swing.JFrame {
 
             }
         ));
+        tableRemote.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableRemoteMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableRemote);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -359,13 +432,24 @@ public class Main extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane2)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(116, 116, 116)
+                .addComponent(lblSeleccionTotalRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSeleccionTotalRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout panelListadoRemotoLayout = new javax.swing.GroupLayout(panelListadoRemoto);
@@ -541,11 +625,9 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -599,7 +681,9 @@ public class Main extends javax.swing.JFrame {
                 };
                 ActionListener exitListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        int option = JOptionPane.showConfirmDialog(null, "Seguro que desea cerrar la ventana", "Cliente FTP", JOptionPane.YES_NO_OPTION);
+                        String a = "Seguro que desea cerrar la ventana";
+                        String b = "Secure FTP";
+                        int option = JOptionPane.showConfirmDialog(null, a, b, JOptionPane.YES_NO_OPTION);
 
                         if (option == JOptionPane.YES_OPTION) {
                             System.exit(0);
@@ -650,11 +734,13 @@ public class Main extends javax.swing.JFrame {
                 popup.addSeparator();
                 popup.add(sa);
 
-                trayIcon = new TrayIcon(image, "Client FTP", popup);
+                trayIcon = new TrayIcon(image, "Secure FTP", popup);
 
                 ActionListener actionListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        trayIcon.displayMessage("Cliente FTP", "Click izquierdo para visualizar mas opciones.", TrayIcon.MessageType.INFO);
+                        String c = "Secure FTP";
+                        String d = "Click izquierdo para visualizar mas opciones.";
+                        trayIcon.displayMessage(c, d, TrayIcon.MessageType.INFO);
                         visibilidad();
                         tray.remove(trayIcon);
                     }
@@ -670,21 +756,24 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "System tray is currently not supported.", "System Tray Error", JOptionPane.ERROR_MESSAGE);
+            String e = "System tray is currently not supported.";
+            String f = "System Tray Error";
+            JOptionPane.showMessageDialog(null, e, f, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowIconified
 
     private void prepareDestination() {
-        System.out.println(lblFileSelectedRemote.getText());
-
         this.settings.put("destination", lblFileSelectedRemote.getText());
     }
 
     private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
         prepareDestination();
-        
-        if(!this.settings.containsKey("selectedFiles")){
-            JOptionPane.showMessageDialog(this, "No hay Archivos Seleccionados.\nPor favor seleccione los archivos y guarde la seleccion", "Sin seleccion", JOptionPane.WARNING_MESSAGE);
+
+        if (!this.settings.containsKey("selectedFiles")) {
+            String g = "No hay Archivos Seleccionados.";
+            String h = "Por favor seleccione los archivos y guarde la seleccion";
+            String i = "Sin seleccion";
+            JOptionPane.showMessageDialog(this, g + "\n" + h, i, JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -696,7 +785,7 @@ public class Main extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowActivated
 
@@ -704,7 +793,7 @@ public class Main extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowDeactivated
 
@@ -712,10 +801,11 @@ public class Main extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote, this.boxSort, this.radioMenor, this.radioMayor);
+            r.setLabelTotal(lblTotalesRemotos, lblSeleccionTotalRemoto);
             r.setVisible(true);
 
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnFileSelectionRemoteActionPerformed
 
@@ -733,7 +823,9 @@ public class Main extends javax.swing.JFrame {
             settings.remove("selectedFiles");
             settings.put("selectedFiles", toTransefer);
         } else {
-            int op = JOptionPane.showConfirmDialog(this, "No ha seleccionado ningun archivo", "Sin archivos", JOptionPane.WARNING_MESSAGE);
+            String j = "No ha seleccionado ningun archivo";
+            String k = "Sin archivos";
+            int op = JOptionPane.showConfirmDialog(this, j, k, JOptionPane.WARNING_MESSAGE);
 
             if (op == JOptionPane.OK_OPTION && this.tableLocal.getModel().getRowCount() == 0) {
                 btnFileSelectionActionPerformed(evt);
@@ -762,7 +854,7 @@ public class Main extends javax.swing.JFrame {
                 initLocalTable(selectedFiles.getAbsolutePath());
             }
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnFileSelectionActionPerformed
 
@@ -795,7 +887,7 @@ public class Main extends javax.swing.JFrame {
 
     private void boxSortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxSortItemStateChanged
         initLocalTable(this.lblFileSelected.getText());
-        if (lblFileSelectedRemote.getText() == "") {
+        if ("".equals(lblFileSelectedRemote.getText())) {
             this.lblFileSelectedRemote.setText("/");
         }
         initRemoteTable(this.lblFileSelectedRemote.getText());
@@ -803,7 +895,7 @@ public class Main extends javax.swing.JFrame {
 
     private void radioMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMenorActionPerformed
         initLocalTable(this.lblFileSelected.getText());
-        if (lblFileSelectedRemote.getText() == "") {
+        if ("".equals(lblFileSelectedRemote.getText())) {
             this.lblFileSelectedRemote.setText("/");
         }
         initRemoteTable(this.lblFileSelectedRemote.getText());
@@ -811,7 +903,7 @@ public class Main extends javax.swing.JFrame {
 
     private void radioMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMayorActionPerformed
         initLocalTable(this.lblFileSelected.getText());
-        if (lblFileSelectedRemote.getText() == "") {
+        if ("".equals(lblFileSelectedRemote.getText())) {
             this.lblFileSelectedRemote.setText("/");
         }
         initRemoteTable(this.lblFileSelectedRemote.getText());
@@ -909,7 +1001,7 @@ public class Main extends javax.swing.JFrame {
             try {
                 searchTable(search);
             } catch (Exception ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnBuscarArchivosActionPerformed
@@ -920,9 +1012,47 @@ public class Main extends javax.swing.JFrame {
             Settings set = new Settings();
             set.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSettingsActionPerformed
+
+    private void tableLocalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLocalMouseClicked
+        int[] selectedRows = this.tableLocal.getSelectedRows();
+
+        String o = "Cantidad de Archivos Seleccionados: ";
+        String p = "Tamaño seleccion: ";
+        long count = 0L;
+
+        int i = 0;
+        if (selectedRows.length != 0) {
+            for (int aux : selectedRows) {
+                Message valueAt = (Message) this.tableLocal.getModel().getValueAt(aux, 4);
+                count += valueAt.getLocalFile().length();
+                i++;
+            }
+        }
+
+        lblSeleccionTotal.setText(o + selectedRows.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
+    }//GEN-LAST:event_tableLocalMouseClicked
+
+    private void tableRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRemoteMouseClicked
+       int[] selectedRows = this.tableRemote.getSelectedRows();
+
+        String o = "Cantidad de Archivos Seleccionados: ";
+        String p = "Tamaño seleccion: ";
+        long count = 0L;
+
+        int i = 0;
+        if (selectedRows.length != 0) {
+            for (int aux : selectedRows) {
+                Message valueAt = (Message) this.tableRemote.getModel().getValueAt(aux, 4);
+                count += valueAt.getFtpFile().getSize();
+                i++;
+            }
+        }
+
+        lblSeleccionTotalRemoto.setText(o + selectedRows.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
+    }//GEN-LAST:event_tableRemoteMouseClicked
 
     /**
      * @param args the command line arguments
@@ -957,12 +1087,14 @@ public class Main extends javax.swing.JFrame {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    File exist = new File("C:\\Temp\\");
-                    
-                    if(!exist.exists()){
-                        exist.mkdir();
+                    File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
+
+                    for (File aux : exist) {
+                        if (!aux.exists()) {
+                            aux.mkdir();
+                        }
                     }
-                    
+
                     new Main().setVisible(true);
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -992,6 +1124,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblFileSelected;
     private javax.swing.JLabel lblFileSelectedRemote;
+    private javax.swing.JLabel lblSeleccionTotal;
+    private javax.swing.JLabel lblSeleccionTotalRemoto;
+    private javax.swing.JLabel lblTotales;
+    private javax.swing.JLabel lblTotalesRemotos;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JPanel panelBuscarPor;
     private javax.swing.JPanel panelListadoLocal;

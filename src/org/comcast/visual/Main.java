@@ -18,7 +18,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -233,6 +237,7 @@ public class Main extends javax.swing.JFrame {
         btnUpload = new javax.swing.JButton();
         btnDownload = new javax.swing.JButton();
         btnSettings = new javax.swing.JButton();
+        btnRestart = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         panelOrdenarPor = new javax.swing.JPanel();
         boxSort = new javax.swing.JComboBox();
@@ -492,7 +497,7 @@ public class Main extends javax.swing.JFrame {
         });
         jToolBar1.add(btnDownload);
 
-        btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Android-Settings-48.png"))); // NOI18N
+        btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Configuration 1-48.png"))); // NOI18N
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -502,6 +507,17 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnSettings);
+
+        btnRestart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Ball-logoff-48.png"))); // NOI18N
+        btnRestart.setFocusable(false);
+        btnRestart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRestart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRestart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestartActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnRestart);
 
         jSplitPane1.setDividerLocation(350);
 
@@ -1036,7 +1052,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tableLocalMouseClicked
 
     private void tableRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRemoteMouseClicked
-       int[] selectedRows = this.tableRemote.getSelectedRows();
+        int[] selectedRows = this.tableRemote.getSelectedRows();
 
         String o = "Cantidad de Archivos Seleccionados: ";
         String p = "Tamaño seleccion: ";
@@ -1053,6 +1069,103 @@ public class Main extends javax.swing.JFrame {
 
         lblSeleccionTotalRemoto.setText(o + selectedRows.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
     }//GEN-LAST:event_tableRemoteMouseClicked
+
+    private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
+        try {
+            /**/
+             Runnable b = new Runnable() {
+                 @Override
+                 public void run() {
+                     try {
+                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                         File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
+
+                         for (File aux : exist) {
+                             if (!aux.exists()) {
+                                 aux.mkdir();
+                             }
+                         }
+
+                         new Main().setVisible(true);
+                     } catch (Exception ex) {
+                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             
+             restartApplication(b);
+        } catch (IOException ex) {
+            System.out.println("ERORORORORORORORORO");
+        }
+    }//GEN-LAST:event_btnRestartActionPerformed
+    /**
+     * Sun property pointing the main class and its arguments. Might not be
+     * defined on non Hotspot VM implementations.
+     */
+    public static final String SUN_JAVA_COMMAND = "sun.java.command";
+
+    /**
+     * Restart the current Java application
+     *
+     * @param runBeforeRestart some custom code to be run before restarting
+     * @throws IOException
+     */
+    private void restartApplication(Runnable runBeforeRestart) throws IOException {
+        try {
+            // java binary
+            String java = System.getProperty("java.home") + "/bin/java";
+            // vm arguments
+            List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+            StringBuffer vmArgsOneLine = new StringBuffer();
+            for (String arg : vmArguments) {
+                // if it's the agent argument : we ignore it otherwise the
+                // address of the old application and the new one will be in conflict
+                if (!arg.contains("-agentlib")) {
+                    vmArgsOneLine.append(arg);
+                    vmArgsOneLine.append(" ");
+                }
+            }
+            // init the command to execute, add the vm args
+            final StringBuffer cmd = new StringBuffer("\"" + java + "\" " + vmArgsOneLine);
+
+            // program main and program arguments
+            String[] mainCommand = System.getProperty(SUN_JAVA_COMMAND).split(" ");
+            // program main is a jar
+            if (mainCommand[0].endsWith(".jar")) {
+                // if it's a jar, add -jar mainJar
+                cmd.append("-jar " + new File(mainCommand[0]).getPath());
+            } else {
+                // else it's a .class, add the classpath and mainClass
+                cmd.append("-cp \"" + System.getProperty("java.class.path") + "\" " + mainCommand[0]);
+            }
+            // finally add program arguments
+            for (int i = 1; i < mainCommand.length; i++) {
+                cmd.append(" ");
+                cmd.append(mainCommand[i]);
+            }
+            // execute the command in a shutdown hook, to be sure that all the
+            // resources have been disposed before restarting the application
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Runtime.getRuntime().exec(cmd.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            // execute some custom code before restarting
+            if (runBeforeRestart != null) {
+                runBeforeRestart.run();
+            }
+            // exit
+            System.exit(0);
+        } catch (Exception e) {
+            // something went wrong
+            throw new IOException("Error while trying to restart the application", e);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -1109,6 +1222,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnDownload;
     private javax.swing.JButton btnFileSelection;
     private javax.swing.JButton btnFileSelectionRemote;
+    private javax.swing.JButton btnRestart;
     private javax.swing.JButton btnSeleccionLocal;
     private javax.swing.JButton btnSeleccionRemota;
     private javax.swing.JButton btnSettings;

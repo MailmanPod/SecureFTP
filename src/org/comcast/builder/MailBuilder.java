@@ -6,9 +6,9 @@ package org.comcast.builder;
 
 import java.util.Properties;
 import java.util.ResourceBundle;
-import javax.mail.Session;
 import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.Validator;
+import org.comcast.xml.LoaderProvider;
 
 /**
  *
@@ -24,7 +24,7 @@ public class MailBuilder {
     public static final int SEND_PROTOCOL = 32;
     public static final int USER_NAME = 64;
     public static final int USER_PASSWORD = 128;
-    private ResourceBundle mailBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/MailBuilder_es_ES");
+    private ResourceBundle mailBuilder_es_ES;
     private Mail mail;
     private int requiredElements;
 
@@ -88,7 +88,7 @@ public class MailBuilder {
         }
     }
 
-    public Mail getMail() throws InformationRequiredException {
+    public Mail getMail() throws InformationRequiredException, Exception {
         this.requiredElements = 0;
 
         if (mail.getProperties() == null) {
@@ -124,6 +124,20 @@ public class MailBuilder {
         }
 
         if (this.requiredElements > 0) {
+            
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            switch(c.getLocalization()){
+                case "Español":
+                    this.mailBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/MailBuilder_es_ES");
+                    break;
+                case "Ingles":
+                    this.mailBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/MailBuilder_en_US");
+                    break;
+                default:
+                    this.mailBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/MailBuilder_en_US");
+                    break;
+            }
             throw new InformationRequiredException(mailBuilder_es_ES.getString("FALTAN DATOS REQUERIDOS PARA ENVIAR EL MAIL"));
         }
 

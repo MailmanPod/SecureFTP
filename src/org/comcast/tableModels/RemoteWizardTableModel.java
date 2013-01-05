@@ -1,11 +1,12 @@
 package org.comcast.tableModels;
 
-import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
 import org.comcast.router.Message;
+import org.comcast.xml.LoaderProvider;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
@@ -15,14 +16,18 @@ import org.comcast.router.Message;
  * @since 1.6
  */
 public class RemoteWizardTableModel implements TableModel {
-    private ResourceBundle remoteWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteWizardTM_es_ES");
+    private ResourceBundle remoteWizardTM_es_ES;
+    
     Object[][] datos;
+    
     final String[] columnas = {
         "#", remoteWizardTM_es_ES.getString("NOMBRE"), remoteWizardTM_es_ES.getString("TAMAÑO"), remoteWizardTM_es_ES.getString("PRIORIDAD"), remoteWizardTM_es_ES.getString("TIPO DE ARCHIVO")
     };
+    
     Class[] types = new Class[]{
         java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
+    
     boolean[] canEdit = new boolean[]{
         false, false, false, false, false, false
     };
@@ -37,6 +42,22 @@ public class RemoteWizardTableModel implements TableModel {
         reload(sample);
     }
 
+    private void locale() throws Exception{
+        Client c = LoaderProvider.getInstance().getClientConfiguration();
+        
+        switch(c.getLocalization()){
+            case "Español":
+                this.remoteWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteWizardTM_es_ES");
+                break;
+            case "Ingles":
+                this.remoteWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteWizardTM_en_US");
+                break;
+            default:
+                this.remoteWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteWizardTM_en_US");
+                break;
+        }
+    }
+    
     private void reload(Message[] sample) throws Exception {
         int i = 0;
         for (Message aux : sample) {

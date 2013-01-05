@@ -5,7 +5,9 @@ import java.util.ResourceBundle;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
 import org.comcast.router.Message;
+import org.comcast.xml.LoaderProvider;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
@@ -15,8 +17,8 @@ import org.comcast.router.Message;
  * @since 1.6
  */
 public class LocalFileTableModel implements TableModel {
-    private ResourceBundle localFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalFileTM_es_ES");
 
+    private ResourceBundle localFileTM_es_ES;
     Object[][] datos;
     final String[] columnas = {
         localFileTM_es_ES.getString("NOMBRE"), localFileTM_es_ES.getString("TAMAÑO"), localFileTM_es_ES.getString("PATH"), localFileTM_es_ES.getString("TIPO DE ARCHIVO")
@@ -29,13 +31,31 @@ public class LocalFileTableModel implements TableModel {
     };
 
     public LocalFileTableModel(Message[] sample) throws Exception {
+        locale();
         datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public LocalFileTableModel(Message[] sample, int rows) throws Exception {
+        locale();
         datos = new Object[rows][5];
         reload(sample);
+    }
+
+    private void locale() throws Exception {
+        Client c = LoaderProvider.getInstance().getClientConfiguration();
+        
+        switch(c.getLocalization()){
+            case "Español":
+                this.localFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalFileTM_es_ES");
+                break;
+            case "Ingles":
+                this.localFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalFileTM_en_US");
+                break;
+            default:
+                this.localFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalFileTM_en_US");
+                break;
+        }
     }
 
     private void reload(Message[] sample) throws Exception {

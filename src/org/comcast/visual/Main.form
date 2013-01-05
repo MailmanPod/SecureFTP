@@ -129,9 +129,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jScrollPane1" pref="334" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblTotales" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                              <Component id="lblSeleccionTotal" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="lblSeleccionTotal" min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -284,9 +284,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane2" pref="332" max="32767" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblTotalesRemotos" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                              <Component id="lblSeleccionTotalRemoto" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="lblSeleccionTotalRemoto" min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -428,6 +428,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Configuration 1-48.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Configuraciones"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -441,6 +442,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Ball-logoff-48.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Resetear la aplicacion"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>

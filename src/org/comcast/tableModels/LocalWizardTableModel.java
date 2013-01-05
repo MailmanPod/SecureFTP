@@ -1,11 +1,12 @@
 package org.comcast.tableModels;
 
-import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
 import org.comcast.router.Message;
+import org.comcast.xml.LoaderProvider;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
@@ -15,26 +16,49 @@ import org.comcast.router.Message;
  * @since 1.6
  */
 public class LocalWizardTableModel implements TableModel {
-    private ResourceBundle localWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_es_ES");
+    private ResourceBundle localWizardTM_es_ES;
+    
     Object[][] datos;
+    
     final String[] columnas = {
-        "#", localWizardTM_es_ES.getString("NOMBRE"), localWizardTM_es_ES.getString("TAMAÑO"), localWizardTM_es_ES.getString("PRIORIDAD"), localWizardTM_es_ES.getString("TIPO DE ARCHIVO")
+        "#", localWizardTM_es_ES.getString("NOMBRE"), localWizardTM_es_ES.getString("TAMAÑO"), 
+        localWizardTM_es_ES.getString("PRIORIDAD"), localWizardTM_es_ES.getString("TIPO DE ARCHIVO")
     };
+    
     Class[] types = new Class[]{
         java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
+    
     boolean[] canEdit = new boolean[]{
         false, false, false, false, false, false
     };
 
     public LocalWizardTableModel(Message[] sample) throws Exception {
+        locale();
         datos = new Object[sample.length][6];
         reload(sample);
     }
 
     public LocalWizardTableModel(Message[] sample, int rows) throws Exception {
+        locale();
         datos = new Object[rows][6];
         reload(sample);
+    }
+    
+    private void locale() throws Exception{
+        Client c = LoaderProvider.getInstance().getClientConfiguration();
+        
+        switch(c.getLocalization()){
+            case "Español":
+                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_es_ES");
+                break;
+            case "Ingles":
+                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
+                break;
+            default:
+                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
+                break;
+        }
     }
 
     private void reload(Message[] sample) throws Exception {

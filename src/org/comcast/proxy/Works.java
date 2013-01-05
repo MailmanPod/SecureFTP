@@ -30,7 +30,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * @author Quality of Service
  */
 public class Works implements InterfaceWorks {
-    private ResourceBundle works_es_ES = ResourceBundle.getBundle("org/comcast/locale/Works_es_ES");
+    private ResourceBundle works_es_ES;
     private Loader loader;
     private Crypto crypto;
     private OutputScheduler os;
@@ -42,7 +42,20 @@ public class Works implements InterfaceWorks {
             this.loader = LoaderProvider.getInstance();
             this.crypto = CryptoProvider.getInstance();
             this.client = loader.getClientConfiguration();
+            
+            switch(client.getLocalization()){
+                case "Español":
+                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_es_ES");
+                    break;
+                case "Ingles":
+                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
+                    break;
+                default:
+                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
+                    break;
+            }
         } catch (Exception ex) {
+            JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -58,18 +71,9 @@ public class Works implements InterfaceWorks {
         String pv = general + ".private";
         String cryp = aux + ".ftp";
 
-//        "C:\\Key\\" 
         String publicName = client.getPublicStorage() + pn;
         String privateName = client.getPrivateStorage() + pv;
         String cryptoFile = particion + cryp;
-
-//        System.out.println("FileName: " + aux);
-//        System.out.println("Public: " + publicName);
-//        System.out.println("Private: " + privateName);
-//        System.out.println("Original: " + partida);
-//        System.out.println("CryptoFile: " + cryptoFile);
-//        System.out.println("Extension: " + ex);
-//        System.out.println("Destination: "+ full.getRemotePath()+ cryp);
 
         String[] args = new String[8];
         args[0] = aux; //FILE NAME
@@ -167,11 +171,6 @@ public class Works implements InterfaceWorks {
             }
 
             if (flagCrypto && flagOrigi) {
-                System.out.println(ori.toString());
-                System.out.println(cry.toString());
-                System.out.println(aux.toString());
-                System.out.println("\n\n\n");
-
                 loader.appendCryptoData(aux);
                 crypto.encryptRSA(ori.getLocalPath(), cry.getLocalPath(), aux.getPublicKey());
             } else {
@@ -239,7 +238,6 @@ public class Works implements InterfaceWorks {
 
         LocalIterator<Message> iter = toDownload.getIterador();
         while (iter.hasMoreElements()) {
-            System.out.println("Previo a desencriptar");
             Message aux = iter.returnElement();
 
             decrypt(aux);
@@ -251,11 +249,6 @@ public class Works implements InterfaceWorks {
         CryptoData data = loader.getCryptoData(toDecrypt.getRemotePath());
 
         if (toNative != null && data != null) {
-            System.out.println("Desencriptando");
-            System.out.println(toDecrypt.getLocalPath());
-            System.out.println(toNative);
-            System.out.println(data.getPrivateKey());
-            System.out.println("\n\n");
             crypto.decryptRSA(toDecrypt.getLocalPath(), toNative, data.getPrivateKey());
         } else {
             throw new Exception(works_es_ES.getString("ERROR EN EL DESENCRIPTADO"));

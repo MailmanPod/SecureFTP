@@ -193,13 +193,13 @@ public class Tester {
 //        
 //        Message archivo7 = new Message(new Client(),
 //                Message.LOW_PRIORITY, "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\hola-mundo-texto.txt", "\\", new FTPFile());
-        
+
         Message archivo = new Message(new Client(),
                 Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPrivate.crypto", "\\RSAPrivate.crypto");
 
         Message archivo1 = new Message(new Client(),
                 Message.HIGH_PRIORITY, c.getDownloadPath() + "RSAPublic.crypto", "\\RSAPublic.crypto");
-        
+
         Message archivo5 = new Message(new Client(),
                 Message.HIGH_PRIORITY, c.getDownloadPath() + "serverConfigValid.crypto", "\\serverConfigValid.crypto");
 
@@ -208,13 +208,13 @@ public class Tester {
 
         Message archivo4 = new Message(new Client(),
                 Message.NORMAL_PRIORITY, c.getDownloadPath() + "dynamic.ftp", "/dynamic.ftp");
-        
+
         Message archivo6 = new Message(new Client(),
                 Message.NORMAL_PRIORITY, c.getDownloadPath() + "serverconfig.crypto", "\\serverconfig.crypto");
 
         Message archivo2 = new Message(new Client(),
                 Message.LOW_PRIORITY, c.getDownloadPath() + "UPLOADER.crypto", "\\UPLOADER.crypto");
-        
+
         Message archivo7 = new Message(new Client(),
                 Message.LOW_PRIORITY, c.getDownloadPath() + "hola-mundo-texto.crypto", "\\hola-mundo-texto.crypto");
 
@@ -228,7 +228,7 @@ public class Tester {
 //        transferir.addInOrder(archivo5);
 //        transferir.addInOrder(archivo6);
 //        transferir.addInOrder(archivo7);
-        
+
 //        BinaryHeap<Message> pila2 = new BinaryHeap<>();
 //        pila.insert(archivo3);
 //        pila.insert(archivo);
@@ -310,7 +310,7 @@ public class Tester {
 
         Calendar calendar = Calendar.getInstance();
         System.out.println(calendar.get(Calendar.YEAR));
-        
+
 //        Crypto crypto = CryptoProvider.getInstance();
 
 //        String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer2\\dynamic.txt";
@@ -355,7 +355,7 @@ public class Tester {
 //        String cryptoFile = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\dynamic.crypto";
         String partida = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\retrieve.txt";
         String cryptoFile = "D:\\Proyectos en NetBeans 9\\neuromancerV1\\FTPServer1\\retrieve.crypto";
-        
+
 //        String partida = "C:\\ServerDownloads\\dynamic.txt";
 //        String cryptoFile = "C:\\ServerDownloads\\dynamic.crypto";
 //        
@@ -420,33 +420,33 @@ public class Tester {
          System.out.println("Directorio: " + name);
          }*/
 
-        /*String password = "null";
-        
-         if(Validator.isPassword(password)){
-         System.out.println("Password validado y correcto");
-         }else{
-         System.out.println("Password no valido");
-         }
-        
-         String mail = "brueradamian@gmail.com";
-        
-         if(Validator.isMail(mail)){
-         System.out.println("Nombre mail Correcto");
-         }else{
-         System.out.println("Nombre de mail Incorrecto");
-         }
-        
-         String subject = "TRabajo PRactico TSb 2012 3K4.";
-       
-         if(Validator.isMailSubject(subject)){
-         System.out.println("Es texto");
-         }*/
+        String password = "null";
+
+        if (Validator.isPassword(password)) {
+            System.out.println("Password validado y correcto");
+        } else {
+            System.out.println("Password no valido");
+        }
+
+        String mail = "brueradamian@gmail.com";
+
+        if (Validator.isMail(mail)) {
+            System.out.println("Nombre mail Correcto");
+        } else {
+            System.out.println("Nombre de mail Incorrecto");
+        }
+
+        String subject = "TRabajo PRactico TSb 2012 3K4.";
+
+        if (Validator.isMailSubject(subject)) {
+            System.out.println("Es texto");
+        }
 
 
         /*if(Validator.isTextEmpty("WTF (Walter Trae Fideos)")){
          System.out.println("Es texto + " + empty.toString());
          }*/
-        
+
 //        FileListing list = new FileListing();
 //        list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
 //        Message[] localMessage = list.getLocalMessage("D:\\Cache\\EoF 1");
@@ -457,7 +457,7 @@ public class Tester {
 //        for(String aux: dirNames){
 //            System.out.println("Dir Name: " + aux);
 //        }
-        
+
 //        for(Message aux: localMessage){
 //            System.out.println(aux.getLocalFile().getName() + "++++++++++++++" + aux.getFileType());
 //        }

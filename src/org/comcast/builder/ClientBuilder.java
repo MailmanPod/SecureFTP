@@ -22,7 +22,7 @@ public class ClientBuilder {
     public static final int DOWNLOAD_PATH = 16;
     public static final int PUBLIC_STORAGE = 32;
     public static final int PRIVATE_STORAGE = 64;
-    private ResourceBundle clientBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/ClientBuilder_es_ES");
+    private ResourceBundle clientBuilder_es_ES;
     private Client client;
     private int requiredElements;
 
@@ -114,6 +114,18 @@ public class ClientBuilder {
         }
 
         if (this.requiredElements > 0) {
+
+            switch(client.getLocalization()){
+                case "Español":
+                    this.clientBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/ClientBuilder_es_ES");
+                    break;
+                case "Ingles":
+                    this.clientBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/ClientBuilder_en_US");
+                    break;
+                default:
+                    this.clientBuilder_es_ES = ResourceBundle.getBundle("org/comcast/locale/ClientBuilder_en_US");
+                    break;
+            }
             throw new InformationRequiredException(clientBuilder_es_ES.getString("FALTAN DATOS REQUERIDOS PARA CONSTRUIR EL CLIENTE"));
         }
 

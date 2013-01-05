@@ -7,12 +7,9 @@ package org.comcast.visual;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.comcast.builder.Client;
 import org.comcast.builder.ClientBuilder;
 import org.comcast.builder.Mail;
@@ -70,6 +67,7 @@ public class Settings extends javax.swing.JDialog {
         try {
             this.txtNombreServidor.setText(config.getHostName());
             this.txtNombreUsuario.setText(config.getUserLogin());
+            this.txtPasswordServidor.setText(config.getPassLogin());
             this.txtIPServidor.setText(config.getIpAddress());
 
             this.txtHost.setText(m.getProperties().getProperty("mail.smtp.host"));
@@ -84,6 +82,8 @@ public class Settings extends javax.swing.JDialog {
             this.txtProtocolo.setText(m.getSendProtocol());
             this.txtAreaCuerpo.setText(m.getMailText());
             this.txtUsuarioMail.setText(m.getMailUserName());
+            this.txtContraseniaMail.setText(m.getMailUserPassword());
+            this.txtContraseniaMail.setEnabled(false);
 
             this.txtNombreCliente.setText(c.getClientName());
             this.txtApellidoCliente.setText(c.getClientLastName());
@@ -119,6 +119,7 @@ public class Settings extends javax.swing.JDialog {
         txtIPServidor = new javax.swing.JTextField();
         btnGuardarServidor = new javax.swing.JButton();
         txtPasswordServidor = new javax.swing.JPasswordField();
+        checkCServidor = new javax.swing.JCheckBox();
         panelMail = new javax.swing.JPanel();
         contenedorMail = new javax.swing.JPanel();
         contenedorMailProps = new javax.swing.JPanel();
@@ -149,6 +150,7 @@ public class Settings extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaCuerpo = new javax.swing.JTextArea();
         btnGuardarMail = new javax.swing.JButton();
+        checkCMail = new javax.swing.JCheckBox();
         panelConfiguracionCliente = new javax.swing.JPanel();
         contenedorCliente = new javax.swing.JPanel();
         lblNombreCliente = new javax.swing.JLabel();
@@ -190,6 +192,14 @@ public class Settings extends javax.swing.JDialog {
             }
         });
 
+        txtPasswordServidor.setEnabled(false);
+
+        checkCServidor.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                checkCServidorStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenedorServidorLayout = new javax.swing.GroupLayout(contenedorServidor);
         contenedorServidor.setLayout(contenedorServidorLayout);
         contenedorServidorLayout.setHorizontalGroup(
@@ -203,13 +213,16 @@ public class Settings extends javax.swing.JDialog {
                     .addComponent(lblIPServidor))
                 .addGap(126, 126, 126)
                 .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtNombreServidor)
-                        .addComponent(txtNombreUsuario)
-                        .addComponent(txtIPServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                        .addComponent(txtPasswordServidor))
+                    .addGroup(contenedorServidorLayout.createSequentialGroup()
+                        .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombreServidor)
+                            .addComponent(txtNombreUsuario)
+                            .addComponent(txtIPServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                            .addComponent(txtPasswordServidor))
+                        .addGap(18, 18, 18)
+                        .addComponent(checkCServidor))
                     .addComponent(btnGuardarServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
         contenedorServidorLayout.setVerticalGroup(
             contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,14 +236,16 @@ public class Settings extends javax.swing.JDialog {
                     .addComponent(lblNombreUsuario)
                     .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblContraseniaUsuario)
-                    .addComponent(txtPasswordServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblContraseniaUsuario)
+                        .addComponent(txtPasswordServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(checkCServidor))
                 .addGap(18, 18, 18)
                 .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIPServidor)
                     .addComponent(txtIPServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(btnGuardarServidor)
                 .addGap(24, 24, 24))
         );
@@ -325,17 +340,21 @@ public class Settings extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Contenido del Mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
-        lblFrom.setText("From");
+        lblFrom.setText("De");
 
-        lblRecipient.setText("Recipient");
+        lblRecipient.setText("Para");
 
-        lblSubject.setText("Subject");
+        lblSubject.setText("Asunto");
 
         lblProtocolo.setText("Protocolo");
 
         lblUsuarioMail.setText("Usuario");
 
         lblContraseniaMail.setText("Contraseña");
+
+        txtFrom.setEnabled(false);
+
+        txtRecipient.setEnabled(false);
 
         txtProtocolo.setEnabled(false);
 
@@ -349,6 +368,12 @@ public class Settings extends javax.swing.JDialog {
         btnGuardarMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarMailActionPerformed(evt);
+            }
+        });
+
+        checkCMail.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                checkCMailStateChanged(evt);
             }
         });
 
@@ -374,19 +399,21 @@ public class Settings extends javax.swing.JDialog {
                     .addComponent(txtUsuarioMail)
                     .addComponent(txtContraseniaMail, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkCMail)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnGuardarMail)
-                                .addGap(58, 58, 58))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblTextoContenido)
-                                .addGap(164, 164, 164))))))
+                                .addGap(164, 164, 164))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnGuardarMail)
+                                .addGap(130, 130, 130))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,14 +443,14 @@ public class Settings extends javax.swing.JDialog {
                             .addComponent(txtUsuarioMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblContraseniaMail)
+                        .addComponent(txtContraseniaMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkCMail))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblContraseniaMail)
-                            .addComponent(txtContraseniaMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(28, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGuardarMail))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGuardarMail)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout contenedorMailLayout = new javax.swing.GroupLayout(contenedorMail);
@@ -438,8 +465,8 @@ public class Settings extends javax.swing.JDialog {
             .addGroup(contenedorMailLayout.createSequentialGroup()
                 .addComponent(contenedorMailProps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelMailLayout = new javax.swing.GroupLayout(panelMail);
@@ -611,37 +638,75 @@ public class Settings extends javax.swing.JDialog {
         String text1 = this.txtNombreServidor.getText();
         String text2 = this.txtNombreUsuario.getText();
         char[] password = this.txtPasswordServidor.getPassword();
+        
+        String conc = new String(password);
+        if (!Validator.isPassword(conc)) {
+            String err = "No es una contraseña valida";
+            String wrr2 = "Consulte la ayuda para mas informacion";
+            String jkd = "Contraseña no valida";
+
+            JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         try {
             if (!(Validator.isTextEmpty(text1) || Validator.isTextEmpty(text2))) {
-                if (password != null && password.length != 0) {
+                if (password != null && password.length != 0 && Validator.isPassword(conc)) {
                     String pass = new String(password);
 
                     Loader d = LoaderProvider.getInstance();
-                    ServerConfig c = new ServerConfig(text1);
-                    c.setUserLogin(text2);
-                    c.setPassLogin(pass);
+                    ServerConfig co = new ServerConfig(text1);
+                    co.setUserLogin(text2);
+                    co.setPassLogin(pass);
 
-                    d.setServerConfiguration(c);
+//                    d.setServerConfiguration(co);
                     JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
                             + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String err = "No es una contraseña valida";
+                    String wrr2 = "Consulte la ayuda para mas informacion";
+                    String jkd = "Contraseña no valida";
+
+                    JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                String err = "No es una contraseña valida";
+                String wrr2 = "Consulte la ayuda para mas informacion";
+                String jkd = "Contraseña no valida";
+
+                JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarServidorActionPerformed
 
+    private boolean isGmail(String mail){
+        String toCompare = mail.substring(mail.lastIndexOf("@") + 1, mail.length());
+        
+        return (toCompare.equals("gmail.com"))? true : false;
+    }
     private void btnGuardarMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarMailActionPerformed
+
+        String conc = new String(this.txtContraseniaMail.getPassword());
+        if (!Validator.isPassword(conc)) {
+            String err = "No es una contraseña valida";
+            String wrr2 = "Consulte la ayuda para mas informacion";
+            String jkd = "Contraseña no valida";
+
+            JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
             String mailUserName = this.txtUsuarioMail.getText();
-            if (mailUserName != null && Validator.isMail(mailUserName)) {
+            if (mailUserName != null && Validator.isMail(mailUserName) && isGmail(mailUserName)) {
 
                 MailBuilder builder = new MailBuilder();
                 m.getProperties().setProperty("mail.smtp.user", mailUserName);
                 builder.buildProperties(m.getProperties());
                 builder.buildFrom(this.txtFrom.getText());
-                builder.buildRecipient(this.txtRecipient.getText());
+                builder.buildRecipient(mailUserName);
                 builder.buildSubject(this.txtSubject.getText());
                 builder.buildSendProtocol(this.txtProtocolo.getText());
                 builder.buildMailText(this.txtAreaCuerpo.getText());
@@ -656,6 +721,11 @@ public class Settings extends javax.swing.JDialog {
 
                 JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
                         + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                String l = "No es un mail valido";
+                String h = "Mail no valido. Solo compatible con Gmail.";
+                
+                JOptionPane.showMessageDialog(this, l, h, JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -725,6 +795,22 @@ public class Settings extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnKeysActionPerformed
+
+    private void checkCMailStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkCMailStateChanged
+        if (this.checkCMail.isSelected()) {
+            this.txtContraseniaMail.setEnabled(true);
+        } else {
+            this.txtContraseniaMail.setEnabled(false);
+        }
+    }//GEN-LAST:event_checkCMailStateChanged
+
+    private void checkCServidorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkCServidorStateChanged
+        if (this.checkCServidor.isSelected()) {
+            this.txtPasswordServidor.setEnabled(true);
+        } else {
+            this.txtPasswordServidor.setEnabled(false);
+        }
+    }//GEN-LAST:event_checkCServidorStateChanged
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -765,6 +851,8 @@ public class Settings extends javax.swing.JDialog {
     private javax.swing.JButton btnGuardarMail;
     private javax.swing.JButton btnGuardarServidor;
     private javax.swing.JButton btnKeys;
+    private javax.swing.JCheckBox checkCMail;
+    private javax.swing.JCheckBox checkCServidor;
     private javax.swing.JComboBox comboLocale;
     private javax.swing.JPanel contenedorCliente;
     private javax.swing.JPanel contenedorMail;

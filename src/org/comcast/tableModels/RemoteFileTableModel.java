@@ -5,7 +5,9 @@ import java.util.ResourceBundle;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
 import org.comcast.router.Message;
+import org.comcast.xml.LoaderProvider;
 
 /**
  * Clase que tiene como objetivo el modeloado de los datos en una tabla.
@@ -14,8 +16,7 @@ import org.comcast.router.Message;
  * @since 1.6
  */
 public class RemoteFileTableModel implements TableModel {
-    private ResourceBundle remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_es_ES");
-//    private ResourceBundle remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_en_US");
+    private ResourceBundle remoteFileTM_es_ES;
 
     Object[][] datos;
     final String[] columnas = {
@@ -29,13 +30,31 @@ public class RemoteFileTableModel implements TableModel {
     };
 
     public RemoteFileTableModel(Message[] sample) throws Exception {
+        locale();
         datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public RemoteFileTableModel(Message[] sample, int rows) throws Exception {
+        locale();
         datos = new Object[rows][5];
         reload(sample);
+    }
+    
+    private void locale() throws Exception{
+        Client c = LoaderProvider.getInstance().getClientConfiguration();
+        
+        switch(c.getLocalization()){
+            case "Español":
+                this.remoteFileTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_es_ES");
+                break;
+            case "Ingles":
+                this.remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_en_US");
+                break;
+            default:
+                this.remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_en_US");
+                break;
+        }
     }
     
     private void reload(Message[] sample) throws Exception {

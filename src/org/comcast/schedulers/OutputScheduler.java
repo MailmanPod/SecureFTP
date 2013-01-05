@@ -4,11 +4,10 @@
  */
 package org.comcast.schedulers;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.Server;
@@ -16,16 +15,15 @@ import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.router.RouterOutput;
 import org.comcast.structures.BinaryHeap;
+import org.comcast.xml.LoaderProvider;
 import static org.quartz.DateBuilder.*;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import static org.quartz.TriggerBuilder.newTrigger;
-import org.quartz.impl.StdSchedulerFactory;
 
 
 /**
@@ -35,7 +33,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class OutputScheduler implements SchedulerInterface {
 
     private static Scheduler scheduler;
-    private ResourceBundle outputScheduler_es_ES = ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES");
+    private ResourceBundle outputScheduler_es_ES;
     private ServerConfig configuration;
     private BinaryHeap<Message> uploadFiles;
     private Mail advice;
@@ -47,6 +45,25 @@ public class OutputScheduler implements SchedulerInterface {
         this.uploadFiles = mess;
         this.advice = mail;
         this.serverSender = new Server(mess, config);
+        
+        try{
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            switch(c.getLocalization()){
+                case "Español":
+                    this.outputScheduler_es_ES = ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES");
+                    break;
+                case "Ingles":
+                    this.outputScheduler_es_ES  = ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_en_US");
+                    break;
+                default:
+                    this.outputScheduler_es_ES  = ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_en_US");
+                    break;
+            }
+            
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void setScheduler(Scheduler s) {
@@ -61,61 +78,43 @@ public class OutputScheduler implements SchedulerInterface {
     public final void startJob() throws SchedulerException {
         System.out.println("------- Initializing ----------------------");
 
-        // First we must get a reference to a scheduler
-        //SchedulerFactory sf = new StdSchedulerFactory();
-        //scheduler = sf.getScheduler();
-
-        System.out.println("------- Initialization Complete -----------");
-
-        // computer a time that is on the next round minute
-//        Date runTime = evenMinuteDate(new Date());
         Date runTime = dateOf(date.getHour(), date.getMinute(), date.getSecond(), date.getDay(), date.getMonth(), date.getYear());
 
         String aux = advice.getMailText();
-        String form = java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES").getString("\\N" + "DATOS DE FECHA: {0}"), new Object[] {runTime});
+        String form = java.text.MessageFormat.format(this.outputScheduler_es_ES.getString("\\N" + "DATOS DE FECHA: {0}"), new Object[] {runTime});
         advice.setMailText(aux + form);
 
-        System.out.println("------- Scheduling Job  -------------------");
         JobDataMap map = new JobDataMap();
         map.put("comcast.config.serverconfig", this.configuration);
         map.put("comcast.config.server", this.serverSender);
         map.put("comcast.data.messages", this.uploadFiles);
         map.put("comcast.data.mail", this.advice);
 
-        // define the job and tie it to our HelloJob class
         JobDetail job = newJob(RouterOutput.class)
                 .withIdentity("Uploading_Files", "upload")
                 .usingJobData(map)
                 .build();
 
-        // Trigger the job to run on the next round minute
         Trigger trigger = newTrigger()
                 .withIdentity("trigger_upload", "upload")
                 .startAt(runTime)
                 .build();
 
-        // Tell quartz to schedule the job using our trigger
         scheduler.scheduleJob(job, trigger);
-        System.out.println(job.getKey() + " will run at: " + runTime);
-
-        // Start up the scheduler (nothing can actually run until the 
-        // scheduler has been started)
         scheduler.start();
 
-        System.out.println("------- Started Scheduler -----------------");
-
-        // wait long enough so that the scheduler as an opportunity to 
-        // run the job!
         try {
-            // wait 65 seconds to show job
             long end = runTime.getTime();
             long start = System.currentTimeMillis();
             long res = (end - start);
-            System.out.println("------- Waiting " + res + " seconds... -------------");
+
             Thread.sleep(res);
-            // executing...
+            
         } catch (InterruptedException ex) {
-            System.out.println(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/OutputScheduler_es_ES").getString("EXCEPTION: " + "\\N{0}"), new Object[] {ex.toString()}));
+            JOptionPane.showMessageDialog(null, 
+                    java.text.MessageFormat.format(this.outputScheduler_es_ES.getString("EXCEPTION: " + "\\N{0}"), new Object[] {ex.toString()}), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            
             scheduler.shutdown(true);
         }
     }

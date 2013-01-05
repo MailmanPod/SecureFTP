@@ -20,7 +20,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,7 +304,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSeleccionTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -451,7 +450,7 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSeleccionTotalRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -498,6 +497,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnDownload);
 
         btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Configuration 1-48.png"))); // NOI18N
+        btnSettings.setToolTipText("Configuraciones");
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -509,6 +509,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnSettings);
 
         btnRestart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Ball-logoff-48.png"))); // NOI18N
+        btnRestart.setToolTipText("Resetear la aplicacion");
         btnRestart.setFocusable(false);
         btnRestart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRestart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -819,6 +820,7 @@ public class Main extends javax.swing.JFrame {
             RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote, this.boxSort, this.radioMenor, this.radioMayor);
             r.setLabelTotal(lblTotalesRemotos, lblSeleccionTotalRemoto);
             r.setVisible(true);
+            System.out.println("Despues");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -1095,7 +1097,7 @@ public class Main extends javax.swing.JFrame {
              
              restartApplication(b);
         } catch (IOException ex) {
-            System.out.println("ERORORORORORORORORO");
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRestartActionPerformed
     /**

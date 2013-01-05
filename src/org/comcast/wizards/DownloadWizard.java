@@ -53,13 +53,33 @@ import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 
-
 /**
  *
  * @author Quality of Service
  */
 public class DownloadWizard {
-    private ResourceBundle downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
+
+    private ResourceBundle downloadWizard_es_ES;
+
+    public DownloadWizard() {
+        try {
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            switch(c.getLocalization()){
+                case "Español":
+                    downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
+                    break;
+                case "Ingles":
+                    downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_en_US");
+                    break;
+                default:
+                    downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_en_US");
+                    break;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     public void main(Map args) {
         final Map properties = args;
@@ -708,7 +728,9 @@ public class DownloadWizard {
         }
     }
 }
+
 class ResultDownload extends DeferredWizardResult {
+
     private ResourceBundle downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
 
     public ResultDownload() {

@@ -9,12 +9,14 @@ import java.net.SocketException;
 import java.util.ResourceBundle;
 import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
+import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.structures.BinaryHeap;
 import org.comcast.structures.LocalIterator;
+import org.comcast.xml.LoaderProvider;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -65,10 +67,33 @@ public class RouterOutput implements Job {
         private ServerConfig config;
 
         public Worker(Server server, StringBuilder m, Mail k, ServerConfig c) {
+            locale();
             this.server = server;
             this.showUploadFiles = m;
             this.config = c;
             this.mail = k;
+        }
+        
+        private void locale(){
+            try{
+                
+                Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            switch(c.getLocalization()){
+                case "Español":
+                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES");
+                    break;
+                case "Ingles":
+                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
+                    break;
+                default:
+                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
+                    break;
+            }
+                
+            }catch(Exception ex){
+                JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            }
         }
 
         private void confirmMail() {

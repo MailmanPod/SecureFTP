@@ -58,8 +58,29 @@ import org.netbeans.spi.wizard.WizardPanelProvider;
  * @author Quality of Service
  */
 public class UploadWizard {
-    private ResourceBundle uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+    private ResourceBundle uploadWizard_es_ES;
 
+    public UploadWizard(){
+        try{
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            switch(c.getLocalization()){
+                case "Español":
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+                    break;
+                case "Ingles":
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+                    break;
+                default:
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+                    break;
+            }
+            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     public void main(Map args) {
         final Map properties = args;
         Runnable r;
@@ -92,13 +113,27 @@ public class UploadWizard {
     }
 }
 class WizardProvider extends WizardPanelProvider {
-    private ResourceBundle uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+    private ResourceBundle uploadWizard_es_ES;
 
     WizardProvider(String title, String[] subtitles) {
         
         super(title,
                 new String[]{"bienvenido", "servidor", "cliente", "mail", "archivosSubir", "destino"},
                 subtitles);
+        
+        
+        try{
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            if(c.getLocalization().equalsIgnoreCase("Español")){
+                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+            }else{
+                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+            }
+            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private CryptoData stringParts(Message full, long serialID) throws Exception {
@@ -710,12 +745,25 @@ class WizardProvider extends WizardPanelProvider {
 }
 
 class Result extends DeferredWizardResult {
-    private ResourceBundle uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+    private ResourceBundle uploadWizard_es_ES;
 
     public Result() {
         // Uncomment the following line to make it possible to close the dialog
         // while the operation is running (abort the operation, in other words).
         // super (true);
+        
+        try{
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            
+            if(c.getLocalization().equalsIgnoreCase("Español")){
+                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+            }else{
+                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+            }
+            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override

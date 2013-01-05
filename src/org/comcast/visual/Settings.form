@@ -91,15 +91,19 @@
                           </Group>
                           <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtNombreServidor" max="32767" attributes="0"/>
-                                  <Component id="txtNombreUsuario" max="32767" attributes="0"/>
-                                  <Component id="txtIPServidor" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtPasswordServidor" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="txtNombreServidor" max="32767" attributes="0"/>
+                                      <Component id="txtNombreUsuario" max="32767" attributes="0"/>
+                                      <Component id="txtIPServidor" pref="265" max="32767" attributes="0"/>
+                                      <Component id="txtPasswordServidor" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="checkCServidor" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="btnGuardarServidor" min="-2" pref="158" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="46" max="32767" attributes="0"/>
+                          <EmptySpace pref="7" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -117,16 +121,19 @@
                               <Component id="txtNombreUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblContraseniaUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtPasswordServidor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblContraseniaUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtPasswordServidor" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="checkCServidor" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblIPServidor" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtIPServidor" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="50" max="32767" attributes="0"/>
+                          <EmptySpace pref="49" max="32767" attributes="0"/>
                           <Component id="btnGuardarServidor" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
@@ -172,6 +179,14 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JPasswordField" name="txtPasswordServidor">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="checkCServidor">
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="checkCServidorStateChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -213,8 +228,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="contenedorMailProps" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                          <Component id="jPanel1" min="-2" pref="265" max="-2" attributes="0"/>
+                          <EmptySpace pref="15" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -377,21 +392,23 @@
                                   <Component id="txtContraseniaMail" pref="250" max="32767" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane1" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
                                   <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="jScrollPane1" min="-2" pref="296" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="checkCMail" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="btnGuardarMail" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
                                               <Component id="lblTextoContenido" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="164" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="btnGuardarMail" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -434,18 +451,17 @@
                                   <Component id="jScrollPane1" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="lblContraseniaMail" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtContraseniaMail" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblContraseniaMail" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtContraseniaMail" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="checkCMail" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnGuardarMail" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -453,17 +469,17 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="lblFrom">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="From"/>
+                        <Property name="text" type="java.lang.String" value="De"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblRecipient">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Recipient"/>
+                        <Property name="text" type="java.lang.String" value="Para"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblSubject">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Subject"/>
+                        <Property name="text" type="java.lang.String" value="Asunto"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblProtocolo">
@@ -482,8 +498,14 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtFrom">
+                      <Properties>
+                        <Property name="enabled" type="boolean" value="false"/>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtRecipient">
+                      <Properties>
+                        <Property name="enabled" type="boolean" value="false"/>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtSubject">
                     </Component>
@@ -522,6 +544,11 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarMailActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="checkCMail">
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="checkCMailStateChanged"/>
                       </Events>
                     </Component>
                   </SubComponents>

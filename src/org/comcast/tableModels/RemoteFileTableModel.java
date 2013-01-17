@@ -19,9 +19,8 @@ public class RemoteFileTableModel implements TableModel {
     private ResourceBundle remoteFileTM_es_ES;
 
     Object[][] datos;
-    final String[] columnas = {
-        remoteFileTM_es_ES.getString("NOMBRE"), remoteFileTM_es_ES.getString("TAMAÑO"), remoteFileTM_es_ES.getString("PATH"), remoteFileTM_es_ES.getString("TIPO DE ARCHIVO")
-    };
+    String[] columnas;
+
     Class[] types = new Class[]{
         java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
@@ -31,14 +30,24 @@ public class RemoteFileTableModel implements TableModel {
 
     public RemoteFileTableModel(Message[] sample) throws Exception {
         locale();
+        column();
         datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public RemoteFileTableModel(Message[] sample, int rows) throws Exception {
         locale();
+        column();
         datos = new Object[rows][5];
         reload(sample);
+    }
+    
+    private void column(){
+        this.columnas = new String[4];
+        columnas[0] = remoteFileTM_es_ES.getString("NOMBRE");
+        columnas[1] = remoteFileTM_es_ES.getString("TAMAÑO");
+        columnas[2] = remoteFileTM_es_ES.getString("PATH");
+        columnas[3] = remoteFileTM_es_ES.getString("TIPO DE ARCHIVO");
     }
     
     private void locale() throws Exception{

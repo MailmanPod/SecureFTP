@@ -161,6 +161,7 @@ public class Main extends javax.swing.JFrame {
 
             lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
             lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+            ex.printStackTrace();
         }
     }
 
@@ -820,7 +821,6 @@ public class Main extends javax.swing.JFrame {
             RemoteTree r = new RemoteTree(this.lblFileSelectedRemote, this.tableRemote, this.boxSort, this.radioMenor, this.radioMayor);
             r.setLabelTotal(lblTotalesRemotos, lblSeleccionTotalRemoto);
             r.setVisible(true);
-            System.out.println("Despues");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

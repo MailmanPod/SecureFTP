@@ -18,6 +18,7 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.comcast.builder.Client;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
 import org.comcast.structures.LocalIterator;
@@ -48,7 +49,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public FTPFile[] getFiles(String dir) throws SocketException, IOException {
+    public FTPFile[] getFiles(String dir) throws SocketException, IOException, FTPConectionRefusedException{
         return server.retrieveMesseges(dir);
     }
 
@@ -61,7 +62,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public String[] getDirNamesCurrent(String path) throws SocketException, IOException{
+    public String[] getDirNamesCurrent(String path) throws SocketException, IOException, FTPConectionRefusedException{
         FTPFile[] retrieveMesseges = this.server.retrieveDirectories(path);
         int count = 0;
         for(FTPFile f : retrieveMesseges){
@@ -90,7 +91,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public SimpleList<Message> getSimpleList(String dir) throws SocketException, IOException {
+    public SimpleList<Message> getSimpleList(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         SimpleList<Message> buffer = new SimpleList<>();
         FTPFile[] ftp = getFiles(dir);
 
@@ -118,7 +119,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public SimpleList<Message> getSimpleListCurrent(String dir) throws SocketException, IOException {
+    public SimpleList<Message> getSimpleListCurrent(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         SimpleList<Message> buffer = new SimpleList<>();
         FTPFile[] ftp = getFiles(dir);
 
@@ -147,7 +148,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public SimpleList<Message> getAllFilesDir(String dir) throws SocketException, IOException {
+    public SimpleList<Message> getAllFilesDir(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         this.recursiveDir = new SimpleList<>();
         FTPFile[] files = this.server.retrieveMesseges(dir);
 
@@ -166,7 +167,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    private void storeFileDir(FTPFile file, String dir) throws SocketException, IOException {
+    private void storeFileDir(FTPFile file, String dir) throws SocketException, IOException, FTPConectionRefusedException {
 
         if (file.isFile()) {
             Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());
@@ -200,7 +201,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    public SimpleList<Message> getAllFiles(String dir) throws SocketException, IOException {
+    public SimpleList<Message> getAllFiles(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         this.recursiveFiles = new SimpleList<>();
         FTPFile[] files = this.server.retrieveMesseges(dir);
 
@@ -219,7 +220,7 @@ public class RouterRetrieve {
      * @throws SocketException
      * @throws IOException
      */
-    private void storeFiles(FTPFile file, String dir) throws SocketException, IOException {
+    private void storeFiles(FTPFile file, String dir) throws SocketException, IOException, FTPConectionRefusedException {
 
         if (file.isFile()) {
             Message aux = new Message(new Client(), Message.NORMAL_PRIORITY, "C:\\Temp\\" + file.getName(), dir + file.getName());

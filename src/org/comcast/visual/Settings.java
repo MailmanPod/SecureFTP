@@ -7,6 +7,10 @@ package org.comcast.visual;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -14,8 +18,10 @@ import org.comcast.builder.Client;
 import org.comcast.builder.ClientBuilder;
 import org.comcast.builder.Mail;
 import org.comcast.builder.MailBuilder;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
+import org.comcast.router.RouterRetrieve;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
 
@@ -120,6 +126,7 @@ public class Settings extends javax.swing.JDialog {
         btnGuardarServidor = new javax.swing.JButton();
         txtPasswordServidor = new javax.swing.JPasswordField();
         checkCServidor = new javax.swing.JCheckBox();
+        btnConexion = new javax.swing.JButton();
         panelMail = new javax.swing.JPanel();
         contenedorMail = new javax.swing.JPanel();
         contenedorMailProps = new javax.swing.JPanel();
@@ -200,6 +207,13 @@ public class Settings extends javax.swing.JDialog {
             }
         });
 
+        btnConexion.setText("Comprobar Conexion");
+        btnConexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConexionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenedorServidorLayout = new javax.swing.GroupLayout(contenedorServidor);
         contenedorServidor.setLayout(contenedorServidorLayout);
         contenedorServidorLayout.setHorizontalGroup(
@@ -207,21 +221,24 @@ public class Settings extends javax.swing.JDialog {
             .addGroup(contenedorServidorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombreServidor)
-                    .addComponent(lblNombreUsuario)
-                    .addComponent(lblContraseniaUsuario)
-                    .addComponent(lblIPServidor))
-                .addGap(126, 126, 126)
-                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contenedorServidorLayout.createSequentialGroup()
+                        .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombreServidor)
+                            .addComponent(lblNombreUsuario)
+                            .addComponent(lblContraseniaUsuario)
+                            .addComponent(lblIPServidor))
+                        .addGap(126, 126, 126)
                         .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombreServidor)
                             .addComponent(txtNombreUsuario)
                             .addComponent(txtIPServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(txtPasswordServidor))
+                            .addComponent(txtPasswordServidor)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorServidorLayout.createSequentialGroup()
+                        .addComponent(btnGuardarServidor)
                         .addGap(18, 18, 18)
-                        .addComponent(checkCServidor))
-                    .addComponent(btnGuardarServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnConexion)))
+                .addGap(18, 18, 18)
+                .addComponent(checkCServidor)
                 .addContainerGap(7, Short.MAX_VALUE))
         );
         contenedorServidorLayout.setVerticalGroup(
@@ -246,7 +263,9 @@ public class Settings extends javax.swing.JDialog {
                     .addComponent(lblIPServidor)
                     .addComponent(txtIPServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addComponent(btnGuardarServidor)
+                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardarServidor)
+                    .addComponent(btnConexion))
                 .addGap(24, 24, 24))
         );
 
@@ -351,8 +370,6 @@ public class Settings extends javax.swing.JDialog {
         lblUsuarioMail.setText("Usuario");
 
         lblContraseniaMail.setText("Contraseña");
-
-        txtFrom.setEnabled(false);
 
         txtRecipient.setEnabled(false);
 
@@ -557,7 +574,7 @@ public class Settings extends javax.swing.JDialog {
                         .addGroup(contenedorClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnDescarga)
                             .addComponent(btnKeys))))
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contenedorClienteLayout.setVerticalGroup(
             contenedorClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -605,10 +622,10 @@ public class Settings extends javax.swing.JDialog {
         panelConfiguracionCliente.setLayout(panelConfiguracionClienteLayout);
         panelConfiguracionClienteLayout.setHorizontalGroup(
             panelConfiguracionClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelConfiguracionClienteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(contenedorCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConfiguracionClienteLayout.createSequentialGroup()
+                .addContainerGap(112, Short.MAX_VALUE)
+                .addComponent(contenedorCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
         panelConfiguracionClienteLayout.setVerticalGroup(
             panelConfiguracionClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -638,7 +655,7 @@ public class Settings extends javax.swing.JDialog {
         String text1 = this.txtNombreServidor.getText();
         String text2 = this.txtNombreUsuario.getText();
         char[] password = this.txtPasswordServidor.getPassword();
-        
+
         String conc = new String(password);
         if (!Validator.isPassword(conc)) {
             String err = "No es una contraseña valida";
@@ -659,9 +676,13 @@ public class Settings extends javax.swing.JDialog {
                     co.setUserLogin(text2);
                     co.setPassLogin(pass);
 
-//                    d.setServerConfiguration(co);
-                    JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
-                            + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    d.setServerConfiguration(co);
+                    
+                    String pp = "Configuracion Guardada.";
+                    String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
+                    String gf = "Exito";
+                    
+                    JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     String err = "No es una contraseña valida";
                     String wrr2 = "Consulte la ayuda para mas informacion";
@@ -681,10 +702,10 @@ public class Settings extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnGuardarServidorActionPerformed
 
-    private boolean isGmail(String mail){
+    private boolean isGmail(String mail) {
         String toCompare = mail.substring(mail.lastIndexOf("@") + 1, mail.length());
-        
-        return (toCompare.equals("gmail.com"))? true : false;
+
+        return (toCompare.equals("gmail.com")) ? true : false;
     }
     private void btnGuardarMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarMailActionPerformed
 
@@ -721,10 +742,10 @@ public class Settings extends javax.swing.JDialog {
 
                 JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
                         + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
-            }else{
+            } else {
                 String l = "No es un mail valido";
                 String h = "Mail no valido. Solo compatible con Gmail.";
-                
+
                 JOptionPane.showMessageDialog(this, l, h, JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
@@ -811,6 +832,42 @@ public class Settings extends javax.swing.JDialog {
             this.txtPasswordServidor.setEnabled(false);
         }
     }//GEN-LAST:event_checkCServidorStateChanged
+
+    private void btnConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConexionActionPerformed
+        try {
+            String text1 = this.txtNombreServidor.getText();
+            String text2 = this.txtNombreUsuario.getText();
+            char[] password = this.txtPasswordServidor.getPassword();
+
+            String conc = new String(password);
+            if (!Validator.isPassword(conc)) {
+                String err = "No es una contraseña valida";
+                String wrr2 = "Consulte la ayuda para mas informacion";
+                String jkd = "Contraseña no valida";
+
+                JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ServerConfig co = new ServerConfig(text1);
+            co.setUserLogin(text2);
+            co.setPassLogin(conc);
+            RouterRetrieve r = new RouterRetrieve(co);
+            r.getSimpleList("/");
+            
+            String l = "Conexion a servidor FTP exitosa";
+            String p = "Prueba de conexion";
+            JOptionPane.showMessageDialog(this, l, p, JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (SocketException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (FTPConectionRefusedException ex){
+            String q = "Prueba de conexion fallida";
+            JOptionPane.showMessageDialog(this, ex.getMessage(), q, JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnConexionActionPerformed
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -846,6 +903,7 @@ public class Settings extends javax.swing.JDialog {
 //        });
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConexion;
     private javax.swing.JButton btnDescarga;
     private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnGuardarMail;

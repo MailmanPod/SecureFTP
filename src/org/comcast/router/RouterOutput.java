@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
@@ -130,7 +131,7 @@ public class RouterOutput implements Job {
 
             } catch (SocketException ex) {
                 confirmMail(ex.getMessage());
-            } catch (IOException | UnderflowException ex) {
+            } catch (IOException | FTPConectionRefusedException | UnderflowException ex) {
                 confirmMail(ex.getMessage());
             }
         }

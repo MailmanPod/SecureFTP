@@ -70,7 +70,7 @@ public class Loader {
     }
 
     public Mail getMail() throws ParserConfigurationException, SAXException, IOException,
-            TransformerConfigurationException, TransformerException, URISyntaxException, InformationRequiredException {
+            TransformerConfigurationException, TransformerException, URISyntaxException, InformationRequiredException, Exception {
 
         general.createConection(XMLConfiguration.MAIL_PROPERTIES_SCHEMA, XMLConfiguration.MAIL_PROPERTIES);
         Properties properties = general.getMailProperties();

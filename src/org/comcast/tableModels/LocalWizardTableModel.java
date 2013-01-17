@@ -20,10 +20,7 @@ public class LocalWizardTableModel implements TableModel {
     
     Object[][] datos;
     
-    final String[] columnas = {
-        "#", localWizardTM_es_ES.getString("NOMBRE"), localWizardTM_es_ES.getString("TAMAÑO"), 
-        localWizardTM_es_ES.getString("PRIORIDAD"), localWizardTM_es_ES.getString("TIPO DE ARCHIVO")
-    };
+    String[] columnas;
     
     Class[] types = new Class[]{
         java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
@@ -35,14 +32,25 @@ public class LocalWizardTableModel implements TableModel {
 
     public LocalWizardTableModel(Message[] sample) throws Exception {
         locale();
+        column();
         datos = new Object[sample.length][6];
         reload(sample);
     }
 
     public LocalWizardTableModel(Message[] sample, int rows) throws Exception {
         locale();
+        column();
         datos = new Object[rows][6];
         reload(sample);
+    }
+    
+    private void column(){
+        this.columnas = new String[5];
+        this.columnas[0] = "#";
+        this.columnas[1] = localWizardTM_es_ES.getString("NOMBRE");
+        this.columnas[2] = localWizardTM_es_ES.getString("TAMAÑO");
+        this.columnas[3] = localWizardTM_es_ES.getString("PRIORIDAD");
+        this.columnas[4] = localWizardTM_es_ES.getString("TIPO DE ARCHIVO");
     }
     
     private void locale() throws Exception{

@@ -19,29 +19,41 @@ import org.comcast.xml.LoaderProvider;
 public class LocalFileTableModel implements TableModel {
 
     private ResourceBundle localFileTM_es_ES;
+    
     Object[][] datos;
-    final String[] columnas = {
-        localFileTM_es_ES.getString("NOMBRE"), localFileTM_es_ES.getString("TAMAÑO"), localFileTM_es_ES.getString("PATH"), localFileTM_es_ES.getString("TIPO DE ARCHIVO")
-    };
+    
+    String[] columnas;
+    
     Class[] types = new Class[]{
         java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
+    
     boolean[] canEdit = new boolean[]{
         false, false, false, false, false
     };
 
     public LocalFileTableModel(Message[] sample) throws Exception {
         locale();
+        column();
         datos = new Object[sample.length][5];
         reload(sample);
     }
 
     public LocalFileTableModel(Message[] sample, int rows) throws Exception {
         locale();
+        column();
         datos = new Object[rows][5];
         reload(sample);
     }
 
+    private void column(){
+        this.columnas = new String[4];
+        this.columnas[0] = localFileTM_es_ES.getString("NOMBRE");
+        this.columnas[1] = localFileTM_es_ES.getString("TAMAÑO");
+        this.columnas[2] = localFileTM_es_ES.getString("PATH");
+        this.columnas[3] = localFileTM_es_ES.getString("TIPO DE ARCHIVO");
+    }
+    
     private void locale() throws Exception {
         Client c = LoaderProvider.getInstance().getClientConfiguration();
         

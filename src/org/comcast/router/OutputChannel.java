@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.FTPFile;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.exceptions.UnderflowException;
 
 /**
@@ -20,11 +21,11 @@ public interface OutputChannel extends Serializable {
     public static final int NORMAL_PRIORITY = 2;
     public static final int LOW_PRIORITY = 3;
 
-    public void uploadMessages() throws SocketException, IOException, UnderflowException;
+    public void uploadMessages() throws SocketException, IOException, UnderflowException, FTPConectionRefusedException;
 
-    public void downloadMessages() throws SocketException, IOException, UnderflowException;
+    public void downloadMessages() throws SocketException, IOException, UnderflowException, FTPConectionRefusedException;
 
-    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException;
+    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException, FTPConectionRefusedException;
     
-    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException;
+    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException, FTPConectionRefusedException;
 }

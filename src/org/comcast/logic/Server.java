@@ -11,6 +11,8 @@ import java.net.SocketException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.exceptions.NullObjectParameterException;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.router.Message;
@@ -83,7 +85,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public synchronized void uploadMessages() throws SocketException, IOException, UnderflowException {
+    public synchronized void uploadMessages() throws SocketException, IOException, UnderflowException, FTPConectionRefusedException {
         Message toSend = null;
 
         openConnection();
@@ -95,10 +97,20 @@ public class Server implements Comparable<Server>, OutputChannel {
 
         closeConnection();
     }
+    
+    private synchronized void ftpCodeChecker(int serverReply) throws FTPConectionRefusedException{
+        if(!FTPReply.isPositiveCompletion(serverReply)){
+            throw new FTPConectionRefusedException(client.getReplyString());
+        }
+    }
 
-    private synchronized void openConnection() throws SocketException, IOException {
+    private synchronized void openConnection() throws SocketException, IOException, FTPConectionRefusedException {
         client.connect(config.getIpAddress(), 21);
+        ftpCodeChecker(client.getReplyCode());
+        
         client.login(config.getUserLogin(), config.getPassLogin());
+        ftpCodeChecker(client.getReplyCode());
+        
         client.enterLocalPassiveMode();
     }
 
@@ -115,18 +127,14 @@ public class Server implements Comparable<Server>, OutputChannel {
             String local = message.getLocalPath();
             String remote = message.getRemotePath();
             
-            System.out.println(local);
-            System.out.println(remote);
-
             fos = new FileOutputStream(local);
             client.retrieveFile(remote, fos);
-
-            client.noop();
+            int noop = client.noop();
             fos.close();
 
         } catch (SocketException ex) {
             client.disconnect();
-            throw new SocketException(ex.getLocalizedMessage());
+            throw new SocketException(ex.toString());
         } catch (IOException ex) {
             client.disconnect();
             throw new IOException(ex);
@@ -134,19 +142,12 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public synchronized void downloadMessages() throws SocketException, IOException, UnderflowException {
+    public synchronized void downloadMessages() throws SocketException, IOException, UnderflowException, FTPConectionRefusedException {
         Message toSend = null;
 
         openConnection();
-
-        if(this.messageToSend.isEmpty()){
-            System.out.println("Ojo esta vacia la cola");
-        }else{
-            System.out.println("HOLA PASO POR SERVIDOR");
-        }
         
         while (!this.messageToSend.isEmpty()) {
-            System.out.println("HOLA PASO POR BUCLE WHILE SERVIDOR");
             toSend = this.messageToSend.deleteMin();
             downloadMessage(toSend);
         }
@@ -154,7 +155,7 @@ public class Server implements Comparable<Server>, OutputChannel {
         closeConnection();
     }
 
-    public synchronized void downloadSingle(Message mess) throws SocketException, IOException {
+    public synchronized void downloadSingle(Message mess) throws SocketException, IOException, FTPConectionRefusedException {
         openConnection();
 
         this.downloadMessage(mess);
@@ -163,11 +164,12 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException {
+    public FTPFile[] retrieveMesseges(String dir) throws SocketException, IOException, FTPConectionRefusedException {
 
         openConnection();
 
         FTPFile[] buffer = client.mlistDir(dir);
+        int noop = client.noop();
 
         closeConnection();
 
@@ -189,7 +191,7 @@ public class Server implements Comparable<Server>, OutputChannel {
     }
 
     @Override
-    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException {
+    public FTPFile[] retrieveDirectories(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         openConnection();
 
         FTPFile[] buffer = client.listDirectories(dir);

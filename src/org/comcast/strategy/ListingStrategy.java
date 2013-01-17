@@ -4,10 +4,7 @@
  */
 package org.comcast.strategy;
 
-import java.io.File;
-import org.apache.commons.net.ftp.FTPFile;
 import org.comcast.router.Message;
-import org.comcast.structures.SimpleList;
 
 /**
  *

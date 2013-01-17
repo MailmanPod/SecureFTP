@@ -220,7 +220,11 @@ public class Settings extends javax.swing.JDialog {
             contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contenedorServidorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(contenedorServidorLayout.createSequentialGroup()
+                        .addComponent(btnConexion)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGuardarServidor))
                     .addGroup(contenedorServidorLayout.createSequentialGroup()
                         .addGroup(contenedorServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNombreServidor)
@@ -232,11 +236,7 @@ public class Settings extends javax.swing.JDialog {
                             .addComponent(txtNombreServidor)
                             .addComponent(txtNombreUsuario)
                             .addComponent(txtIPServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(txtPasswordServidor)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorServidorLayout.createSequentialGroup()
-                        .addComponent(btnGuardarServidor)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConexion)))
+                            .addComponent(txtPasswordServidor))))
                 .addGap(18, 18, 18)
                 .addComponent(checkCServidor)
                 .addContainerGap(7, Short.MAX_VALUE))
@@ -677,11 +677,11 @@ public class Settings extends javax.swing.JDialog {
                     co.setPassLogin(pass);
 
                     d.setServerConfiguration(co);
-                    
+
                     String pp = "Configuracion Guardada.";
                     String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
                     String gf = "Exito";
-                    
+
                     JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     String err = "No es una contraseña valida";
@@ -740,8 +740,11 @@ public class Settings extends javax.swing.JDialog {
                 l.setMailProperties(mailUserName);
                 l.setMailContent(mail.getContent());
 
-                JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
-                        + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                String pp = "Configuracion Guardada.";
+                String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
+                String gf = "Exito";
+
+                JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
             } else {
                 String l = "No es un mail valido";
                 String h = "Mail no valido. Solo compatible con Gmail.";
@@ -771,8 +774,12 @@ public class Settings extends javax.swing.JDialog {
             Loader l = LoaderProvider.getInstance();
             l.setClientConfiguration(co);
 
-            JOptionPane.showMessageDialog(this, "Configuracion Guardada.\n"
-                    + "Los cambios surtiran efecto la proxima vez que inicie el programa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            String pp = "Configuracion Guardada.";
+            String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
+            String gf = "Exito";
+
+            JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -854,16 +861,16 @@ public class Settings extends javax.swing.JDialog {
             co.setPassLogin(conc);
             RouterRetrieve r = new RouterRetrieve(co);
             r.getSimpleList("/");
-            
+
             String l = "Conexion a servidor FTP exitosa";
             String p = "Prueba de conexion";
             JOptionPane.showMessageDialog(this, l, p, JOptionPane.INFORMATION_MESSAGE);
-            
+
         } catch (SocketException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (FTPConectionRefusedException ex){
+        } catch (FTPConectionRefusedException ex) {
             String q = "Prueba de conexion fallida";
             JOptionPane.showMessageDialog(this, ex.getMessage(), q, JOptionPane.WARNING_MESSAGE);
         }

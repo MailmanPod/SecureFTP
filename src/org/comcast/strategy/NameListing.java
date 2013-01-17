@@ -5,10 +5,12 @@
 package org.comcast.strategy;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.router.RouterRetrieve;
@@ -54,6 +56,9 @@ public class NameListing implements ListingStrategy{
             
             return sorted;
             
+        } catch (SocketException | FTPConectionRefusedException ex) {
+            Logger.getLogger(NameListing.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         } catch (IOException ex) {
             Logger.getLogger(NameListing.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -64,8 +69,8 @@ public class NameListing implements ListingStrategy{
     public String[] getRemoteDirectories(String pathName) {
         try{
             return results.getDirNamesCurrent(pathName);
-        }catch(Exception ex){
-            ex.printStackTrace();
+        }catch(IOException | FTPConectionRefusedException ex){
+            Logger.getLogger(NameListing.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

@@ -81,12 +81,12 @@ public class RemoteTree extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    public void setLabelTotal(JLabel totales, JLabel seleccion){
+
+    public void setLabelTotal(JLabel totales, JLabel seleccion) {
         this.lblTotalesRemotos = totales;
         this.lblSeleccionTotalRemoto = seleccion;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -137,7 +137,6 @@ public class RemoteTree extends javax.swing.JDialog {
         String dir = (String) current.getUserObject();
 
         if (current.getChildCount() == 0) {
-            System.out.println("Es un nodo terminal");
             if (!current.getUserObject().equals("/")) {
                 TreeNode[] path = current.getPath();
                 int i = 0;
@@ -155,7 +154,6 @@ public class RemoteTree extends javax.swing.JDialog {
                 pathName = dir;
             }
 
-//            System.out.println("PAthNAme: " + pathName);
             this.lbl.setText(pathName);
             initRemoteTable(pathName);
 
@@ -170,7 +168,6 @@ public class RemoteTree extends javax.swing.JDialog {
                 i++;
             }
         } else {
-            System.out.println("No es un nodo terminal");
             if (!current.getUserObject().equals("/")) {
                 TreeNode[] path = current.getPath();
                 int i = 0;
@@ -195,13 +192,13 @@ public class RemoteTree extends javax.swing.JDialog {
     private void initRemoteTable(String pathName) {
         String o = "Cantidad de Archivos: ";
         String p = "Tamaño total: ";
-        
+
         try {
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             FileListing list = new FileListing();
             sortRemoteTable(list);
             Message[] localMessage = list.getRemoteMessages(pathName);
-            
+
             long count = 0L;
 
             for (Message aux : localMessage) {
@@ -210,47 +207,47 @@ public class RemoteTree extends javax.swing.JDialog {
 
             lblTotalesRemotos.setText(o + localMessage.length + "      " + p + FileUtils.byteCountToDisplaySize(count));
             lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
-            
+
             this.remote.setModel(new RemoteFileTableModel(localMessage));
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         } catch (Exception ex) {
             this.remote.setModel(new DefaultTableModel());
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            
+
             lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
             lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
         }
     }
-    
-    private void sortRemoteTable(FileListing list){
+
+    private void sortRemoteTable(FileListing list) {
         int selection = this.boxSort.getSelectedIndex();
-        
-        switch(selection){
+
+        switch (selection) {
             case 0:
-                if(radioMenor.isSelected()){
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new NameListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new NameListing(config, ListingStrategy.DESC));
                     }
                 }
                 break;
-                
+
             case 1:
-                if(radioMenor.isSelected()){
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new FileTypeListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new FileTypeListing(config, ListingStrategy.DESC));
                     }
                 }
                 break;
-                
+
             case 2:
-                if(radioMenor.isSelected()){
+                if (radioMenor.isSelected()) {
                     list.setListingStrategy(new SizeListing(config, ListingStrategy.ASC));
-                }else{
-                    if(radioMayor.isSelected()){
+                } else {
+                    if (radioMayor.isSelected()) {
                         list.setListingStrategy(new SizeListing(config, ListingStrategy.DESC));
                     }
                 }

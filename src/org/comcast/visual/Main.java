@@ -930,8 +930,7 @@ public class Main extends javax.swing.JFrame {
     private void searchTable(String search) throws Exception {
         int selection = this.boxBusqueda.getSelectedIndex();
         FileFinder finder = new FileFinder(config);
-        System.out.println(search);
-
+        
         switch (selection) {
             case 0:
                 if (radioExacto.isSelected()) {
@@ -958,7 +957,6 @@ public class Main extends javax.swing.JFrame {
                     } else {
                         if (radioExtension.isSelected()) {
                             SimpleList<Message> localNameAprox = finder.getLocalExtAprox(this.lblFileSelected.getText(), search);
-                            System.out.println(localNameAprox.isEmpty());
 
                             if (!localNameAprox.isEmpty()) {
                                 Message[] only = localNameAprox.toArray(Message.class);
@@ -1075,27 +1073,27 @@ public class Main extends javax.swing.JFrame {
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
         try {
             /**/
-             Runnable b = new Runnable() {
-                 @Override
-                 public void run() {
-                     try {
-                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                         File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
+            Runnable b = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                        File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
 
-                         for (File aux : exist) {
-                             if (!aux.exists()) {
-                                 aux.mkdir();
-                             }
-                         }
+                        for (File aux : exist) {
+                            if (!aux.exists()) {
+                                aux.mkdir();
+                            }
+                        }
 
-                         new Main().setVisible(true);
-                     } catch (Exception ex) {
-                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                 }
-             };
-             
-             restartApplication(b);
+                        new Main().setVisible(true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            };
+
+            restartApplication(b);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

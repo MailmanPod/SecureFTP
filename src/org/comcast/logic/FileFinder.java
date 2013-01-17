@@ -5,8 +5,10 @@
 package org.comcast.logic;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.SocketException;
+import org.comcast.exceptions.EmptyHashTableException;
+import org.comcast.exceptions.FTPConectionRefusedException;
+import org.comcast.exceptions.InvalidEntryException;
 import org.comcast.router.Message;
 import org.comcast.router.RouterRetrieve;
 import org.comcast.structures.LocalIterator;
@@ -34,7 +36,6 @@ public class FileFinder {
         while (iter.hasMoreElements()) {
             Message aux = iter.returnElement();
             map.putByKey(aux, aux.getLocalFile().getName());
-            System.out.println(aux.getLocalFile().getName());
         }
 
         return map;
@@ -46,9 +47,8 @@ public class FileFinder {
             OpenAdressingHashTable<Message, String> reloadLocal = reloadLocal(pathName);
             
             r = reloadLocal.get(localFileName);
-            System.out.println("RERERFSDS;: " + r.getLocalFile().getName());
             return r;
-        } catch (Exception ex) {
+        } catch (IOException | EmptyHashTableException | InvalidEntryException ex) {
             return null;
         }
     }
@@ -96,7 +96,7 @@ public class FileFinder {
         }
     }
     
-    private OpenAdressingHashTable<Message, String> reloadRemote(String pathName) throws IOException {
+    private OpenAdressingHashTable<Message, String> reloadRemote(String pathName) throws IOException, SocketException, FTPConectionRefusedException {
         SimpleList<Message> localMessages = results.getSimpleListCurrent(pathName);
         LocalIterator<Message> iter = localMessages.getIterador();
 
@@ -116,9 +116,8 @@ public class FileFinder {
             OpenAdressingHashTable<Message, String> reloadRemote = reloadRemote(pathName);
             
             r = reloadRemote.get(remoteFileName);
-            System.out.println("RERERFSDS;: " + r.getLocalFile().getName());
             return r;
-        } catch (Exception ex) {
+        } catch (IOException | FTPConectionRefusedException | EmptyHashTableException | InvalidEntryException ex) {
             return null;
         }
     }
@@ -139,7 +138,7 @@ public class FileFinder {
             }
             
             return aprox;
-        } catch (Exception ex) {
+        } catch (IOException | FTPConectionRefusedException ex) {
             return aprox;
         }
     }
@@ -161,7 +160,7 @@ public class FileFinder {
             }
             
             return aprox;
-        } catch (Exception ex) {
+        } catch (IOException | FTPConectionRefusedException ex) {
             return aprox;
         }
     }

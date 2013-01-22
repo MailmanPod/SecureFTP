@@ -860,7 +860,7 @@ public class Settings extends javax.swing.JDialog {
             co.setUserLogin(text2);
             co.setPassLogin(conc);
             RouterRetrieve r = new RouterRetrieve(co);
-            r.getSimpleList("/");
+            r.testConnection();
 
             String l = "Conexion a servidor FTP exitosa";
             String p = "Prueba de conexion";

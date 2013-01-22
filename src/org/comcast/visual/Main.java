@@ -7,6 +7,7 @@ package org.comcast.visual;
 import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -20,6 +21,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +31,17 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.logic.FileFinder;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
 import org.comcast.router.Message;
+import org.comcast.router.RouterRetrieve;
 import org.comcast.strategy.FileListing;
 import org.comcast.strategy.FileTypeListing;
 import org.comcast.strategy.ListingStrategy;
@@ -46,6 +54,7 @@ import org.comcast.wizards.DownloadWizard;
 import org.comcast.wizards.UploadWizard;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -67,6 +76,7 @@ public class Main extends javax.swing.JFrame {
         setImageIconFrame();
         initElements();
         initObjects();
+//        connection();
     }
 
     private void centrarPantalla() {
@@ -98,8 +108,31 @@ public class Main extends javax.swing.JFrame {
             config = loader.getServerConfiguration();
             settings = new HashMap();
             download = new HashMap();
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException ex) {
             JOptionPane.showConfirmDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public void connection() {
+        String j = "No se pudo establecer la conexion con el servidor FTP.";
+        String c = "Mas informacion del error: ";
+        String k = "Error en la conexion.";
+
+        try {
+            RouterRetrieve r = new RouterRetrieve(config);
+            r.testConnection();
+
+        } catch (SocketException ex) {
+            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString(), k, JOptionPane.ERROR_MESSAGE);
+
+            Settings s = new Settings();
+            s.setVisible(true);
+
+        } catch (IOException | FTPConectionRefusedException ex) {
+            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString(), k, JOptionPane.ERROR_MESSAGE);
+
+            Settings s = new Settings();
+            s.setVisible(true);
         }
     }
 
@@ -161,7 +194,6 @@ public class Main extends javax.swing.JFrame {
 
             lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
             lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
-            ex.printStackTrace();
         }
     }
 
@@ -677,27 +709,33 @@ public class Main extends javax.swing.JFrame {
                 Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png"));
 
                 MouseListener mouseListener = new MouseListener() {
+                    @Override
                     public void mouseClicked(MouseEvent e) {
                         //System.out.println("Tray Icon - Mouse clicked!");
                     }
 
+                    @Override
                     public void mouseEntered(MouseEvent e) {
                         //System.out.println("Tray Icon - Mouse entered!");
                     }
 
+                    @Override
                     public void mouseExited(MouseEvent e) {
                         //System.out.println("Tray Icon - Mouse exited!");
                     }
 
+                    @Override
                     public void mousePressed(MouseEvent e) {
                         //System.out.println("Tray Icon - Mouse pressed!");
                     }
 
+                    @Override
                     public void mouseReleased(MouseEvent e) {
                         //System.out.println("Tray Icon - Mouse released!");
                     }
                 };
                 ActionListener exitListener = new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         String a = "Seguro que desea cerrar la ventana";
                         String b = "Secure FTP";
@@ -710,6 +748,7 @@ public class Main extends javax.swing.JFrame {
                 };
 
                 ActionListener mostrarListener = new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         visibilidad();
 
@@ -718,6 +757,7 @@ public class Main extends javax.swing.JFrame {
                 };
 
                 ActionListener packListener = new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
 //                        compress();
                         visibilidad();
@@ -727,6 +767,7 @@ public class Main extends javax.swing.JFrame {
                 };
 
                 ActionListener unpackListener = new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
 //                        decompress();
                         visibilidad();
@@ -755,6 +796,7 @@ public class Main extends javax.swing.JFrame {
                 trayIcon = new TrayIcon(image, "Secure FTP", popup);
 
                 ActionListener actionListener = new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         String c = "Secure FTP";
                         String d = "Click izquierdo para visualizar mas opciones.";
@@ -802,7 +844,7 @@ public class Main extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowActivated
@@ -810,7 +852,7 @@ public class Main extends javax.swing.JFrame {
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowDeactivated
@@ -822,7 +864,7 @@ public class Main extends javax.swing.JFrame {
             r.setLabelTotal(lblTotalesRemotos, lblSeleccionTotalRemoto);
             r.setVisible(true);
 
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnFileSelectionRemoteActionPerformed
@@ -871,7 +913,7 @@ public class Main extends javax.swing.JFrame {
                 this.lblFileSelected.setText(selectedFiles.getAbsolutePath());
                 initLocalTable(selectedFiles.getAbsolutePath());
             }
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnFileSelectionActionPerformed
@@ -930,7 +972,7 @@ public class Main extends javax.swing.JFrame {
     private void searchTable(String search) throws Exception {
         int selection = this.boxBusqueda.getSelectedIndex();
         FileFinder finder = new FileFinder(config);
-        
+
         switch (selection) {
             case 0:
                 if (radioExacto.isSelected()) {
@@ -1027,7 +1069,7 @@ public class Main extends javax.swing.JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             Settings set = new Settings();
             set.setVisible(true);
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSettingsActionPerformed
@@ -1086,9 +1128,12 @@ public class Main extends javax.swing.JFrame {
                             }
                         }
 
-                        new Main().setVisible(true);
-                    } catch (Exception ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//                        new Main().setVisible(true);
+                        Main m = new Main();
+//                        m.connection();
+                        m.setVisible(true);
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                        JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             };
@@ -1151,7 +1196,7 @@ public class Main extends javax.swing.JFrame {
                     try {
                         Runtime.getRuntime().exec(cmd.toString());
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -1208,9 +1253,12 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
 
-                    new Main().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//                    new Main().setVisible(true);
+                    Main m = new Main();
+                    m.connection();
+                    m.setVisible(true);
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

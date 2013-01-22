@@ -7,6 +7,8 @@ package org.comcast.visual;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
@@ -27,6 +31,7 @@ import org.comcast.strategy.SizeListing;
 import org.comcast.tableModels.RemoteFileTableModel;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -77,7 +82,7 @@ public class RemoteTree extends javax.swing.JDialog {
             config = loader.getServerConfiguration();
             model = new DefaultTreeModel((TreeNode) this.treeRemote.getModel().getRoot());
             this.treeRemote.setModel(model);
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -257,8 +262,12 @@ public class RemoteTree extends javax.swing.JDialog {
 
     private void treeRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeRemoteMouseClicked
 
-        if (evt.getButton() == 1 && evt.getClickCount() == 2) {
-            pathCalculator();
+        try {
+            if (evt.getButton() == 1 && evt.getClickCount() == 2) {
+                pathCalculator();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showConfirmDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_treeRemoteMouseClicked
     /**

@@ -5,12 +5,9 @@
 package org.comcast.router;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketException;
-import org.apache.commons.io.filefilter.FileFileFilter;
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -322,5 +319,9 @@ public class RouterRetrieve {
         }
 
         return list;
+    }
+    
+    public void testConnection() throws SocketException, IOException, FTPConectionRefusedException{
+        this.server.testConnection();
     }
 }

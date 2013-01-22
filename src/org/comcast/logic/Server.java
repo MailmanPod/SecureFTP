@@ -200,4 +200,9 @@ public class Server implements Comparable<Server>, OutputChannel {
 
         return buffer;
     }
+    
+    public void testConnection() throws SocketException, IOException, FTPConectionRefusedException{
+        openConnection();
+        closeConnection();
+    }
 }

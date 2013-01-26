@@ -29,14 +29,17 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
 import org.comcast.exceptions.FTPConectionRefusedException;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.FileFinder;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
@@ -66,6 +69,7 @@ public class Main extends javax.swing.JFrame {
     private Loader loader;
     private Map settings;
     private Map download;
+    private static final String IMAGE_ROUTE = "../images/Computer-32.png";
 
     /**
      * Creates new form Main
@@ -74,8 +78,8 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         centrarPantalla();
         setImageIconFrame();
-        initElements();
         initObjects();
+        initElements();
 //        connection();
     }
 
@@ -86,20 +90,39 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void setImageIconFrame() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(IMAGE_ROUTE)));
     }
 
     private void initElements() {
+        try {
+            this.radioMenor.setSelected(true);
+            this.radioExacto.setSelected(true);
+
+            initLocalTable(loader.getClientConfiguration().getDownloadPath());
+            initRemoteTable("/");
+
+            this.lblFileSelected.setText(loader.getClientConfiguration().getDownloadPath());
+            this.lblFileSelectedRemote.setText("/");
+
+        } catch (ParserConfigurationException | SAXException | IOException | URISyntaxException | InformationRequiredException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void initExternalElements(String localTMP, String remoteTMP) {
         this.radioMenor.setSelected(true);
         this.radioExacto.setSelected(true);
 
-        String o = "Cantidad de Archivos: ";
-        String p = "Tamaño total: ";
-        lblTotales.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
-        lblSeleccionTotal.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+        initLocalTable(localTMP);
+        initRemoteTable(remoteTMP);
 
-        lblTotalesRemotos.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
-        lblSeleccionTotalRemoto.setText(o + 0 + "      " + p + FileUtils.byteCountToDisplaySize(0));
+        this.lblFileSelected.setText(localTMP);
+        this.lblFileSelectedRemote.setText(remoteTMP);
+
     }
 
     private void initObjects() {
@@ -116,6 +139,7 @@ public class Main extends javax.swing.JFrame {
     public void connection() {
         String j = "No se pudo establecer la conexion con el servidor FTP.";
         String c = "Mas informacion del error: ";
+        String h = "Por favor revise su configuracion";
         String k = "Error en la conexion.";
 
         try {
@@ -123,13 +147,13 @@ public class Main extends javax.swing.JFrame {
             r.testConnection();
 
         } catch (SocketException ex) {
-            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString(), k, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString() + "\n" + h, k, JOptionPane.ERROR_MESSAGE);
 
             Settings s = new Settings();
             s.setVisible(true);
 
         } catch (IOException | FTPConectionRefusedException ex) {
-            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString(), k, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, j + "\n" + c + ex.toString() + "\n" + h, k, JOptionPane.ERROR_MESSAGE);
 
             Settings s = new Settings();
             s.setVisible(true);
@@ -290,14 +314,17 @@ public class Main extends javax.swing.JFrame {
         setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
             public void windowDeactivated(java.awt.event.WindowEvent evt) {
                 formWindowDeactivated(evt);
             }
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowIconified(java.awt.event.WindowEvent evt) {
                 formWindowIconified(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -505,7 +532,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        btnUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Apple Red_48.png"))); // NOI18N
+        btnUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Step-Forward-48.png"))); // NOI18N
         btnUpload.setToolTipText("Sube archivos al servidor FTP");
         btnUpload.setFocusable(false);
         btnUpload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -517,7 +544,7 @@ public class Main extends javax.swing.JFrame {
         });
         jToolBar1.add(btnUpload);
 
-        btnDownload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Apple Blue_48.png"))); // NOI18N
+        btnDownload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Step-Backward-48.png"))); // NOI18N
         btnDownload.setToolTipText("Descarga archivos desde un Servidor FTP");
         btnDownload.setFocusable(false);
         btnDownload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -529,7 +556,7 @@ public class Main extends javax.swing.JFrame {
         });
         jToolBar1.add(btnDownload);
 
-        btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Configuration 1-48.png"))); // NOI18N
+        btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Settings-Metallic-48.png"))); // NOI18N
         btnSettings.setToolTipText("Configuraciones");
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -541,7 +568,7 @@ public class Main extends javax.swing.JFrame {
         });
         jToolBar1.add(btnSettings);
 
-        btnRestart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Ball-logoff-48.png"))); // NOI18N
+        btnRestart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Punto Switcher-48.png"))); // NOI18N
         btnRestart.setToolTipText("Resetear la aplicacion");
         btnRestart.setFocusable(false);
         btnRestart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -706,7 +733,7 @@ public class Main extends javax.swing.JFrame {
 
                 tray = SystemTray.getSystemTray();
 
-                Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png"));
+                Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(IMAGE_ROUTE));
 
                 MouseListener mouseListener = new MouseListener() {
                     @Override
@@ -830,7 +857,7 @@ public class Main extends javax.swing.JFrame {
         prepareDestination();
 
         if (!this.settings.containsKey("selectedFiles")) {
-            String g = "No hay Archivos Seleccionados.";
+            String g = "No hay Archivos Locales Seleccionados.";
             String h = "Por favor seleccione los archivos y guarde la seleccion";
             String i = "Sin seleccion";
             JOptionPane.showMessageDialog(this, g + "\n" + h, i, JOptionPane.WARNING_MESSAGE);
@@ -919,6 +946,14 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFileSelectionActionPerformed
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
+        if (!this.download.containsKey("selectedFiles")) {
+            String g = "No hay Archivos Remotos Seleccionados.";
+            String h = "Por favor seleccione los archivos y guarde la seleccion";
+            String i = "Sin seleccion";
+            JOptionPane.showMessageDialog(this, g + "\n" + h, i, JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         DownloadWizard dw = new DownloadWizard();
         dw.main(download);
     }//GEN-LAST:event_btnDownloadActionPerformed
@@ -1113,36 +1148,56 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tableRemoteMouseClicked
 
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
-        try {
-            /**/
-            Runnable b = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                        File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
+        String h = "¿Desea reiniciar el programa?";
+        String l = "Reiniciar SECURE FTP";
 
-                        for (File aux : exist) {
-                            if (!aux.exists()) {
-                                aux.mkdir();
+        int option = JOptionPane.showConfirmDialog(this, h, l, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (option == JOptionPane.YES_OPTION) {
+
+            try {
+                /**/
+                Runnable b = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                            File[] exist = {new File("C:\\Temp\\"), new File("C:\\Key\\"), new File("C:\\ServerDownloads\\")};
+
+                            for (File aux : exist) {
+                                if (!aux.exists()) {
+                                    aux.mkdir();
+                                }
                             }
+
+                            Main m = new Main();
+                            m.setVisible(true);
+
+                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                            JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                         }
-
-//                        new Main().setVisible(true);
-                        Main m = new Main();
-//                        m.connection();
-                        m.setVisible(true);
-                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                        JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                     }
-                }
-            };
+                };
 
-            restartApplication(b);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                restartApplication(b);
+                
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnRestartActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        String mess = "¿Seguro que desea cerrar el programa?";
+        String tit = "Cerrar Programa";
+        int option = JOptionPane.showConfirmDialog(null, mess, tit, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (option == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        } else {
+            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        }
+    }//GEN-LAST:event_formWindowClosing
     /**
      * Sun property pointing the main class and its arguments. Might not be
      * defined on non Hotspot VM implementations.

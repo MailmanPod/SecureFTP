@@ -29,9 +29,10 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
   <Events>
-    <EventHandler event="windowActivated" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowActivated"/>
     <EventHandler event="windowDeactivated" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowDeactivated"/>
+    <EventHandler event="windowActivated" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowActivated"/>
     <EventHandler event="windowIconified" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowIconified"/>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
   </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -398,7 +399,7 @@
         <Component class="javax.swing.JButton" name="btnUpload">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/comcast/images/Apple Red_48.png"/>
+              <Image iconType="3" name="/org/comcast/images/Step-Forward-48.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Sube archivos al servidor FTP"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -412,7 +413,7 @@
         <Component class="javax.swing.JButton" name="btnDownload">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/comcast/images/Apple Blue_48.png"/>
+              <Image iconType="3" name="/org/comcast/images/Step-Backward-48.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Descarga archivos desde un Servidor FTP"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -426,7 +427,7 @@
         <Component class="javax.swing.JButton" name="btnSettings">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/comcast/images/Configuration 1-48.png"/>
+              <Image iconType="3" name="/org/comcast/images/Settings-Metallic-48.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Configuraciones"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -440,7 +441,7 @@
         <Component class="javax.swing.JButton" name="btnRestart">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/comcast/images/Ball-logoff-48.png"/>
+              <Image iconType="3" name="/org/comcast/images/Punto Switcher-48.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Resetear la aplicacion"/>
             <Property name="focusable" type="boolean" value="false"/>

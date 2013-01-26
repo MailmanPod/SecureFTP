@@ -55,7 +55,7 @@ public class Settings extends javax.swing.JDialog {
     }
 
     private void setImageIconFrame() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png"))); //NOI18N
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/Computer-32.png"))); //NOI18N
     }
 
     private void initObjects() {

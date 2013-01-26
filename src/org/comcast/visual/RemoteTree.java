@@ -73,7 +73,7 @@ public class RemoteTree extends javax.swing.JDialog {
     }
 
     private void setImageIconFrame() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/pendrive_32x32.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../images/Computer-32.png")));
     }
 
     private void initElements() {
@@ -262,12 +262,14 @@ public class RemoteTree extends javax.swing.JDialog {
 
     private void treeRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeRemoteMouseClicked
 
+        String w = "Error en la conexion al servidor FTP.";
+        String l = "Profavor revise su configuracion";
         try {
             if (evt.getButton() == 1 && evt.getClickCount() == 2) {
                 pathCalculator();
             }
         } catch (Exception ex) {
-            JOptionPane.showConfirmDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showConfirmDialog(this, w + "\n" + l, "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_treeRemoteMouseClicked
     /**

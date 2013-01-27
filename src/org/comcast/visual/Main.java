@@ -130,7 +130,7 @@ public class Main extends javax.swing.JFrame {
             settings = new HashMap();
             download = new HashMap();
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException ex) {
-            JOptionPane.showConfirmDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -970,7 +970,10 @@ public class Main extends javax.swing.JFrame {
             download.remove("selectedFiles");
             download.put("selectedFiles", toTransefer);
         } else {
-            int op = JOptionPane.showConfirmDialog(this, "No ha seleccionado ningun archivo", "Sin archivos", JOptionPane.WARNING_MESSAGE);
+            String mess = "No ha seleccionado ningun archivo";
+            String t = "Sin Archivos";
+
+            int op = JOptionPane.showConfirmDialog(this, mess, t, JOptionPane.WARNING_MESSAGE);
 
             if (op == JOptionPane.OK_OPTION && this.tableRemote.getModel().getRowCount() == 0) {
                 btnFileSelectionRemoteActionPerformed(evt);
@@ -1178,7 +1181,7 @@ public class Main extends javax.swing.JFrame {
                 };
 
                 restartApplication(b);
-                
+
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -263,7 +263,7 @@ public class RemoteTree extends javax.swing.JDialog {
     private void treeRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeRemoteMouseClicked
 
         String w = "Error en la conexion al servidor FTP.";
-        String l = "Profavor revise su configuracion";
+        String l = "Por favor revise su configuracion";
         try {
             if (evt.getButton() == 1 && evt.getClickCount() == 2) {
                 pathCalculator();

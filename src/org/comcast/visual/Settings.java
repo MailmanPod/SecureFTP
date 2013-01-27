@@ -5,25 +5,30 @@
 package org.comcast.visual;
 
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.URISyntaxException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.ClientBuilder;
 import org.comcast.builder.Mail;
 import org.comcast.builder.MailBuilder;
 import org.comcast.exceptions.FTPConectionRefusedException;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.ServerConfig;
 import org.comcast.logic.Validator;
 import org.comcast.router.RouterRetrieve;
 import org.comcast.xml.Loader;
 import org.comcast.xml.LoaderProvider;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -697,7 +702,7 @@ public class Settings extends javax.swing.JDialog {
 
                 JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | HeadlessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarServidorActionPerformed
@@ -780,7 +785,7 @@ public class Settings extends javax.swing.JDialog {
 
             JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
 
-        } catch (Exception ex) {
+        } catch (InformationRequiredException | ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | HeadlessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
@@ -799,7 +804,7 @@ public class Settings extends javax.swing.JDialog {
                 File selectedFiles = jfc.getSelectedFile();
                 this.txtDescarga.setText(selectedFiles.getAbsolutePath() + "\\");
             }
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDescargaActionPerformed
@@ -819,7 +824,7 @@ public class Settings extends javax.swing.JDialog {
                 this.txtPublica.setText(selectedFiles.getAbsolutePath() + "\\");
                 this.txtPrivada.setText(selectedFiles.getAbsolutePath() + "\\");
             }
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnKeysActionPerformed

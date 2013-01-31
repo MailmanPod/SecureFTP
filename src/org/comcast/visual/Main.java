@@ -273,20 +273,26 @@ public class Main extends javax.swing.JFrame {
         tableLocal = new javax.swing.JTable();
         lblTotales = new javax.swing.JLabel();
         lblSeleccionTotal = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        areaSeleccion = new javax.swing.JTextArea();
         panelSeleccionArchivoLocal = new javax.swing.JPanel();
         lblFileSelected = new javax.swing.JLabel();
         btnFileSelection = new javax.swing.JButton();
         btnSeleccionLocal = new javax.swing.JButton();
+        btnBorrarSeleccion = new javax.swing.JButton();
         panelListadoRemoto = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         panelSeleccionArchivoRemoto = new javax.swing.JPanel();
         lblFileSelectedRemote = new javax.swing.JLabel();
         btnFileSelectionRemote = new javax.swing.JButton();
         btnSeleccionRemota = new javax.swing.JButton();
+        btnBorrarSeleccionRemota = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRemote = new javax.swing.JTable();
         lblSeleccionTotalRemoto = new javax.swing.JLabel();
         lblTotalesRemotos = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        areaSeleccionRemota = new javax.swing.JTextArea();
         jToolBar1 = new javax.swing.JToolBar();
         btnUpload = new javax.swing.JButton();
         btnDownload = new javax.swing.JButton();
@@ -345,22 +351,32 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableLocal);
 
+        areaSeleccion.setEditable(false);
+        areaSeleccion.setColumns(20);
+        areaSeleccion.setRows(5);
+        jScrollPane3.setViewportView(areaSeleccion);
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(lblTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(116, 116, 116)
                 .addComponent(lblSeleccionTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -388,28 +404,35 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnBorrarSeleccion.setText("Borrar Seleccion");
+        btnBorrarSeleccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarSeleccionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelSeleccionArchivoLocalLayout = new javax.swing.GroupLayout(panelSeleccionArchivoLocal);
         panelSeleccionArchivoLocal.setLayout(panelSeleccionArchivoLocalLayout);
         panelSeleccionArchivoLocalLayout.setHorizontalGroup(
             panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSeleccionArchivoLocalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnFileSelection)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(btnSeleccionLocal)
+                .addGap(18, 18, 18)
+                .addComponent(btnBorrarSeleccion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelSeleccionArchivoLocalLayout.setVerticalGroup(
             panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSeleccionArchivoLocalLayout.createSequentialGroup()
-                .addGroup(panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnFileSelection)
-                        .addComponent(btnSeleccionLocal)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblFileSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(panelSeleccionArchivoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnFileSelection)
+                .addComponent(btnSeleccionLocal)
+                .addComponent(btnBorrarSeleccion))
         );
 
         javax.swing.GroupLayout panelListadoLocalLayout = new javax.swing.GroupLayout(panelListadoLocal);
@@ -418,15 +441,15 @@ public class Main extends javax.swing.JFrame {
             panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListadoLocalLayout.createSequentialGroup()
                 .addGroup(panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelListadoLocalLayout.setVerticalGroup(
             panelListadoLocalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListadoLocalLayout.createSequentialGroup()
-                .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelSeleccionArchivoLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -452,25 +475,34 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnBorrarSeleccionRemota.setText("Borrar Seleccion");
+        btnBorrarSeleccionRemota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarSeleccionRemotaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelSeleccionArchivoRemotoLayout = new javax.swing.GroupLayout(panelSeleccionArchivoRemoto);
         panelSeleccionArchivoRemoto.setLayout(panelSeleccionArchivoRemotoLayout);
         panelSeleccionArchivoRemotoLayout.setHorizontalGroup(
             panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSeleccionArchivoRemotoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnFileSelectionRemote)
                 .addGap(18, 18, 18)
                 .addComponent(btnSeleccionRemota)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(btnBorrarSeleccionRemota))
         );
         panelSeleccionArchivoRemotoLayout.setVerticalGroup(
             panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblFileSelectedRemote, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panelSeleccionArchivoRemotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnFileSelectionRemote)
-                .addComponent(btnSeleccionRemota))
+                .addComponent(btnSeleccionRemota)
+                .addComponent(btnBorrarSeleccionRemota))
         );
 
         tableRemote.setModel(new javax.swing.table.DefaultTableModel(
@@ -488,25 +520,37 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tableRemote);
 
+        areaSeleccionRemota.setColumns(20);
+        areaSeleccionRemota.setRows(5);
+        jScrollPane4.setViewportView(areaSeleccionRemota);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116)
-                .addComponent(lblSeleccionTotalRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(116, 116, 116)
+                        .addComponent(lblSeleccionTotalRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addComponent(panelSeleccionArchivoRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotalesRemotos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -897,6 +941,7 @@ public class Main extends javax.swing.JFrame {
     private void btnSeleccionLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionLocalActionPerformed
         int[] selectedRows = this.tableLocal.getSelectedRows();
         Message[] toTransefer = new Message[selectedRows.length];
+        StringBuilder buffer = new StringBuilder();
 
         int i = 0;
         if (selectedRows.length != 0) {
@@ -905,6 +950,13 @@ public class Main extends javax.swing.JFrame {
                 toTransefer[i] = valueAt;
                 i++;
             }
+            
+            for(Message aux : toTransefer){
+                buffer.append(aux.getLocalFile().getName()).append("\n");
+            }
+            
+            this.areaSeleccion.setText(buffer.toString());
+            
             settings.remove("selectedFiles");
             settings.put("selectedFiles", toTransefer);
         } else {
@@ -959,6 +1011,7 @@ public class Main extends javax.swing.JFrame {
     private void btnSeleccionRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionRemotaActionPerformed
         int[] selectedRows = this.tableRemote.getSelectedRows();
         Message[] toTransefer = new Message[selectedRows.length];
+        StringBuilder buffer = new StringBuilder();
 
         int i = 0;
         if (selectedRows.length != 0) {
@@ -967,6 +1020,13 @@ public class Main extends javax.swing.JFrame {
                 toTransefer[i] = valueAt;
                 i++;
             }
+            
+            for(Message aux : toTransefer){
+                buffer.append(aux.getLocalFile().getName()).append("\n");
+            }
+            
+            this.areaSeleccionRemota.setText(buffer.toString());
+            
             download.remove("selectedFiles");
             download.put("selectedFiles", toTransefer);
         } else {
@@ -1199,6 +1259,16 @@ public class Main extends javax.swing.JFrame {
             this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnBorrarSeleccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarSeleccionActionPerformed
+        settings.remove("selectedFiles");
+        this.areaSeleccion.setText("");
+    }//GEN-LAST:event_btnBorrarSeleccionActionPerformed
+
+    private void btnBorrarSeleccionRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarSeleccionRemotaActionPerformed
+        download.remove("selectedFiles");
+        this.areaSeleccionRemota.setText("");
+    }//GEN-LAST:event_btnBorrarSeleccionRemotaActionPerformed
     /**
      * Sun property pointing the main class and its arguments. Might not be
      * defined on non Hotspot VM implementations.
@@ -1314,8 +1384,12 @@ public class Main extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaSeleccion;
+    private javax.swing.JTextArea areaSeleccionRemota;
     private javax.swing.JComboBox boxBusqueda;
     private javax.swing.JComboBox boxSort;
+    private javax.swing.JButton btnBorrarSeleccion;
+    private javax.swing.JButton btnBorrarSeleccionRemota;
     private javax.swing.JButton btnBuscarArchivos;
     private javax.swing.JButton btnDownload;
     private javax.swing.JButton btnFileSelection;
@@ -1332,6 +1406,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblFileSelected;

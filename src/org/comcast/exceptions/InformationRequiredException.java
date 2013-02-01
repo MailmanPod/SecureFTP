@@ -1,12 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.exceptions;
 
 /**
+ * Este tipo de excepciones son lanzadas cuando existen datos incorrectos.
  *
- * @author Quality of Service
+ * @author Damian Bruera.
+ * @version 1.0
+ * @since 2012.
  */
 public class InformationRequiredException extends GlobalException {
 

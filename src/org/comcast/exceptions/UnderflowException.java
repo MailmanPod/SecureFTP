@@ -1,10 +1,12 @@
 package org.comcast.exceptions;
 
 /**
- * Exception class for access in empty containers such as stacks, queues, and
- * priority queues.
+ * Esta excepcion es lanzada cuando se intenta aceder a contenedores que se
+ * encuentran <br> vacios, como por ejemplo colas, colas de prioridad o pilas.
  *
- * @author Mark Allen Weiss
+ * @author Damian Bruera.
+ * @version 1.0
+ * @since 2012.
  */
 public class UnderflowException extends GlobalException {
 

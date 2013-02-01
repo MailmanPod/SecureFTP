@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.builder;
 
 import java.util.Properties;
@@ -17,8 +13,12 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 /**
+ * Clase que representa un objeto Mail.<br> Este objeto se utilizara para avisar
+ * al usuario el resultado de las operaciones programadas.
  *
- * @author Quality of Service
+ * @author Damian Bruera.
+ * @version 1.0
+ * @since 2012.
  */
 public class Mail {
 
@@ -34,35 +34,51 @@ public class Mail {
     private MimeMessage message;
 
     /**
-     * @return the properties
+     * Constructor vacio de la clase Mail.
+     */
+    public Mail() {
+    }
+
+    /**
+     * Metodo get, retorna las propiedades del mail.
+     *
+     * @return Properties Con las propiedades.
      */
     public Properties getProperties() {
         return properties;
     }
 
     /**
-     * @param properties the properties to set
+     * Metodo set, modifica los parametros del mail.
+     *
+     * @param properties Con los nuevos parametros de envio.
      */
     public void setProperties(Properties properties) {
         this.properties = properties;
     }
 
     /**
-     * @return the from
+     * Metodo get, retorna el emisor del mail.
+     *
+     * @return String Con el emisor del mensaje.
      */
     public String getFrom() {
         return from;
     }
 
     /**
-     * @param from the from to set
+     * Metodo set, modifica el emisor del mensaje.
+     *
+     * @param from Con el nuevo emisor.
      */
     public void setFrom(String from) {
         this.from = from;
     }
 
     /**
-     * @return the recipient
+     * Metodo get, que devuelve el receptor del mail.
+     *
+     * @return String Con el receptor.
      */
     public String getRecipient() {
         return recipient;
@@ -179,10 +195,10 @@ public class Mail {
         t.connect(this.mailUserName, this.mailUserPassword);
         t.sendMessage(message, message.getAllRecipients());
     }
-    
-    public Properties getContent(){
+
+    public Properties getContent() {
         Properties p = new Properties();
-        
+
         p.setProperty("comcast.from", from);
         p.setProperty("comcast.recipient", recipient);
         p.setProperty("comcast.subject", subject);
@@ -190,7 +206,7 @@ public class Mail {
         p.setProperty("comcast.text", mailText);
         p.setProperty("comcast.user", mailUserName);
         p.setProperty("comcast.password", mailUserPassword);
-        
+
         return p;
     }
 }

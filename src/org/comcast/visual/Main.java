@@ -311,7 +311,7 @@ public class Main extends javax.swing.JFrame {
         txtBusqueda = new javax.swing.JTextField();
         btnBuscarArchivos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuAyuda = new javax.swing.JMenu();
+        menuOpciones = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SECURE FTP");
@@ -734,8 +734,8 @@ public class Main extends javax.swing.JFrame {
 
         jSplitPane1.setRightComponent(panelBuscarPor);
 
-        menuAyuda.setText("Ayuda");
-        jMenuBar1.add(menuAyuda);
+        menuOpciones.setText("Opciones");
+        jMenuBar1.add(menuOpciones);
 
         setJMenuBar(jMenuBar1);
 
@@ -1416,7 +1416,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lblSeleccionTotalRemoto;
     private javax.swing.JLabel lblTotales;
     private javax.swing.JLabel lblTotalesRemotos;
-    private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuOpciones;
     private javax.swing.JPanel panelBuscarPor;
     private javax.swing.JPanel panelListadoLocal;
     private javax.swing.JPanel panelListadoRemoto;

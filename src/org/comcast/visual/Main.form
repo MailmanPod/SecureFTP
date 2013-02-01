@@ -8,9 +8,9 @@
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="menuAyuda">
+        <Menu class="javax.swing.JMenu" name="menuOpciones">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ayuda"/>
+            <Property name="text" type="java.lang.String" value="Opciones"/>
           </Properties>
         </Menu>
       </SubComponents>

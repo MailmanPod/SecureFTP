@@ -33,10 +33,15 @@ public class FileFinder {
     }
 
     /**
+     * Este metodo tiene como finalidad crear una tabla de hash con
+     * direccionamiento<br> abierto, colocando los nombres de los archivos
+     * locales como llave de busqueda.
      *
-     * @param pathName
-     * @return
-     * @throws IOException
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos.
+     * @return OpenAdressingHashTable Tabla con todos los objetos Message
+     * Locales.
+     * @throws IOException Si existe un error de Entrada o Salida.
      */
     private OpenAdressingHashTable<Message, String> reloadLocal(String pathName) throws IOException {
         SimpleList<Message> localMessages = results.getLocalMessages(pathName);
@@ -52,6 +57,15 @@ public class FileFinder {
         return map;
     }
 
+    /**
+     * Metodo que utiliza una tabla de hash de direccionamiento abierto, para
+     * buscar <br> los archivos por su nombre exacto.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos.
+     * @param localFileName Con el nombre exacto a buscar.
+     * @return El archivo encontrado o null si no lo encuentra.
+     */
     public Message getLocalExactName(String pathName, String localFileName) {
         Message r = null;
         try {
@@ -64,6 +78,15 @@ public class FileFinder {
         }
     }
 
+    /**
+     * Este metodo se encarga de realizar las busquedas de los archivos <br> por
+     * el nombre, pero de manera aproximada.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos.
+     * @param localFileName Con el nombre aproximado a buscar.
+     * @return Una lista con todos los archivos que contienen el patron deseado.
+     */
     public SimpleList<Message> getLocalNameAprox(String pathName, String localFileName) {
         SimpleList<Message> aprox = new SimpleList<>();
 
@@ -85,6 +108,15 @@ public class FileFinder {
         }
     }
 
+    /**
+     * Este metodo se encarga de realizar las busquedas de los archivos <br> por
+     * la extension de manera aproximada.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos.
+     * @param localFileName Con la extension del archivo a buscar.
+     * @return Una lista con todos los archivos que contienen el patron deseado.
+     */
     public SimpleList<Message> getLocalExtAprox(String pathName, String localFileName) {
         SimpleList<Message> aprox = new SimpleList<>();
         String ph = "." + localFileName;
@@ -107,6 +139,20 @@ public class FileFinder {
         }
     }
 
+    /**
+     * Este metodo tiene como finalidad crear una tabla de hash con
+     * direccionamiento<br> abierto, colocando los nombres de los archivos
+     * remotos como llave de busqueda.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos
+     * @return OpenAdressingHashTable Tabla con todos los objetos Message
+     * Locales.
+     * @throws IOException Si existe algun error de entrada o salida.
+     * @throws SocketException Si se produce un error en el socket que controla
+     * la coneccion.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
+     */
     private OpenAdressingHashTable<Message, String> reloadRemote(String pathName) throws IOException, SocketException, FTPConectionRefusedException {
         SimpleList<Message> localMessages = results.getSimpleListCurrent(pathName);
         LocalIterator<Message> iter = localMessages.getIterador();
@@ -121,6 +167,15 @@ public class FileFinder {
         return map;
     }
 
+    /**
+     * Metodo que utiliza una tabla de hash de direccionamiento abierto, para
+     * buscar <br> los archivos remotos por su nombre exacto.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos remotos.
+     * @param remoteFileName Con el nombre exacto a buscar.
+     * @return El archivo encontrado o null si no lo encuentra.
+     */
     public Message getRemoteExactName(String pathName, String remoteFileName) {
         Message r = null;
         try {
@@ -133,6 +188,15 @@ public class FileFinder {
         }
     }
 
+    /**
+     * Este metodo se encarga de realizar las busquedas de los archivos remotos
+     * <br> por el nombre, pero de manera aproximada.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos.
+     * @param remoteFileName Con la extension del archivo a buscar.
+     * @return Una lista con todos los archivos que contienen el patron deseado.
+     */
     public SimpleList<Message> getRemoteNameAprox(String pathName, String remoteFileName) {
         SimpleList<Message> aprox = new SimpleList<>();
 
@@ -154,6 +218,15 @@ public class FileFinder {
         }
     }
 
+    /**
+     * Este metodo se encarga de realizar las busquedas de los archivos remotos
+     * <br> por la extension de manera aproximada.
+     *
+     * @param pathName Con la ruta absoluta de la carpeta que contiene los
+     * archivos remotos.
+     * @param remoteFileName Con la extension del archivo a buscar.
+     * @return Una lista con todos los archivos que contienen el patron deseado.
+     */
     public SimpleList<Message> getRemoteExtAprox(String pathName, String remoteFileName) {
         SimpleList<Message> aprox = new SimpleList<>();
         String ph = "." + remoteFileName;

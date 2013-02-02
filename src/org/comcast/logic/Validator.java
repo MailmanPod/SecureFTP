@@ -185,7 +185,7 @@ public class Validator {
 
     /**
      * Este metodo valida si una fecha es valida. <br> Valida si son los dias
-     * son correctos, los mese son correctos, anios.
+     * son correctos, los meses son correctos, anios.
      *
      * @param date con la fecha a validar
      * @return true si esta todo bien. <br> false, en caso contrario.
@@ -270,6 +270,13 @@ public class Validator {
         return m.matches();
     }
 
+    /**
+     * Este metodo tiene como finalidad verificar si el parametro ingresado
+     * posee el formato de mail. <br> Dicho formato es
+     * (unnmbre121212cualquiera@host.com.algo)
+     * @param toValid String con el mail a validar.
+     * @return true si esta todo bien. <br> false, en caso contrario.
+     */
     public static boolean isMail(String toValid) {
         Pattern patron = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$");
         Pattern patron2 = Pattern.compile("^\\s|\\s|\\s$|^$");
@@ -283,6 +290,13 @@ public class Validator {
         return m.matches();
     }
 
+    /**
+     * Este metodo tiene como finalidad verificar si el asunto de un mail es
+     * valido.<br> Valida caracteres alfanumericos y especiales.
+     *
+     * @param toValid String con el asunto a validar.
+     * @return true si esta todo bien. <br> false, en caso contrario.
+     */
     public static boolean isMailSubject(String toValid) {
         Pattern patron = Pattern.compile("([a-zA-Z]|[0-9]|\\[|\\]|\\(|\\)|\\s|\\?|\\¿|\\!|\\¡|\\&|\\:|\\.|\\-|\\_|\\*)+");
         Pattern patron2 = Pattern.compile("^\\s|\\s$|^$");
@@ -297,6 +311,12 @@ public class Validator {
         return m.matches();
     }
 
+    /**
+     * Este metodo verifica si el parametro esta vacio.
+     *
+     * @param toValid String a validar.
+     * @return true si esta todo bien. <br> false, en caso contrario.
+     */
     public static boolean isTextEmpty(String toValid) {
         Pattern patron2 = Pattern.compile("^\\s|\\s$|^$");
 

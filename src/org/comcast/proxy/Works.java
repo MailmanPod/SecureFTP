@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.proxy;
 
 import java.util.Properties;
@@ -26,10 +22,24 @@ import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
 /**
+ * Clase que representa el nucleo del programa.<br> Esta clase realiza las
+ * siguientes tareas: <br> 1) Recibe una coleccion de archivos a transferir y
+ * los encripta. <br> 2) Dichos archivos encriptados se colocan en una cola de
+ * prioridad. <br> 3) Luego transfiere todos los archivos en la cola de
+ * prioridad.<br> 4) Descarga los archivos del servidor ftp. Esta peticion de
+ * descarga se encuentra tambien en una cola de prioridad. <br> 5) Luego se pasa
+ * a la tarea de desencriptar los archivos descargados. 6) La forma de trabajo
+ * se basa en tareas programadas.<br> 7) Ademas es el encargado de manejar los
+ * nombres de los archivos encriptados. <br> 8) Los archivos que ya fueron
+ * subidos se guardan en un archivo xml. <br> 9) Este programa no admite que se
+ * carguen al servidor dos veces el mismo archivo.
  *
- * @author Quality of Service
+ * @author Bruera Damian
+ * @version 2.1
+ * @since 2012.
  */
 public class Works implements InterfaceWorks {
+
     private ResourceBundle works_es_ES;
     private Loader loader;
     private Crypto crypto;
@@ -37,21 +47,24 @@ public class Works implements InterfaceWorks {
     private InputScheduler is;
     private Client client;
 
+    /**
+     * Constructor de la clase.
+     */
     public Works() {
         try {
             this.loader = LoaderProvider.getInstance();
             this.crypto = CryptoProvider.getInstance();
             this.client = loader.getClientConfiguration();
-            
-            switch(client.getLocalization()){
+
+            switch (client.getLocalization()) {
                 case "Español":
-                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_es_ES");
+                    this.works_es_ES = ResourceBundle.getBundle("org/comcast/locale/Works_es_ES");
                     break;
                 case "Ingles":
-                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
+                    this.works_es_ES = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
                     break;
                 default:
-                    this.works_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
+                    this.works_es_ES = ResourceBundle.getBundle("org/comcast/locale/Works_en_US");
                     break;
             }
         } catch (Exception ex) {
@@ -59,6 +72,18 @@ public class Works implements InterfaceWorks {
         }
     }
 
+    /**
+     * Este metodo se encarga de crear un objeto CryptoData con la
+     * configuracion, para un archivo en particular.<br> Entre otras cosas
+     * define el nombre que tendran los archivos de clave publica y privada.<br>
+     * Setea la configuracion de encriptacion para el archivo indicado.<br> El
+     * nombre del archivo publico y privado, se conforma con el nombre del
+     * archivo a encriptar y la hora del sistema en nano segundos.
+     *
+     * @param full El archivo a encriptar.
+     * @param serialID Un numero que indica el tiempo en nano sgundos.
+     * @return La configuracion de encriptacion para un archivo.
+     */
     private CryptoData stringParts(Message full, long serialID) {
         String partida = full.getLocalPath();
         String general = "key" + serialID;
@@ -89,6 +114,14 @@ public class Works implements InterfaceWorks {
         return data;
     }
 
+    /**
+     * Este metodo verifica si el archivo que se esta intentando subir al
+     * servidor ftp ya existe.
+     *
+     * @param remoteDestination Con la ruta al archivo remoto.
+     * @return True si ya existe o False en caso contrario.
+     * @throws Exception Si algo falla.
+     */
     private boolean isLoadable(String remoteDestination) throws Exception {
 
         CryptoData data = loader.getCryptoData(remoteDestination);
@@ -96,6 +129,16 @@ public class Works implements InterfaceWorks {
         return (data != null) ? false : true;
     }
 
+    /**
+     * Este metodo prepara los archivos para ser encriptados. Verifica si los
+     * archivos ya existen en el servidor.
+     *
+     * @param plainFiles Los archivos nativos (sin encriptar).
+     * @param serialID Un numero que se agrega para diferenciar los archivos de
+     * claves entre si.
+     * @return Los archivos ya preparados para su encriptacion.
+     * @throws Exception Si algo falla.
+     */
     private Properties getEncryptedFiles(SimpleList<Message> plainFiles, long serialID) throws Exception {
 
         LocalIterator<Message> iter = plainFiles.getIterador();
@@ -114,10 +157,7 @@ public class Works implements InterfaceWorks {
             } else {
                 String primero = works_es_ES.getString("EL ARCHIVO YA ES ENCUENTRA EN EL SERVIDOR.");
                 String segundo = works_es_ES.getString("ARCHIVO DUPLICADO");
-                int op = JOptionPane.showConfirmDialog(null, primero, segundo, JOptionPane.YES_NO_OPTION);
-                if (op == JOptionPane.NO_OPTION) {
-                    break;
-                }
+                JOptionPane.showMessageDialog(null, primero + "\n" + aux.getLocalFile().getName(), segundo, JOptionPane.WARNING_MESSAGE);
             }
         }
 
@@ -128,11 +168,24 @@ public class Works implements InterfaceWorks {
         return props;
     }
 
+    /**
+     * Metodo encargado de realizar la encriptacion de los archivos.<br>
+     * "Recordatorio: Utiliza dos listas enlazadas para emparejar los archivos
+     * nativos y los encriptados. Correspondencia entre los dos".
+     *
+     * @param plainFiles Los archivos a encriptar.
+     * @return Los archivos encriptados.
+     * @throws Exception Por si algo falla.
+     */
     private SimpleList<Message> encryptFiles(SimpleList<Message> plainFiles) throws Exception {
 
         long serialID = System.nanoTime();
         Properties props = getEncryptedFiles(plainFiles, serialID);
+
+        @SuppressWarnings("unchecked")
         SimpleList<Message> encrypted = (SimpleList<Message>) props.get("encrypted");
+
+        @SuppressWarnings("unchecked")
         SimpleList<CryptoData> data = (SimpleList<CryptoData>) props.get("data");
         int i = 0;
 
@@ -181,6 +234,14 @@ public class Works implements InterfaceWorks {
         return encrypted;
     }
 
+    /**
+     * Este metodo se encarga de colocar los archivos en una cola de prioridad,
+     * ademas de programar la tarea de subida de archivos.
+     *
+     * @param toTransfer Son los archivos a transferir
+     * @param date Fecha y hora de la realizacion de la tarea.
+     * @throws Exception Por si algo falla.
+     */
     @Override
     public void transferFiles(SimpleList<Message> toTransfer, DateScheduler date) throws Exception {
 
@@ -207,10 +268,18 @@ public class Works implements InterfaceWorks {
         os.stopJob();
     }
 
+    /**
+     * Metodo que se encarga de recibir una coleccion de archivos para descargar
+     * desde el servidor, y colocarlos en una cola de prioridad.<br> Ademas es
+     * encargado de programar la tarea de descarga.
+     *
+     * @param toDownload Todos los archivos a descargar.
+     * @param date Fecha y hora de la realizacion de la tarea.
+     * @throws Exception Por si algo falla.
+     */
     @Override
     public void downloadFiles(SimpleList<Message> toDownload, DateScheduler date) throws Exception {
 
-        System.out.println("Pasa por WORKS");
         BinaryHeap<Message> heap = new BinaryHeap<>();
 
         LocalIterator<Message> iter = toDownload.getIterador();
@@ -233,6 +302,14 @@ public class Works implements InterfaceWorks {
         is.stopJob();
     }
 
+    /**
+     * Metodo public que se encarga de procesar uno por uno los archivos que ya
+     * fueron descargados desde el servidor. <br> Etso archivos llegan aqui en
+     * una lista enlazada.
+     *
+     * @param toDownload Con los archivos ya descargados.
+     * @throws Exception Por si algo falla.
+     */
     @Override
     public void decryptFiles(SimpleList<Message> toDownload) throws Exception {
 
@@ -244,6 +321,13 @@ public class Works implements InterfaceWorks {
         }
     }
 
+    /**
+     * Metodo que se encarga de llamar al desencriptador por cada uno de los
+     * archivos.
+     *
+     * @param toDecrypt Con el archivo a desencriptar.
+     * @throws Exception Por si algo falla.
+     */
     private void decrypt(Message toDecrypt) throws Exception {
         String toNative = prepareStrings(toDecrypt);
         CryptoData data = loader.getCryptoData(toDecrypt.getRemotePath());
@@ -255,6 +339,14 @@ public class Works implements InterfaceWorks {
         }
     }
 
+    /**
+     * Metodo encargado de armar la ruta absoluta donde se almacenara el archivo
+     * original.
+     *
+     * @param toPrepare El archivo a desencriptar.
+     * @return String con la ruta absoluta.
+     * @throws Exception Por si algo falla.
+     */
     private String prepareStrings(Message toPrepare) throws Exception {
         CryptoData data = loader.getCryptoData(toPrepare.getRemotePath());
         String finalMessage = null;

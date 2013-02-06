@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  * utilizan.
  *
  * @author Federico Bruera TSB 2010.
+ * @since Java 6
  */
 public class Validator {
 

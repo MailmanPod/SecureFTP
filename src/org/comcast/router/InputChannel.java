@@ -1,14 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.router;
 
 import java.io.Serializable;
 
 /**
+ * Clase marca a aquellas clases que son clientes de la aplicacion.
  *
- * @author Quality of Service
+ * @author Damian Bruera
+ * @since Java 7
+ * @version 1.0
  */
-public interface InputChannel extends Serializable{
+public interface InputChannel extends Serializable {
 }

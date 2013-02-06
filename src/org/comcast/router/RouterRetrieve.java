@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.router;
 
 import java.io.File;
@@ -25,8 +21,12 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
+ * Clase que se encarga de realizar la recuperacion de los archivos, con el fin
+ * de realizar busquedas, ordenamientos, listados.
  *
- * @author Quality of Service
+ * @author Damian Bruera
+ * @since Java 7
+ * @version 3.5
  */
 public class RouterRetrieve {
 
@@ -41,40 +41,43 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae todo lo que esta en un directorio especificado.
+     * Este metodo recupera todos los archivos que estan en un directorio remoto
+     * especificado.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @param dir Con el directorio Remoto
+     * @return Una lista de archivos dentro de ese directorio.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
-    public FTPFile[] getFiles(String dir) throws SocketException, IOException, FTPConectionRefusedException{
+    public FTPFile[] getFiles(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         return server.retrieveMesseges(dir);
     }
 
     /**
-     * Este trae el nombre de todos los directorios del servidor. Para armar un
-     * arbol de directorios remotos.
+     * Este Metodo recupera el nombre de todos los directorios remotos qu se
+     * encuentran bajo un directorio remoto.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @param dir Con el directorio remoto.
+     * @return Listado de todos los nombres de los directorios.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
-    public String[] getDirNamesCurrent(String path) throws SocketException, IOException, FTPConectionRefusedException{
+    public String[] getDirNamesCurrent(String path) throws SocketException, IOException, FTPConectionRefusedException {
         FTPFile[] retrieveMesseges = this.server.retrieveDirectories(path);
         int count = 0;
-        for(FTPFile f : retrieveMesseges){
-            if(f.isDirectory()){
+        for (FTPFile f : retrieveMesseges) {
+            if (f.isDirectory()) {
                 count++;
             }
         }
-        
+
         String[] s = new String[count];
         int i = 0;
-        
-        for(FTPFile f : retrieveMesseges){
-            if(f.isDirectory()){
+
+        for (FTPFile f : retrieveMesseges) {
+            if (f.isDirectory()) {
                 s[i] = f.getName();
                 i++;
             }
@@ -83,12 +86,13 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae archivos + directorios del directorio actual.
+     * Este Metodo recupera archivos + directorios del directorio remoto actual.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @param dir Con el directorio remoto.
+     * @return Listado de archivos y directorios.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     public SimpleList<Message> getSimpleList(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         SimpleList<Message> buffer = new SimpleList<>();
@@ -111,12 +115,13 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae los archivos del directorio actual del Servidor. Construir la tabla.
+     * Este Metodo recupera los archivos del directorio actual del Servidor.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @param dir Con el directorio remoto.
+     * @return Lista de todos los archivos bajo ese mismo directorio.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     public SimpleList<Message> getSimpleListCurrent(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         SimpleList<Message> buffer = new SimpleList<>();
@@ -139,13 +144,14 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este trae todos los directorios mas los archivos. Formateados segun en
-     * que carpeta estan.
+     * Este metodo recupera todos los directorios mas los archivos. Formateados
+     * segun en que carpeta estan.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @param dir Con el directorio remoto.
+     * @return Lista de todos los archivos bajo ese mismo directorio.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     public SimpleList<Message> getAllFilesDir(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         this.recursiveDir = new SimpleList<>();
@@ -159,12 +165,13 @@ public class RouterRetrieve {
     }
 
     /**
-     * Soporte Recursivo
+     * Soporte Recursivo. Procesa Directorios y Archivos
      *
-     * @param file
-     * @param dir
-     * @throws SocketException
-     * @throws IOException
+     * @param file Archivo o Directorio actual a la recursion.
+     * @param dir Con el directorio remoto.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     private void storeFileDir(FTPFile file, String dir) throws SocketException, IOException, FTPConectionRefusedException {
 
@@ -192,13 +199,14 @@ public class RouterRetrieve {
     }
 
     /**
-     * Este solo trae todos los archivos del servidor. Busqueda aproximacion de
-     * un archivo en todo el servidor.
+     * Este metodo recupera todos los archivos del servidor. Busqueda
+     * aproximacion de un archivo en todo el servidor.
      *
-     * @param dir
-     * @return
-     * @throws SocketException
-     * @throws IOException
+     * @@param dir Con el directorio remoto.
+     * @return Lista de todos los archivos del servidor.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     public SimpleList<Message> getAllFiles(String dir) throws SocketException, IOException, FTPConectionRefusedException {
         this.recursiveFiles = new SimpleList<>();
@@ -212,12 +220,13 @@ public class RouterRetrieve {
     }
 
     /**
-     * Soporte recursivo.
+     * Soporte Recursivo. Procesa solo archivos.
      *
-     * @param file
-     * @param dir
-     * @throws SocketException
-     * @throws IOException
+     * @param file Archivo o Directorio actual a la recursion.
+     * @param dir Con el directorio remoto.
+     * @throws SocketException Si hay error de conexion con el servidor.
+     * @throws IOException Por errores de entrada o salida.
+     * @throws FTPConectionRefusedException Si el servidor rechaza la coneccion.
      */
     private void storeFiles(FTPFile file, String dir) throws SocketException, IOException, FTPConectionRefusedException {
 
@@ -240,6 +249,13 @@ public class RouterRetrieve {
         }
     }
 
+    /**
+     * Metodo que obtiene el tipo MIME de los metadatos del archivo.
+     *
+     * @param fileName Con la ubicacion del archivo.
+     * @return El tipo MIME.
+     * @throws IOException Error de lectura del archivo.
+     */
     private String getType(String fileName) throws IOException {
 
         FileInputStream is = null;
@@ -267,6 +283,13 @@ public class RouterRetrieve {
         return type;
     }
 
+    /**
+     * Este metodo recupera todos los archivos bajo un mismo directorio
+     * local.<br> Formato File.
+     *
+     * @param pathName Ubicacion del directorio.
+     * @return Listado con todos los archivos.
+     */
     private SimpleList<File> getLocalFiles(String pathName) {
         File f = new File(pathName);
         SimpleList<File> list = new SimpleList<>();
@@ -280,7 +303,14 @@ public class RouterRetrieve {
 
         return list;
     }
-    
+
+    /**
+     * Este metodo recupera todos los archivos bajo un mismo directorio
+     * local.<br> Formato Message.
+     *
+     * @param pathName Ubicacion del directorio.
+     * @return Listado con todos los archivos.
+     */
     public SimpleList<Message> getLocalMessages(String pathName) throws IOException {
         SimpleList<Message> list = new SimpleList<>();
         SimpleList<File> fileList = getLocalFiles(pathName);
@@ -302,6 +332,14 @@ public class RouterRetrieve {
         return list;
     }
 
+    /**
+     * Este metodo recupera todos los archivos bajo un mismo directorio
+     * local.<br> Formato Message.<br> Agrega un destino remoto como parametro.
+     *
+     * @param pathName Ubicacion del directorio.
+     * @param destin Con el destino remoto.
+     * @return Listado con todos los archivos.
+     */
     public SimpleList<Message> getLocalMessages(String pathName, String destin) throws IOException {
         SimpleList<Message> list = new SimpleList<>();
         SimpleList<File> fileList = getLocalFiles(pathName);
@@ -322,8 +360,15 @@ public class RouterRetrieve {
 
         return list;
     }
-    
-    public void testConnection() throws SocketException, IOException, FTPConectionRefusedException{
+
+    /**
+     * Realiza una prueba de coneccion al servidor ftp.
+     *
+     * @throws SocketException Si hay error de comunicacion.
+     * @throws IOException Si hay error de lectura/escritura del disco.
+     * @throws FTPConectionRefusedException Si el servidor rechazo la coneccion.
+     */
+    public void testConnection() throws SocketException, IOException, FTPConectionRefusedException {
         this.server.testConnection();
     }
 }

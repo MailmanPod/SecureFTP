@@ -20,7 +20,7 @@ import org.comcast.structures.BinaryHeap;
  * <br> ya encriptados al servidor ftp.
  *
  * @author Damian Bruera
- * @since 2012.
+ * @since Java 7
  * @version 2.5
  */
 public class Server implements Comparable<Server>, OutputChannel {

@@ -34,7 +34,7 @@ import javax.crypto.SecretKey;
  * que se utiliza <br> la llave privada para desencriptar la llave simetrica.
  *
  * @author Damian Bruera.
- * @since 2012.
+ * @since Java 7
  * @version 1.2.
  */
 public class Crypto {

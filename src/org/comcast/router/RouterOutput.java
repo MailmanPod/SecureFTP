@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.router;
 
 import java.io.IOException;
@@ -29,15 +25,30 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.xml.sax.SAXException;
 
-
 /**
+ * Clase encargada de realizar la tarea de subir los archivos encriptados al
+ * servidor ftp. <br> Define una implementacion del patron Router.<br> La tarea
+ * se ejecutara segun el momento de tiempo definido por el usuario.<br>
  *
- * @author Quality of Service
+ * @author Damian Bruera
+ * @since Java 7
+ * @version 3.5
  */
 public class RouterOutput implements Job {
 
     private static final String ROUTER_SERVICE_NAME = "router_output";
 
+    /**
+     * Aqui se realiza el seteo de los parametros que se utilizaran en la
+     * ejecucion de la tarea programada.<br> Ademas se setean los parametros
+     * para la notificacion por mail de la tarea realizada.
+     *
+     * @param jec Es el contexto del trabajo. Aqui se pasan datos como por
+     * ejemplo, La fecha de inicio de la tarea, junto a otros parametros de
+     * ejecucion.
+     * @throws JobExecutionException Si existe algun problema mientras se setean
+     * los parametros de ejecucion de la tarea programada.
+     */
     @Override
     public final void execute(JobExecutionContext jec) throws JobExecutionException {
         BinaryHeap<Message> toSend = null;
@@ -63,8 +74,11 @@ public class RouterOutput implements Job {
         Worker routerWorkerThread = new Worker(server, show, mail, serverConfig);
         routerWorkerThread.run();
     }
-    private ResourceBundle routerOutput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES");
+    private ResourceBundle routerOutput_es_ES;
 
+    /**
+     * Clase privada encargada de realizar la tarea y la notificacion
+     */
     private class Worker {
 
         private Server server;
@@ -72,6 +86,14 @@ public class RouterOutput implements Job {
         private Mail mail;
         private ServerConfig config;
 
+        /**
+         * Constructor de la clase.
+         *
+         * @param server Quien realiza la tarea verdaderamente.
+         * @param m Contenido del mail.
+         * @param k Configuracion del Mail.
+         * @param c Configuracion del servidor.
+         */
         public Worker(Server server, StringBuilder m, Mail k, ServerConfig c) {
             locale();
             this.server = server;
@@ -79,33 +101,39 @@ public class RouterOutput implements Job {
             this.config = c;
             this.mail = k;
         }
-        
-        private void locale(){
-            try{
-                
+
+        /**
+         * Define el lenguaje de la aplicacion.
+         */
+        private void locale() {
+            try {
+
                 Client c = LoaderProvider.getInstance().getClientConfiguration();
-            
-            switch(c.getLocalization()){
-                case "Español":
-                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES");
-                    break;
-                case "Ingles":
-                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
-                    break;
-                default:
-                    routerOutput_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
-                    break;
-            }
-                
-            }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
+
+                switch (c.getLocalization()) {
+                    case "Español":
+                        routerOutput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES");
+                        break;
+                    case "Ingles":
+                        routerOutput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
+                        break;
+                    default:
+                        routerOutput_es_ES = ResourceBundle.getBundle("org/comcast/locale/RouterOutput_en_US");
+                        break;
+                }
+
+            } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
                 JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
             }
         }
 
+        /**
+         * Confirmacion por mail de exito
+         */
         private void confirmMail() {
             try {
                 String buffer = mail.getMailText();
-                mail.setMailText(buffer + java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES").getString("\\N\\NARCHIVOS ENVIADOS AL SERVIDOR: {0}\\N\\N{1}"), new Object[] {config.getHostName(), showUploadFiles.toString()}));
+                mail.setMailText(buffer + java.text.MessageFormat.format(routerOutput_es_ES.getString("\\N\\NARCHIVOS ENVIADOS AL SERVIDOR: {0}\\N\\N{1}"), new Object[]{config.getHostName(), showUploadFiles.toString()}));
 
                 mail.initSession();
                 mail.createMail();
@@ -116,9 +144,14 @@ public class RouterOutput implements Job {
             }
         }
 
+        /**
+         * Confirmacion por mail de error / falla
+         *
+         * @param s
+         */
         private void confirmMail(String s) {
             try {
-                mail.setMailText(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("org/comcast/locale/RouterOutput_es_ES").getString("\\N\\NERROR AL ENVIAR LOS ARCHIVOS AL SERVIDOR \\N\\N{0}"), new Object[] {s}));
+                mail.setMailText(java.text.MessageFormat.format(routerOutput_es_ES.getString("\\N\\NERROR AL ENVIAR LOS ARCHIVOS AL SERVIDOR \\N\\N{0}"), new Object[]{s}));
 
                 mail.initSession();
                 mail.createMail();
@@ -128,6 +161,10 @@ public class RouterOutput implements Job {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+
+        /**
+         * Realiza el trabajo programado y confirma.
+         */
         public void run() {
             try {
                 server.uploadMessages();

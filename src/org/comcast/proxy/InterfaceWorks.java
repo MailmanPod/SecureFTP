@@ -8,7 +8,7 @@ import org.comcast.structures.SimpleList;
  * Clase que define la funcionalidad de la aplicacion.
  *
  * @author Damian Bruera
- * @since 2012
+ * @since Java 7
  * @version 1.5
  */
 public interface InterfaceWorks {

@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
  * la coneccion hacia el servidor ftp.
  *
  * @author Damian Bruera.
- * @since 2012.
+ * @since Java 7
  * @version 2.1.
  */
 public class ServerConfig {

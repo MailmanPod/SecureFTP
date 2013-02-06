@@ -16,7 +16,7 @@ import org.comcast.structures.SimpleList;
  * manera local, como remota.
  *
  * @author Damian Bruera.
- * @since 2012.
+ * @since Java 7
  * @version 2.0
  */
 public class FileFinder {

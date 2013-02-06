@@ -36,7 +36,7 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  * @author Bruera Damian
  * @version 2.1
- * @since 2012.
+ * @since Java 7
  */
 public class Works implements InterfaceWorks {
 

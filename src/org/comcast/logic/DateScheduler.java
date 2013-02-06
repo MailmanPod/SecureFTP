@@ -8,7 +8,7 @@ import java.util.Calendar;
  *
  * @author Damian Bruera.
  * @version 1.5
- * @since 2012.
+ * @since Java 7
  */
 public class DateScheduler {
 

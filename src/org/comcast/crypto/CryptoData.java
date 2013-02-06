@@ -5,7 +5,7 @@ package org.comcast.crypto;
  * contiene datos que luego seran pasados al cifrador.
  *
  * @author Damian Bruera.
- * @since 2012.
+ * @since Java 7
  * @version 1.1
  */
 public class CryptoData implements Comparable<CryptoData> {

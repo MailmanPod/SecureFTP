@@ -12,7 +12,7 @@ import org.comcast.logic.Validator;
  *
  * @author Damian Bruera
  * @version 1.1
- * @since 2012
+ * @since Java 7
  */
 public class ClientBuilder {
 

@@ -4,11 +4,16 @@
  */
 package org.comcast.schedulers;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
@@ -24,6 +29,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import static org.quartz.TriggerBuilder.newTrigger;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -61,7 +67,7 @@ public class OutputScheduler implements SchedulerInterface {
                     break;
             }
             
-        }catch (Exception ex){
+        }catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

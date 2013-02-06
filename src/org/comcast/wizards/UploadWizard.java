@@ -9,7 +9,9 @@ import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.lang.reflect.Proxy;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -28,10 +30,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.CryptoData;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.ServerConfig;
 import org.comcast.proxy.InterfaceWorks;
@@ -51,6 +57,7 @@ import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -76,7 +83,7 @@ public class UploadWizard {
                     break;
             }
             
-        }catch(Exception ex){
+        }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -103,7 +110,7 @@ public class UploadWizard {
                             1000, 600), null, properties);
                     System.out.println("Result = " + result);
                     //             System.exit (0);
-                } catch (Exception ex) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(UploadWizard.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -131,7 +138,7 @@ class WizardProvider extends WizardPanelProvider {
                 uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
             }
             
-        }catch(Exception ex){
+        }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -21,6 +22,7 @@ import org.comcast.logic.ServerConfig;
 import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -255,7 +257,7 @@ public class RouterRetrieve {
             //System.out.println("Mime: " + metadata.get(Metadata.CONTENT_TYPE));
             type = metadata.get(Metadata.CONTENT_TYPE);
 
-        } catch (Exception e) {
+        } catch (IOException | SAXException | TikaException e) {
         } finally {
             if (is != null) {
                 is.close();

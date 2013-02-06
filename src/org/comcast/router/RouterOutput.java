@@ -6,12 +6,16 @@ package org.comcast.router;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.util.ResourceBundle;
 import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.exceptions.FTPConectionRefusedException;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.exceptions.UnderflowException;
 import org.comcast.logic.Server;
 import org.comcast.logic.ServerConfig;
@@ -23,6 +27,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -92,7 +97,7 @@ public class RouterOutput implements Job {
                     break;
             }
                 
-            }catch(Exception ex){
+            }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
                 JOptionPane.showConfirmDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
             }
         }

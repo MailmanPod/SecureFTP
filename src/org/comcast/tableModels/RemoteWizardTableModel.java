@@ -9,9 +9,11 @@ import org.comcast.router.Message;
 import org.comcast.xml.LoaderProvider;
 
 /**
- * Clase que tiene como objetivo el modeloado de los datos en una tabla.
+ * Clase que tiene como objetivo el modeloado de los datos en una tabla.<br>
+ * Dicha tabla se encuentra en el asistente de bajada de archivos.<br> Modela un
+ * listado de los archivos locales seleccionados.
  *
- * @author Federico Bruera TSB 2010.
+ * @author Federico Bruera.
  * @version 1.0
  * @since 1.6
  */

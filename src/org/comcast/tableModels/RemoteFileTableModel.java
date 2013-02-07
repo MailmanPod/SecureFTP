@@ -10,17 +10,18 @@ import org.comcast.router.Message;
 import org.comcast.xml.LoaderProvider;
 
 /**
- * Clase que tiene como objetivo el modeloado de los datos en una tabla.
- * @author Federico Bruera TSB 2010.
+ * Clase que tiene como objetivo el modelado de los datos en una tabla.<br>
+ * Representa a listados de los archivos remotos.
+ *
+ * @author Federico Bruera.
  * @version 1.0
  * @since 1.6
  */
 public class RemoteFileTableModel implements TableModel {
-    private ResourceBundle remoteFileTM_es_ES;
 
+    private ResourceBundle remoteFileTM_es_ES;
     Object[][] datos;
     String[] columnas;
-
     Class[] types = new Class[]{
         java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
@@ -41,21 +42,21 @@ public class RemoteFileTableModel implements TableModel {
         datos = new Object[rows][5];
         reload(sample);
     }
-    
-    private void column(){
+
+    private void column() {
         this.columnas = new String[4];
         columnas[0] = remoteFileTM_es_ES.getString("NOMBRE");
         columnas[1] = remoteFileTM_es_ES.getString("TAMAÑO");
         columnas[2] = remoteFileTM_es_ES.getString("PATH");
         columnas[3] = remoteFileTM_es_ES.getString("TIPO DE ARCHIVO");
     }
-    
-    private void locale() throws Exception{
+
+    private void locale() throws Exception {
         Client c = LoaderProvider.getInstance().getClientConfiguration();
-        
-        switch(c.getLocalization()){
+
+        switch (c.getLocalization()) {
             case "Español":
-                this.remoteFileTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_es_ES");
+                this.remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_es_ES");
                 break;
             case "Ingles":
                 this.remoteFileTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteFileTM_en_US");
@@ -65,7 +66,7 @@ public class RemoteFileTableModel implements TableModel {
                 break;
         }
     }
-    
+
     private void reload(Message[] sample) throws Exception {
         int i = 0;
         for (Message aux : sample) {
@@ -83,11 +84,11 @@ public class RemoteFileTableModel implements TableModel {
                     case 2:
                         setValueAt(aux.getRemotePath(), i, j);
                         break;
-                        
-                    case 3: 
+
+                    case 3:
                         setValueAt(aux.getFileType(), i, j);
                         break;
-                        
+
                     case 4:
                         setValueAt(aux, i, j);
                         break;

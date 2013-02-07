@@ -20,8 +20,8 @@ package org.comcast.tableModels;
 
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import javax.swing.filechooser.*;
 
 public class SimpleFileFilter extends FileFilter {

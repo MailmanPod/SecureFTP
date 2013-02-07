@@ -9,23 +9,22 @@ import org.comcast.router.Message;
 import org.comcast.xml.LoaderProvider;
 
 /**
- * Clase que tiene como objetivo el modeloado de los datos en una tabla.
+ * Clase que tiene como objetivo el modeloado de los datos en una tabla.<br>
+ * Dicha tabla se encuentra en el asistente de subida de archivos.<br> Modela un
+ * listado de los archivos locales seleccionados.
  *
- * @author Federico Bruera TSB 2010.
+ * @author Federico Bruera.
  * @version 1.0
  * @since 1.6
  */
 public class LocalWizardTableModel implements TableModel {
+
     private ResourceBundle localWizardTM_es_ES;
-    
     Object[][] datos;
-    
     String[] columnas;
-    
     Class[] types = new Class[]{
         java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
     };
-    
     boolean[] canEdit = new boolean[]{
         false, false, false, false, false, false
     };
@@ -43,8 +42,8 @@ public class LocalWizardTableModel implements TableModel {
         datos = new Object[rows][6];
         reload(sample);
     }
-    
-    private void column(){
+
+    private void column() {
         this.columnas = new String[5];
         this.columnas[0] = "#";
         this.columnas[1] = localWizardTM_es_ES.getString("NOMBRE");
@@ -52,19 +51,19 @@ public class LocalWizardTableModel implements TableModel {
         this.columnas[3] = localWizardTM_es_ES.getString("PRIORIDAD");
         this.columnas[4] = localWizardTM_es_ES.getString("TIPO DE ARCHIVO");
     }
-    
-    private void locale() throws Exception{
+
+    private void locale() throws Exception {
         Client c = LoaderProvider.getInstance().getClientConfiguration();
-        
-        switch(c.getLocalization()){
+
+        switch (c.getLocalization()) {
             case "Español":
-                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_es_ES");
+                this.localWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_es_ES");
                 break;
             case "Ingles":
-                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
+                this.localWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
                 break;
             default:
-                this.localWizardTM_es_ES  = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
+                this.localWizardTM_es_ES = ResourceBundle.getBundle("org/comcast/locale/LocalWizardTM_en_US");
                 break;
         }
     }
@@ -78,7 +77,7 @@ public class LocalWizardTableModel implements TableModel {
                     case 0:
                         setValueAt(i + 1, i, j);
                         break;
-                        
+
                     case 1:
                         setValueAt(aux.getLocalFile().getName(), i, j);
                         break;

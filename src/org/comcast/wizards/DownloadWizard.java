@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.wizards;
 
 import java.awt.EventQueue;
@@ -54,8 +50,12 @@ import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 
 /**
+ * Clase que representa al asistente de configuracion y bajada de archivos del
+ * servidor ftp.
  *
- * @author Quality of Service
+ * @author Damian Bruera.
+ * @version 4.2
+ * @since Java 7
  */
 public class DownloadWizard {
 
@@ -64,8 +64,8 @@ public class DownloadWizard {
     public DownloadWizard() {
         try {
             Client c = LoaderProvider.getInstance().getClientConfiguration();
-            
-            switch(c.getLocalization()){
+
+            switch (c.getLocalization()) {
                 case "Español":
                     downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_es_ES");
                     break;

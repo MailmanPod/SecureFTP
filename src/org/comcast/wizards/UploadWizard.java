@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.wizards;
 
 import java.awt.EventQueue;
@@ -59,19 +55,23 @@ import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
 import org.xml.sax.SAXException;
 
-
 /**
+ * Clase que representa al asistente de configuracion y subida de archivos al
+ * servidor ftp.
  *
- * @author Quality of Service
+ * @author Damian Bruera.
+ * @version 4.2
+ * @since Java 7
  */
 public class UploadWizard {
+
     private ResourceBundle uploadWizard_es_ES;
 
-    public UploadWizard(){
-        try{
+    public UploadWizard() {
+        try {
             Client c = LoaderProvider.getInstance().getClientConfiguration();
-            
-            switch(c.getLocalization()){
+
+            switch (c.getLocalization()) {
                 case "Español":
                     uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
                     break;
@@ -82,12 +82,12 @@ public class UploadWizard {
                     uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
                     break;
             }
-            
-        }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
+
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void main(Map args) {
         final Map properties = args;
         Runnable r;
@@ -98,10 +98,10 @@ public class UploadWizard {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
                     String title = uploadWizard_es_ES.getString("ASISTENTE SUBIR ARCHIVOS");
-                    String[] subtitles = new String[]{uploadWizard_es_ES.getString("BIENVENIDO"), uploadWizard_es_ES.getString("VERIFICAR SERVIDOR"), 
-                        uploadWizard_es_ES.getString("CONFIGURACION CLIENTE"), uploadWizard_es_ES.getString("VERIFICAR MAIL"), 
-                        uploadWizard_es_ES.getString("ARCHIVOS A SUBIR"), uploadWizard_es_ES.getString("DESTINO REMOTO")}; 
-                    
+                    String[] subtitles = new String[]{uploadWizard_es_ES.getString("BIENVENIDO"), uploadWizard_es_ES.getString("VERIFICAR SERVIDOR"),
+                        uploadWizard_es_ES.getString("CONFIGURACION CLIENTE"), uploadWizard_es_ES.getString("VERIFICAR MAIL"),
+                        uploadWizard_es_ES.getString("ARCHIVOS A SUBIR"), uploadWizard_es_ES.getString("DESTINO REMOTO")};
+
                     WizardProvider mp = new WizardProvider(title, subtitles);
                     Wizard wizard = mp.createWizard();
                     Object result;
@@ -119,26 +119,34 @@ public class UploadWizard {
         EventQueue.invokeLater(r);
     }
 }
+
 class WizardProvider extends WizardPanelProvider {
+
     private ResourceBundle uploadWizard_es_ES;
 
     WizardProvider(String title, String[] subtitles) {
-        
+
         super(title,
                 new String[]{"bienvenido", "servidor", "cliente", "mail", "archivosSubir", "destino"},
                 subtitles);
-        
-        
-        try{
+
+
+        try {
             Client c = LoaderProvider.getInstance().getClientConfiguration();
-            
-            if(c.getLocalization().equalsIgnoreCase("Español")){
-                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
-            }else{
-                uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+
+            switch (c.getLocalization()) {
+                case "Español":
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
+                    break;
+                case "Ingles":
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+                    break;
+                default:
+                    uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
+                    break;
             }
-            
-        }catch(ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex){
+
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -475,12 +483,12 @@ class WizardProvider extends WizardPanelProvider {
                         builder.append(uploadWizard_es_ES.getString("NO HAY ARCHIVOS SELECCIONADOS"));
                         wc.setProblem(uploadWizard_es_ES.getString("NO HAY ARCHIVOS SELECCIONADOS"));
                     }
-                    
+
                     JLabel p = new JLabel(uploadWizard_es_ES.getString("ASIGNAR PRIORIDADES A LOS ARCHIVOS"));
-                    
+
                     final JComboBox archivos = getArchivos(selectedItems);
                     final JComboBox prioridades = getPrioridades();
-                    
+
                     JButton añadir = new JButton(uploadWizard_es_ES.getString("AÑADIR"));
                     añadir.addActionListener(new ActionListener() {
                         @Override
@@ -498,10 +506,10 @@ class WizardProvider extends WizardPanelProvider {
                                 JOptionPane.showMessageDialog(null,
                                         z + selectedItems[sel - 1].getLocalPath() + "\n" + y + "\n" + prioridades.getSelectedItem(),
                                         x, JOptionPane.INFORMATION_MESSAGE);
-                                
+
                                 area.setModel(new LocalWizardTableModel(selectedItems));
                                 alineacion(area);
-                                
+
                             } catch (Exception ex) {
                                 String a = (uploadWizard_es_ES.getString("PROBLEMA AL CARGAR LOS ARCHIVOS: "));
                                 wc.setProblem(a + ex.toString());
@@ -509,7 +517,7 @@ class WizardProvider extends WizardPanelProvider {
                         }
                     });
                     wc.setProblem(uploadWizard_es_ES.getString("NO HA FINALIZADO LAS MODIFICACIONES"));
-                    
+
                     JButton finalizar = new JButton(uploadWizard_es_ES.getString("FINALIZAR MODIFICACIONES"));
                     finalizar.addActionListener(new ActionListener() {
                         @Override
@@ -552,13 +560,13 @@ class WizardProvider extends WizardPanelProvider {
 
             case "destino":
                 wc.setProblem(uploadWizard_es_ES.getString("RUTA REMOTA NO VALIDA O FECHA NO VALIDA"));
-                
+
                 JLabel desc = new JLabel(uploadWizard_es_ES.getString("UBICACION REMOTA ELEGIDA: "));
                 final JLabel selec = new JLabel();
 
                 final JButton buildScheduler = new JButton(uploadWizard_es_ES.getString("ARMAR HORARIO"));
                 buildScheduler.setEnabled(false);
-                
+
                 JButton ingresar = new JButton("....");
                 ingresar.addActionListener(new ActionListener() {
                     @Override
@@ -568,9 +576,9 @@ class WizardProvider extends WizardPanelProvider {
                         if (get == null || get.equalsIgnoreCase("")) {
                             String s = uploadWizard_es_ES.getString("DEBE SELECCIONAR UNA RUTA REMOTA VALIDA");
                             String g = uploadWizard_es_ES.getString("RUTA REMOTA");
-                            
+
                             JOptionPane.showMessageDialog(null, s, g, JOptionPane.WARNING_MESSAGE);
-                            
+
                             wc.setProblem(uploadWizard_es_ES.getString("DEBE SELECCIONAR UNA RUTA REMOTA VALIDA"));
                         } else {
                             selec.setText(get);
@@ -585,7 +593,7 @@ class WizardProvider extends WizardPanelProvider {
 
                 final JComboBox dias = getDias();
                 final JComboBox meses = getMeses();
-                
+
                 Calendar c = Calendar.getInstance();
                 int year = c.get(Calendar.YEAR);
                 final JTextField años = new JTextField(5);
@@ -597,7 +605,7 @@ class WizardProvider extends WizardPanelProvider {
                 final JTextField segundos = new JTextField(3);
                 segundos.setText("00");
                 segundos.setEnabled(false);
-                
+
                 buildScheduler.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -620,8 +628,8 @@ class WizardProvider extends WizardPanelProvider {
                             } else {
                                 wc.setProblem(null);
                                 map.put("dateScheduler", date);
-                                
-                                String k = uploadWizard_es_ES.getString("LA TAREA FUE PROGRAMADA PARA EJECUTARSE EN:") ;
+
+                                String k = uploadWizard_es_ES.getString("LA TAREA FUE PROGRAMADA PARA EJECUTARSE EN:");
                                 String h = uploadWizard_es_ES.getString("TAREA SUBIR ARCHIVO");
                                 JOptionPane.showMessageDialog(null, k + "\n" + runTime, h, JOptionPane.INFORMATION_MESSAGE);
                             }
@@ -731,8 +739,8 @@ class WizardProvider extends WizardPanelProvider {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.CENTER);
         int count = table.getColumnCount();
-        
-        for(int i = 0; i < count; i++){
+
+        for (int i = 0; i < count; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
     }
@@ -752,23 +760,24 @@ class WizardProvider extends WizardPanelProvider {
 }
 
 class Result extends DeferredWizardResult {
+
     private ResourceBundle uploadWizard_es_ES;
 
     public Result() {
         // Uncomment the following line to make it possible to close the dialog
         // while the operation is running (abort the operation, in other words).
         // super (true);
-        
-        try{
+
+        try {
             Client c = LoaderProvider.getInstance().getClientConfiguration();
-            
-            if(c.getLocalization().equalsIgnoreCase("Español")){
+
+            if (c.getLocalization().equalsIgnoreCase("Español")) {
                 uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_es_ES");
-            }else{
+            } else {
                 uploadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/UploadWizard_en_US");
             }
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -778,7 +787,7 @@ class Result extends DeferredWizardResult {
         Message[] selectedItems = (Message[]) settings.get("newItems");
         SimpleList<Message> transfer = null;
         InterfaceWorks behind = null;
-        
+
         progress.setProgress(uploadWizard_es_ES.getString("PREPARAR ARCHIVOS"), 0, 3);
         try {
             for (Message aux : selectedItems) {
@@ -826,19 +835,19 @@ class Result extends DeferredWizardResult {
 
         String[] items = new String[iterador.size() + 2];
         int i = 0;
-        
+
         String y = uploadWizard_es_ES.getString("TAREA REALIZADA: ");
         items[i] = y + runTime;
-        
+
         i++;
-        
+
         String h = uploadWizard_es_ES.getString("DESTINO REMOTO: ");
         items[i] = h + (String) settings.get("destination");
-        
+
         while (iterador.hasMoreElements()) {
             i++;
             Message aux = iterador.returnElement();
-            
+
             String d = uploadWizard_es_ES.getString("ARCHIVO TRANSFERIDO: ");
             items[i] = d + aux.getLocalPath();
         }

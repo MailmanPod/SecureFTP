@@ -14,6 +14,7 @@ package org.comcast.splash;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -81,6 +82,7 @@ public class Presentation extends javax.swing.JFrame {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     //UIManager.setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceGraphiteGlassLookAndFeel");
@@ -90,7 +92,7 @@ public class Presentation extends javax.swing.JFrame {
 
                     progre.start();
 
-                } catch (Exception ex) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     JOptionPane.showMessageDialog(null, "No se puede establecer el aspecto deseado", "Adminstrador Base Datos", JOptionPane.ERROR_MESSAGE);
                     System.exit(0);
                 }

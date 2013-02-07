@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.strategy;
 
 import java.io.IOException;
@@ -14,8 +10,12 @@ import org.comcast.router.RouterRetrieve;
 import org.comcast.structures.SimpleList;
 
 /**
+ * Clase parte del patron strategy, el cual se encarga de listar todos los
+ * archivos, ordenandolos segun el tamaño del archivo.
  *
- * @author Quality of Service
+ * @author Damian Bruera
+ * @version 2.0
+ * @since Java 7
  */
 public class SizeListing implements ListingStrategy {
 

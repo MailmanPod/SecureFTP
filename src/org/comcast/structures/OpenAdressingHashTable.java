@@ -463,6 +463,20 @@ public class OpenAdressingHashTable<E extends Comparable, K> implements Serializ
         return true;
     }
 
+    /**
+     * Metodo que tiene como objetivo colocar un nuevo objeto en una entrada en
+     * la tabla de hash. <br> Primero verifica, por medio de la llave si el
+     * objeto que se quiere colocar en la tabla ya se encuentra en la tabla. En
+     * el caso de no encontrarse en la tabla se crea una nueva entrada en la
+     * tabla y se coloca el objeto en la posicion indicada por
+     * <i><b>finder</b></i>, ademas de aumentar en uno la ocupacion actual. <br>
+     * Por ultimo se verifica si el factor de carga excede el factor por defecto
+     * de esta tabla. De ser asi se llama al metodo <i><b>rehash</b></i>.
+     *
+     * @param x Elemento a insertar en la tabla.
+     * @return true si la operacion se hizo con exito.<br> false si el objeto ya
+     * se encontraba en la tabla.
+     */
     public boolean putByKey(E x, K k) {
         int currentPos = finder(k);
 

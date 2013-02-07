@@ -1,39 +1,40 @@
 package org.comcast.structures;
 
-// BinaryHeap class
 import org.comcast.exceptions.UnderflowException;
 
-//
-// CONSTRUCTION: with optional capacity (that defaults to 100)
-//               or an array containing initial items
-//
-// ******************PUBLIC OPERATIONS*********************
-// void insert( x )       --> Insert x
-// Comparable deleteMin( )--> Return and remove smallest item
-// Comparable findMin( )  --> Return smallest item
-// boolean isEmpty( )     --> Return true if empty; else false
-// void makeEmpty( )      --> Remove all items
-// ******************ERRORS********************************
-// Throws UnderflowException as appropriate
 /**
- * Implements a binary heap. Note that all "matching" is based on the compareTo
- * method.
+ *CONSTRUCCION: Con capacidad opcional (que por defecto es 100) o una matriz que 
+ * contiene todos los elementos iniciales
  *
- * @author Mark Allen Weiss
+ *******************OPERACIONES PUBLICAS*********************
+ *void insert( x )       --> Añade x
+ *Comparable deleteMin( )--> Retorna y elimina el item mas pequeño
+ *Comparable findMin( )  --> Retorna el item mas pequeño
+ *boolean isEmpty( )     --> Retorna true si esta vacio o false en caso contrario.
+ *void makeEmpty( )      --> Elimina todos los items.
+ *******************ERRORES********************************
+ *Throws UnderflowException en caso de que se quiera ingresar con la cola de prioridad vacia.
+ *
+ * Implementa una cola binaria de prioridad. Notar que todas las comparaciones se
+ * basan en el metodo compareTo.
+ *
+ * @author Damian Bruera
+ * @since Java 6
+ * @version 1.0
  */
 public class BinaryHeap<E extends Comparable<? super E>> {
 
     /**
-     * Construct the binary heap.
+     * Construye la cola de prioridades con la capacidad por default.
      */
     public BinaryHeap() {
         this(DEFAULT_CAPACITY);
     }
 
     /**
-     * Construct the binary heap.
+     * Constructor de la clase.
      *
-     * @param capacity the capacity of the binary heap.
+     * @param capacity Con la capacidad de la cola binaria.
      */
     public BinaryHeap(int capacity) {
         currentSize = 0;
@@ -41,7 +42,9 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Construct the binary heap given an array of items.
+     * Construye una cola de prioridades dada una matriz de elementos.
+     * 
+     * @param items Elementos a añadir.
      */
     public BinaryHeap(E[] items) {
         currentSize = items.length;
@@ -55,10 +58,10 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Insert into the priority queue, maintaining heap order. Duplicates are
-     * allowed.
-     *
-     * @param x the item to insert.
+     * Insertar en la cola de prioridades, manteniendo el orden del montón. 
+     * Duplicados son permitidos.
+     * 
+     * @param x El item a insertar.
      */
     public void insert(E x) {
         if (currentSize == array.length - 1) {
@@ -73,6 +76,11 @@ public class BinaryHeap<E extends Comparable<? super E>> {
         array[ hole] = x;
     }
 
+    /**
+     * Redimenciona la cola de prioridad.
+     * 
+     * @param newSize Con el nuevo tamaño.
+     */
     private void enlargeArray(int newSize) {
         E[] old = array;
         array = (E[]) new Comparable[newSize];
@@ -82,9 +90,10 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Find the smallest item in the priority queue.
-     *
-     * @return the smallest item, or throw an UnderflowException if empty.
+     * Buscar el elemento más pequeño en la cola de prioridades.
+     * 
+     * @return el item mas pequeño.
+     * @throws UnderflowException Si esta vacia la cola.
      */
     public E findMin() throws UnderflowException {
         if (isEmpty()) {
@@ -94,9 +103,10 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Remove the smallest item from the priority queue.
-     *
-     * @return the smallest item, or throw an UnderflowException if empty.
+     * Quita el elemento más pequeño de la cola de prioridad.
+     * 
+     * @return El item mas pequeño
+     * @throws UnderflowException Si esta vacia la cola.
      */
     public E deleteMin() throws UnderflowException {
         if (isEmpty()) {
@@ -111,26 +121,24 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Establish heap order property from an arbitrary arrangement of items.
-     * Runs in linear time.
+     * Establece el orden del montón de un arreglo arbitrario de elementos.
      */
     private void buildHeap() {
         for (int i = currentSize / 2; i > 0; i--) {
             percolateDown(i);
         }
     }
-
+    
     /**
-     * Test if the priority queue is logically empty.
-     *
-     * @return true if empty, false otherwise.
+     * Verifica si la cola de prioridad esta vacia
+     * @return True si esta vacia o false si no lo esta.
      */
     public boolean isEmpty() {
         return currentSize == 0;
     }
 
     /**
-     * Make the priority queue logically empty.
+     * Hace la cola de prioridad lógicamente vacía. 
      */
     public void makeEmpty() {
         currentSize = 0;
@@ -140,9 +148,9 @@ public class BinaryHeap<E extends Comparable<? super E>> {
     private E[] array; // The heap array
 
     /**
-     * Internal method to percolate down in the heap.
+     * Método interno que filtra hacia abajo en el montón.
      *
-     * @param hole the index at which the percolate begins.
+     * @param hole indice en donde empieza el filtrado.
      */
     private void percolateDown(int hole) {
         int child;
@@ -175,6 +183,12 @@ public class BinaryHeap<E extends Comparable<? super E>> {
         return cadena.toString();
     }
 
+    /**
+     * Metodo que retorna un iterador sobre la cola de prioridad.<br>
+     * Este iterador recorre el array de manera secuencial.
+     *
+     * @return LocalIterator<E> con el iterador.
+     */
     public LocalIterator<E> getIterator() {
         return new Iterator();
     }

@@ -497,7 +497,7 @@ public class SimpleList<E extends Comparable> implements Serializable {
 
     /**
      * Metodo que tiene como objetivo crear un arreglo que contiene todos los
-     * elementos que se encuentran en la lista.
+     * elementos que se encuentran en la lista que se pasa como parametro.
      *
      * @param clase representa al tipo de elementos que contendra el arreglo. En
      * otras palabras, indicamos de que clase son los objetos que contiene la
@@ -518,6 +518,16 @@ public class SimpleList<E extends Comparable> implements Serializable {
         return array;
     }
 
+    /**
+     * Metodo que tiene como objetivo crear un arreglo que contiene todos los
+     * elementos que se encuentran en la lista local.
+     *
+     * @param clase representa al tipo de elementos que contendra el arreglo. En
+     * otras palabras, indicamos de que clase son los objetos que contiene la
+     * lista.
+     * @param objects SimpleList<E> con todos los elementos.
+     * @return E[] arreglo que representa a todos los elementos.
+     */
     public E[] toArray(Class<E> clase) {
         E[] array = (E[]) Array.newInstance(clase, this.size);
         LocalIterator<E> iter = this.getIterador();

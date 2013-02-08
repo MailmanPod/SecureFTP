@@ -17,9 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.comcast.builder.Client;
 import org.comcast.crypto.CryptoData;
 import org.comcast.logic.ServerConfig;
-import org.comcast.structures.LocalIterator;
 import org.comcast.structures.OpenAdressingHashTable;
-import org.comcast.structures.SimpleList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -27,13 +25,13 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
- * Clase que maneja la conexion y movimiento de datos u un archivo XML.<br> Este
- * archivo XML de configuracion que se crea, almacena los datos de un usuario,
- * Nombre y contrasenia, utilizando el sistema DOM, el cual crea en memoria,
- * luego de realizar el parseo, un esquema de arbol n-ario.
+ * Clase que maneja la conexion y movimiento de datos a un archivo XML.<br> Este
+ * archivo XML de configuracion que se crea, almacena todos los datos que
+ * brindaran soporte a la aplicacion, utilizando el sistema DOM, el cual crea en
+ * memoria, luego de realizar el parseo, un esquema de arbol n-ario.
  *
- * @author Federico Bruera TSB 2010.
- * @version 2.0
+ * @author Federico Bruera.
+ * @version 4.0
  * @since 1.6
  */
 public final class XMLConfiguration {
@@ -88,8 +86,7 @@ public final class XMLConfiguration {
      * Metodo que tiene como finalidad establecer la conexion con el archivo
      * XML. <br> En este metodo se realiza el parseo del archivo de
      * configuracion XML, para luego crear el arbol n-ario representado por
-     * <code>userElement</code>. <br> Principalmente el archivo XML contendra
-     * los nombres de usuario y sus respectivas contrasenias.
+     * <code>userElement</code>.
      *
      * @throws ParserConfigurationException si no se puede llevar u cabo el
      * parseo
@@ -114,6 +111,18 @@ public final class XMLConfiguration {
         userElement = root.getDocumentElement();/*apunta u la raiz del arbol*/
     }
 
+    /**
+     * Metodo que tiene como finalidad establecer la conexion con el archivo
+     * XML. <br> En este metodo se realiza el parseo del archivo de
+     * configuracion XML, para luego crear el arbol n-ario representado por
+     * <code>userElement</code>.<br> En este caso, no se utiliza un esquema para
+     * validar.
+     *
+     * @throws ParserConfigurationException si no se puede llevar u cabo el
+     * parseo
+     * @throws SAXException si ocurre algun problema durante la operacion.
+     * @throws IOException si ocurre algun problema durante la operacion.
+     */
     public void createConection(String xmlFile) throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
         File fileXML = new File(xmlFile);
 
@@ -133,7 +142,7 @@ public final class XMLConfiguration {
      * Metodo que tiene como finalidad cerrar la conexion con el archivo de
      * configuracion. <br> Este metodo se utiliza si ocurrio alguna modificacion
      * en el arbol de memoria y se quiere que salga reflejada en el mismo
-     * archivo. Estas modificaciones pueden ser tanto dde insercion,
+     * archivo. Estas modificaciones pueden ser tanto de insercion,
      * modificacion, o remocion de algun elemento del archivo XML.
      *
      * @throws TransformerConfigurationException si ocurre algun problema
@@ -153,6 +162,18 @@ public final class XMLConfiguration {
         transformer.transform(source, result);
     }
 
+    /**
+     * Obtiene los datos de la configuracion del servidor ftp desde el archivo
+     * xml.
+     *
+     * @return Un objeto con todos los datos de la configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public ServerConfig getServerConfig() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -182,6 +203,18 @@ public final class XMLConfiguration {
         return config;
     }
 
+    /**
+     * Guarda en el archivo xml todos los datos de la configuracion del servidor
+     * ftp.
+     *
+     * @param newServerConfig Con toda la configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public void setServerConfig(ServerConfig newServerConfig) throws ParserConfigurationException,
             SAXException, IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -209,6 +242,17 @@ public final class XMLConfiguration {
         //closeConection();
     }
 
+    /**
+     * Obtiene los datos del cliente de la aplicacion desde el archivo xml.
+     *
+     * @return Con toda la configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public Properties getClientConfig() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -268,6 +312,18 @@ public final class XMLConfiguration {
         return config;
     }
 
+    /**
+     * Guarda en el archivo xml todos los datos de la configuracion del servidor
+     * ftp.
+     *
+     * @param config Con toda la configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public void setClientConfig(Client config) throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -319,6 +375,18 @@ public final class XMLConfiguration {
         //closeConection();
     }
 
+    /**
+     * Obtiene la configuracion para establecer una conexion con el servicio
+     * smtp, para enviar el mail.
+     *
+     * @return Configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public Properties getMailProperties() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -361,6 +429,18 @@ public final class XMLConfiguration {
         return config;
     }
 
+    /**
+     * Guarda la configuracion para establecer una conexion con el servicio
+     * smtp, para enviar el mail.
+     *
+     * @return Configuracion.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public void setMailProperties(String mailUser) throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -381,6 +461,17 @@ public final class XMLConfiguration {
         //closeConection();
     }
 
+    /**
+     * Obtiene los datos que hacen a la creacion del mail, propiamente dicho.
+     *
+     * @return Datos del mail.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public Properties getMailContent() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -433,6 +524,17 @@ public final class XMLConfiguration {
         return config;
     }
 
+    /**
+     * Modifica los datos que hacen al mail.
+     *
+     * @param c Nuevo contenido del mail.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public void setMailContent(Properties c) throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -482,6 +584,21 @@ public final class XMLConfiguration {
         //closeConection();
     }
 
+    /**
+     * Obtiene los datos de los archivos que fueron subidos al servidor ftp,
+     * para evitar archivos duplicados.<br> Crea una taba de hash en donde la
+     * llave es el nombre del archivo asociado a un objeto que contiene todos
+     * los datos del archivo enviado al servidor.
+     *
+     * @return Una tabla de hash con todos los objetos con datos de los archivos
+     * subidos.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     */
     public OpenAdressingHashTable<CryptoData, String> getCryptoData() throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 
@@ -529,6 +646,11 @@ public final class XMLConfiguration {
         return list;
     }
 
+    /**
+     * Agrega un nuevo registro con el nuevo archivo subido al servidor ftp.
+     *
+     * @param newData Datos del archivo subido.
+     */
     public void appendCryptoData(CryptoData newData) {
 
         Element data = root.createElement("data");
@@ -568,6 +690,20 @@ public final class XMLConfiguration {
         userElement.appendChild(data);
     }
 
+    /**
+     * Elimina un registro del archivo descargado desde el servidor ftp.
+     *
+     * @param fileName
+     * @param extension
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     * @throws URISyntaxException
+     * @deprecated Sin uso. Reservado para futuras implementaciones. Usar con
+     * cuidado.
+     */
     public void removeCryptoData(String fileName, String extension) throws ParserConfigurationException, SAXException,
             IOException, TransformerConfigurationException, TransformerException, URISyntaxException {
 

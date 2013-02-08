@@ -1,12 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.xml;
 
 /**
+ * Clase que representa la implementacion del patron Singleton.
  *
- * @author Quality of Service
+ * @author Damian Bruera
+ * @since Java 6
+ * @version 1.0
  */
 public class LoaderProvider {
 

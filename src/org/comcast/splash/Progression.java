@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.comcast.splash;
-
-
 
 import java.util.Random;
 import java.util.logging.Level;
@@ -13,8 +7,11 @@ import javax.swing.JProgressBar;
 import org.comcast.visual.Main;
 
 /**
+ * Clase que se encarga de simular la carga de elementso del programa.
  *
- * @author Fox_Nightmare
+ * @author Damian Bruera
+ * @since Java 6
+ * @version 2.0
  */
 public class Progression extends Thread {
 

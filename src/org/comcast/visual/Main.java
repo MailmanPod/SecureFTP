@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -36,6 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
 import org.comcast.exceptions.FTPConectionRefusedException;
 import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.FileFinder;
@@ -73,9 +75,10 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
+        locale();
         initComponents();
-        centrarPantalla();
         setImageIconFrame();
+        centrarPantalla();
         initObjects();
         initElements();
 //        connection();
@@ -135,10 +138,10 @@ public class Main extends javax.swing.JFrame {
     }
 
     public void connection() {
-        String j = "No se pudo establecer la conexion con el servidor FTP.";
-        String c = "Mas informacion del error: ";
-        String h = "Por favor revise su configuracion";
-        String k = "Error en la conexion.";
+        String j = main_es_ES.getString("NO SE PUDO ESTABLECER LA CONEXION CON EL SERVIDOR FTP.");
+        String c = main_es_ES.getString("MAS INFORMACION DEL ERROR: ");
+        String h = main_es_ES.getString("POR FAVOR REVISE SU CONFIGURACION");
+        String k = main_es_ES.getString("ERROR EN LA CONEXION.");
 
         try {
             RouterRetrieve r = new RouterRetrieve(config);
@@ -159,8 +162,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void initLocalTable(String pathName) {
-        String o = "Cantidad de Archivos: ";
-        String p = "Tamaño total: ";
+        String o = main_es_ES.getString("CANTIDAD DE ARCHIVOS: ");
+        String p = main_es_ES.getString("TAMAÑO TOTAL: ");
 
         try {
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -189,8 +192,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void initRemoteTable(String pathName) {
-        String o = "Cantidad de Archivos: ";
-        String p = "Tamaño total: ";
+        String o = main_es_ES.getString("CANTIDAD DE ARCHIVOS: ");
+        String p = main_es_ES.getString("TAMAÑO TOTAL: ");
 
         try {
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -312,6 +315,8 @@ public class Main extends javax.swing.JFrame {
         btnBuscarArchivos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuOpciones = new javax.swing.JMenu();
+        menuItemAyuda = new javax.swing.JMenuItem();
+        menuItemSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SECURE FTP");
@@ -384,7 +389,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panelSeleccionArchivoLocal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Local Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelSeleccionArchivoLocal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, main_es_ES.getString("DLA"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
 
         lblFileSelected.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         lblFileSelected.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -397,14 +402,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btnSeleccionLocal.setText("Guardar Seleccion");
+        btnSeleccionLocal.setText(main_es_ES.getString("GUARDAR SELECCION")); // NOI18N
         btnSeleccionLocal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSeleccionLocalActionPerformed(evt);
             }
         });
 
-        btnBorrarSeleccion.setText("Borrar Seleccion");
+        btnBorrarSeleccion.setText(main_es_ES.getString("BORRAR SELECCION")); // NOI18N
         btnBorrarSeleccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBorrarSeleccionActionPerformed(evt);
@@ -453,9 +458,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabbed.addTab("Listados de Archivos Locales", panelListadoLocal);
+        tabbed.addTab(main_es_ES.getString("LAL"), panelListadoLocal);
 
-        panelSeleccionArchivoRemoto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorio Remoto  Activo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelSeleccionArchivoRemoto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, main_es_ES.getString("DRA"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 10), new java.awt.Color(255, 51, 51))); // NOI18N
 
         lblFileSelectedRemote.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         lblFileSelectedRemote.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -468,14 +473,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btnSeleccionRemota.setText("Guardar Seleccion");
+        btnSeleccionRemota.setText(main_es_ES.getString("GUARDAR SELECCION")); // NOI18N
         btnSeleccionRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSeleccionRemotaActionPerformed(evt);
             }
         });
 
-        btnBorrarSeleccionRemota.setText("Borrar Seleccion");
+        btnBorrarSeleccionRemota.setText(main_es_ES.getString("BORRAR SELECCION")); // NOI18N
         btnBorrarSeleccionRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBorrarSeleccionRemotaActionPerformed(evt);
@@ -569,13 +574,13 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        tabbed.addTab("Listado Archivos Remotos", panelListadoRemoto);
+        tabbed.addTab(main_es_ES.getString("LAR"), panelListadoRemoto);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         btnUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Step-Forward-48.png"))); // NOI18N
-        btnUpload.setToolTipText("Sube archivos al servidor FTP");
+        btnUpload.setToolTipText(main_es_ES.getString("SUBE ARCHIVOS AL SERVIDOR FTP")); // NOI18N
         btnUpload.setFocusable(false);
         btnUpload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnUpload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -587,7 +592,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnUpload);
 
         btnDownload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Step-Backward-48.png"))); // NOI18N
-        btnDownload.setToolTipText("Descarga archivos desde un Servidor FTP");
+        btnDownload.setToolTipText(main_es_ES.getString("DESCARGA ARCHIVOS DESDE UN SERVIDOR FTP")); // NOI18N
         btnDownload.setFocusable(false);
         btnDownload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDownload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -599,7 +604,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnDownload);
 
         btnSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Settings-Metallic-48.png"))); // NOI18N
-        btnSettings.setToolTipText("Configuraciones");
+        btnSettings.setToolTipText(main_es_ES.getString("CONFIGURACIONES")); // NOI18N
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -611,7 +616,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(btnSettings);
 
         btnRestart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/comcast/images/Punto Switcher-48.png"))); // NOI18N
-        btnRestart.setToolTipText("Resetear la aplicacion");
+        btnRestart.setToolTipText(main_es_ES.getString("RESETEAR LA APLICACION")); // NOI18N
         btnRestart.setFocusable(false);
         btnRestart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRestart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -624,7 +629,7 @@ public class Main extends javax.swing.JFrame {
 
         jSplitPane1.setDividerLocation(350);
 
-        panelOrdenarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ordenar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelOrdenarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, main_es_ES.getString("OrdenarPor"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
         boxSort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Tipo de Archivo", "Tamaño" }));
         boxSort.addItemListener(new java.awt.event.ItemListener() {
@@ -634,7 +639,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(radioMayor);
-        radioMayor.setText("Mayor a Menor");
+        radioMayor.setText(main_es_ES.getString("MAYOR A MENOR")); // NOI18N
         radioMayor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioMayorActionPerformed(evt);
@@ -642,7 +647,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(radioMenor);
-        radioMenor.setText("Menor a Mayor");
+        radioMenor.setText(main_es_ES.getString("MENOR A MAYOR")); // NOI18N
         radioMenor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioMenorActionPerformed(evt);
@@ -677,20 +682,20 @@ public class Main extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(panelOrdenarPor);
 
-        panelBuscarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar por...", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        panelBuscarPor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, main_es_ES.getString("BuscarPor"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
         boxBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Archivos Locales", "Archivos Remotos" }));
 
         buttonGroup2.add(radioExacto);
-        radioExacto.setText("Nombre Exacto");
+        radioExacto.setText(main_es_ES.getString("NOMBRE EXACTO")); // NOI18N
 
         buttonGroup2.add(radioAprox);
-        radioAprox.setText("Nombre Aprox");
+        radioAprox.setText(main_es_ES.getString("NOMBRE APROX")); // NOI18N
 
         buttonGroup2.add(radioExtension);
-        radioExtension.setText("Extension");
+        radioExtension.setText(main_es_ES.getString("EXTENSION")); // NOI18N
 
-        btnBuscarArchivos.setText("Buscar");
+        btnBuscarArchivos.setText(main_es_ES.getString("BUSCAR")); // NOI18N
         btnBuscarArchivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarArchivosActionPerformed(evt);
@@ -734,7 +739,17 @@ public class Main extends javax.swing.JFrame {
 
         jSplitPane1.setRightComponent(panelBuscarPor);
 
-        menuOpciones.setText("Opciones");
+        menuOpciones.setText(main_es_ES.getString("OPCIONES")); // NOI18N
+
+        menuItemAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/comcast/locale/Main_es_ES"); // NOI18N
+        menuItemAyuda.setText(bundle.getString("MenuAyuda")); // NOI18N
+        menuOpciones.add(menuItemAyuda);
+
+        menuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        menuItemSalir.setText(bundle.getString("MenuSalir")); // NOI18N
+        menuOpciones.add(menuItemSalir);
+
         jMenuBar1.add(menuOpciones);
 
         setJMenuBar(jMenuBar1);
@@ -806,8 +821,8 @@ public class Main extends javax.swing.JFrame {
                 ActionListener exitListener = new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        String a = "Seguro que desea cerrar la ventana";
-                        String b = "Secure FTP";
+                        String a = main_es_ES.getString("SEGURO QUE DESEA CERRAR LA VENTANA");
+                        String b = main_es_ES.getString("SECURE FTP");
                         int option = JOptionPane.showConfirmDialog(null, a, b, JOptionPane.YES_NO_OPTION);
 
                         if (option == JOptionPane.YES_OPTION) {
@@ -846,10 +861,10 @@ public class Main extends javax.swing.JFrame {
                 };
 
                 PopupMenu popup = new PopupMenu();
-                MenuItem ventanaPrinc = new MenuItem("Volver a ventana principal");
-                MenuItem comprimir = new MenuItem("Subir Archivos");
-                MenuItem descomprimir = new MenuItem("Descargar Archivos");
-                MenuItem sa = new MenuItem("Salir del programa");
+                MenuItem ventanaPrinc = new MenuItem(main_es_ES.getString("VOLVER A VENTANA PRINCIPAL"));
+                MenuItem comprimir = new MenuItem(main_es_ES.getString("SUBIR ARCHIVOS"));
+                MenuItem descomprimir = new MenuItem(main_es_ES.getString("DESCARGAR ARCHIVOS"));
+                MenuItem sa = new MenuItem(main_es_ES.getString("SALIR DEL PROGRAMA"));
 
                 ventanaPrinc.addActionListener(mostrarListener);
                 comprimir.addActionListener(packListener);
@@ -868,7 +883,7 @@ public class Main extends javax.swing.JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String c = "Secure FTP";
-                        String d = "Click izquierdo para visualizar mas opciones.";
+                        String d = main_es_ES.getString("CLICK IZQUIERDO PARA VISUALIZAR MAS OPCIONES.");
                         trayIcon.displayMessage(c, d, TrayIcon.MessageType.INFO);
                         visibilidad();
                         tray.remove(trayIcon);
@@ -885,8 +900,8 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else {
-            String e = "System tray is currently not supported.";
-            String f = "System Tray Error";
+            String e = main_es_ES.getString("SYSTEM TRAY IS CURRENTLY NOT SUPPORTED.");
+            String f = main_es_ES.getString("SYSTEM TRAY ERROR");
             JOptionPane.showMessageDialog(null, e, f, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowIconified
@@ -899,9 +914,9 @@ public class Main extends javax.swing.JFrame {
         prepareDestination();
 
         if (!this.settings.containsKey("selectedFiles")) {
-            String g = "No hay Archivos Locales Seleccionados.";
-            String h = "Por favor seleccione los archivos y guarde la seleccion";
-            String i = "Sin seleccion";
+            String g = main_es_ES.getString("NO HAY ARCHIVOS LOCALES SELECCIONADOS.");
+            String h = main_es_ES.getString("POR FAVOR SELECCIONE LOS ARCHIVOS Y GUARDE LA SELECCION");
+            String i = main_es_ES.getString("SIN SELECCION");
             JOptionPane.showMessageDialog(this, g + "\n" + h, i, JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -960,8 +975,8 @@ public class Main extends javax.swing.JFrame {
             settings.remove("selectedFiles");
             settings.put("selectedFiles", toTransefer);
         } else {
-            String j = "No ha seleccionado ningun archivo";
-            String k = "Sin archivos";
+            String j = main_es_ES.getString("NO HA SELECCIONADO NINGUN ARCHIVO");
+            String k = main_es_ES.getString("SIN ARCHIVOS");
             int op = JOptionPane.showConfirmDialog(this, j, k, JOptionPane.WARNING_MESSAGE);
 
             if (op == JOptionPane.OK_OPTION && this.tableLocal.getModel().getRowCount() == 0) {
@@ -980,7 +995,7 @@ public class Main extends javax.swing.JFrame {
                 jfc = new JFileChooser(sel);
             }
 
-            jfc.setApproveButtonText("Seleccionar");
+            jfc.setApproveButtonText(main_es_ES.getString("SELECCIONAR"));
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jfc.setMultiSelectionEnabled(false);
             int response = jfc.showOpenDialog(this);
@@ -997,9 +1012,9 @@ public class Main extends javax.swing.JFrame {
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
         if (!this.download.containsKey("selectedFiles")) {
-            String g = "No hay Archivos Remotos Seleccionados.";
-            String h = "Por favor seleccione los archivos y guarde la seleccion";
-            String i = "Sin seleccion";
+            String g = main_es_ES.getString("NO HAY ARCHIVOS REMOTOS SELECCIONADOS.");
+            String h = main_es_ES.getString("POR FAVOR SELECCIONE LOS ARCHIVOS Y GUARDE LA SELECCION");
+            String i = main_es_ES.getString("SIN SELECCION");
             JOptionPane.showMessageDialog(this, g + "\n" + h, i, JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -1030,8 +1045,8 @@ public class Main extends javax.swing.JFrame {
             download.remove("selectedFiles");
             download.put("selectedFiles", toTransefer);
         } else {
-            String mess = "No ha seleccionado ningun archivo";
-            String t = "Sin Archivos";
+            String mess = main_es_ES.getString("NO HA SELECCIONADO NINGUN ARCHIVO");
+            String t = main_es_ES.getString("SIN ARCHIVOS");
 
             int op = JOptionPane.showConfirmDialog(this, mess, t, JOptionPane.WARNING_MESSAGE);
 
@@ -1079,7 +1094,7 @@ public class Main extends javax.swing.JFrame {
 
                         this.tableLocal.setModel(new LocalFileTableModel(only));
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
                     if (radioAprox.isSelected()) {
@@ -1089,7 +1104,7 @@ public class Main extends javax.swing.JFrame {
                             Message[] only = localNameAprox.toArray(Message.class);
                             this.tableLocal.setModel(new LocalFileTableModel(only));
                         } else {
-                            JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                         }
 
                     } else {
@@ -1100,7 +1115,7 @@ public class Main extends javax.swing.JFrame {
                                 Message[] only = localNameAprox.toArray(Message.class);
                                 this.tableLocal.setModel(new LocalFileTableModel(only));
                             } else {
-                                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
                     }
@@ -1116,7 +1131,7 @@ public class Main extends javax.swing.JFrame {
 
                         this.tableRemote.setModel(new RemoteFileTableModel(only));
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
                     if (radioAprox.isSelected()) {
@@ -1126,7 +1141,7 @@ public class Main extends javax.swing.JFrame {
                             Message[] only = remoteNameAprox.toArray(Message.class);
                             this.tableRemote.setModel(new RemoteFileTableModel(only));
                         } else {
-                            JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                         }
 
                     } else {
@@ -1137,7 +1152,7 @@ public class Main extends javax.swing.JFrame {
                                 Message[] only = remoteNameAprox.toArray(Message.class);
                                 this.tableRemote.setModel(new RemoteFileTableModel(only));
                             } else {
-                                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo", "Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, main_es_ES.getString("NO SE HA ENCONTRADO EL ARCHIVO"), main_es_ES.getString("ARCHIVO NO ENCONTRADO"), JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
                     }
@@ -1150,7 +1165,7 @@ public class Main extends javax.swing.JFrame {
         String search = this.txtBusqueda.getText();
 
         if (Validator.isTextEmpty(search) && search.startsWith(" ")) {
-            JOptionPane.showMessageDialog(this, "Campo de texto vacio", "Campo vacio", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, main_es_ES.getString("CAMPO DE TEXTO VACIO"), main_es_ES.getString("CAMPO VACIO"), JOptionPane.WARNING_MESSAGE);
         } else {
             try {
                 searchTable(search);
@@ -1173,8 +1188,8 @@ public class Main extends javax.swing.JFrame {
     private void tableLocalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLocalMouseClicked
         int[] selectedRows = this.tableLocal.getSelectedRows();
 
-        String o = "Cantidad de Archivos Seleccionados: ";
-        String p = "Tamaño seleccion: ";
+        String o = main_es_ES.getString("CANTIDAD DE ARCHIVOS SELECCIONADOS: ");
+        String p = main_es_ES.getString("TAMAÑO SELECCION: ");
         long count = 0L;
 
         int i = 0;
@@ -1192,8 +1207,8 @@ public class Main extends javax.swing.JFrame {
     private void tableRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRemoteMouseClicked
         int[] selectedRows = this.tableRemote.getSelectedRows();
 
-        String o = "Cantidad de Archivos Seleccionados: ";
-        String p = "Tamaño seleccion: ";
+        String o = main_es_ES.getString("CANTIDAD DE ARCHIVOS SELECCIONADOS: ");
+        String p = main_es_ES.getString("TAMAÑO SELECCION: ");
         long count = 0L;
 
         int i = 0;
@@ -1209,8 +1224,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tableRemoteMouseClicked
 
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
-        String h = "¿Desea reiniciar el programa?";
-        String l = "Reiniciar SECURE FTP";
+        String h = main_es_ES.getString("¿DESEA REINICIAR EL PROGRAMA?");
+        String l = main_es_ES.getString("REINICIAR SECURE FTP");
 
         int option = JOptionPane.showConfirmDialog(this, h, l, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -1249,8 +1264,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRestartActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        String mess = "¿Seguro que desea cerrar el programa?";
-        String tit = "Cerrar Programa";
+        String mess = main_es_ES.getString("¿SEGURO QUE DESEA CERRAR EL PROGRAMA?");
+        String tit = main_es_ES.getString("CERRAR PROGRAMA");
         int option = JOptionPane.showConfirmDialog(null, mess, tit, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (option == JOptionPane.YES_OPTION) {
@@ -1274,6 +1289,27 @@ public class Main extends javax.swing.JFrame {
      * defined on non Hotspot VM implementations.
      */
     public static final String SUN_JAVA_COMMAND = "sun.java.command";
+    private ResourceBundle main_es_ES;
+    
+    private void locale(){
+        try {
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+
+            switch (c.getLocalization()) {
+                case "Español":
+                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_es_ES");
+                    break;
+                case "Ingles":
+                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
+                    break;
+                default:
+                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
+                    break;
+            }
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * Restart the current Java application
@@ -1334,7 +1370,7 @@ public class Main extends javax.swing.JFrame {
             System.exit(0);
         } catch (Exception e) {
             // something went wrong
-            throw new IOException("Error while trying to restart the application", e);
+            throw new IOException(main_es_ES.getString("ERROR WHILE TRYING TO RESTART THE APPLICATION"), e);
         }
     }
 
@@ -1416,6 +1452,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lblSeleccionTotalRemoto;
     private javax.swing.JLabel lblTotales;
     private javax.swing.JLabel lblTotalesRemotos;
+    private javax.swing.JMenuItem menuItemAyuda;
+    private javax.swing.JMenuItem menuItemSalir;
     private javax.swing.JMenu menuOpciones;
     private javax.swing.JPanel panelBuscarPor;
     private javax.swing.JPanel panelListadoLocal;

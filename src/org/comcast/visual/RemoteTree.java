@@ -55,9 +55,9 @@ public class RemoteTree extends javax.swing.JDialog {
      */
     public RemoteTree(JLabel lbl, JTable r, JComboBox sort, JRadioButton menor, JRadioButton mayor) {
         initComponents();
+        setImageIconFrame();
         initElements();
         centrarPantalla();
-        setImageIconFrame();
         this.lbl = lbl;
         this.remote = r;
         this.boxSort = sort;

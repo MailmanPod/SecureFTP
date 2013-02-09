@@ -46,8 +46,8 @@ public class Settings extends javax.swing.JDialog {
      */
     public Settings() {
         initComponents();
-        centrarPantalla();
         setImageIconFrame();
+        centrarPantalla();
         initObjects();
         initAll();
     }

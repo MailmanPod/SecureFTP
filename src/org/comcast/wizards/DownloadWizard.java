@@ -5,7 +5,9 @@ import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.lang.reflect.Proxy;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -25,9 +27,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.comcast.builder.Client;
 import org.comcast.builder.Mail;
 import org.comcast.crypto.CryptoData;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.DateScheduler;
 import org.comcast.logic.ServerConfig;
 import org.comcast.proxy.DecryptHandler;
@@ -48,6 +53,7 @@ import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardController;
 import org.netbeans.spi.wizard.WizardException;
 import org.netbeans.spi.wizard.WizardPanelProvider;
+import org.xml.sax.SAXException;
 
 /**
  * Clase que representa al asistente de configuracion y bajada de archivos del
@@ -76,7 +82,7 @@ public class DownloadWizard {
                     downloadWizard_es_ES = ResourceBundle.getBundle("org/comcast/locale/DownloadWizard_en_US");
                     break;
             }
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -10,8 +10,32 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuOpciones">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Opciones"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="OPCIONES" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemAyuda">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="MenuAyuda" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                </Property>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemSalir">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+F4"/>
+                </Property>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="MenuSalir" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                </Property>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -81,8 +105,10 @@
         <Container class="javax.swing.JPanel" name="panelListadoLocal">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Listados de Archivos Locales">
-                <Property name="tabTitle" type="java.lang.String" value="Listados de Archivos Locales"/>
+              <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="main_es_ES.getString(&quot;LAL&quot;)" type="code"/>
+                </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -196,7 +222,8 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Directorio Local Activo">
+                    <TitledBorder title="&lt;User Code&gt;">
+                      <Connection PropertyName="titleX" code="main_es_ES.getString(&quot;DLA&quot;)" type="code"/>
                       <Font PropertyName="font" name="Segoe UI" size="10" style="0"/>
                       <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                     </TitledBorder>
@@ -251,7 +278,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSeleccionLocal">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Guardar Seleccion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="GUARDAR SELECCION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionLocalActionPerformed"/>
@@ -259,7 +288,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnBorrarSeleccion">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Borrar Seleccion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="BORRAR SELECCION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBorrarSeleccionActionPerformed"/>
@@ -272,8 +303,10 @@
         <Container class="javax.swing.JPanel" name="panelListadoRemoto">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Listado Archivos Remotos">
-                <Property name="tabTitle" type="java.lang.String" value="Listado Archivos Remotos"/>
+              <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="main_es_ES.getString(&quot;LAR&quot;)" type="code"/>
+                </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -341,7 +374,8 @@
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Directorio Remoto  Activo">
+                        <TitledBorder title="&lt;User Code&gt;">
+                          <Connection PropertyName="titleX" code="main_es_ES.getString(&quot;DRA&quot;)" type="code"/>
                           <Font PropertyName="font" name="Segoe UI" size="10" style="0"/>
                           <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                         </TitledBorder>
@@ -395,7 +429,9 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnSeleccionRemota">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Guardar Seleccion"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="GUARDAR SELECCION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionRemotaActionPerformed"/>
@@ -403,7 +439,9 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnBorrarSeleccionRemota">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Borrar Seleccion"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="BORRAR SELECCION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBorrarSeleccionRemotaActionPerformed"/>
@@ -468,7 +506,9 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Step-Forward-48.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Sube archivos al servidor FTP"/>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="SUBE ARCHIVOS AL SERVIDOR FTP" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -482,7 +522,9 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Step-Backward-48.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Descarga archivos desde un Servidor FTP"/>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="DESCARGA ARCHIVOS DESDE UN SERVIDOR FTP" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -496,7 +538,9 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Settings-Metallic-48.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Configuraciones"/>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="CONFIGURACIONES" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -510,7 +554,9 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/org/comcast/images/Punto Switcher-48.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Resetear la aplicacion"/>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="RESETEAR LA APLICACION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -532,7 +578,8 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Ordenar por...">
+                <TitledBorder title="&lt;User Code&gt;">
+                  <Connection PropertyName="titleX" code="main_es_ES.getString(&quot;OrdenarPor&quot;)" type="code"/>
                   <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                   <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                 </TitledBorder>
@@ -596,7 +643,9 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Mayor a Menor"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="MAYOR A MENOR" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioMayorActionPerformed"/>
@@ -607,7 +656,9 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Menor a Mayor"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="MENOR A MAYOR" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioMenorActionPerformed"/>
@@ -619,7 +670,8 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Buscar por...">
+                <TitledBorder title="&lt;User Code&gt;">
+                  <Connection PropertyName="titleX" code="main_es_ES.getString(&quot;BuscarPor&quot;)" type="code"/>
                   <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                   <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                 </TitledBorder>
@@ -690,7 +742,9 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Nombre Exacto"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="NOMBRE EXACTO" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="radioAprox">
@@ -698,7 +752,9 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Nombre Aprox"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="NOMBRE APROX" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="radioExtension">
@@ -706,14 +762,18 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Extension"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="EXTENSION" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtBusqueda">
             </Component>
             <Component class="javax.swing.JButton" name="btnBuscarArchivos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/comcast/locale/Main_es_ES.properties" key="BUSCAR" replaceFormat="main_es_ES.getString(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarArchivosActionPerformed"/>

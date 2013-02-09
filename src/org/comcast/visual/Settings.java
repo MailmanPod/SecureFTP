@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -35,6 +36,7 @@ import org.xml.sax.SAXException;
  * @author Quality of Service
  */
 public class Settings extends javax.swing.JDialog {
+    private ResourceBundle settings_es_ES;
 
     private Loader loader = LoaderProvider.getInstance();
     private Client c;
@@ -45,6 +47,7 @@ public class Settings extends javax.swing.JDialog {
      * Creates new form Settings
      */
     public Settings() {
+        locale();
         initComponents();
         setImageIconFrame();
         centrarPantalla();
@@ -52,6 +55,26 @@ public class Settings extends javax.swing.JDialog {
         initAll();
     }
 
+    private void locale(){
+        try {
+            Client c = LoaderProvider.getInstance().getClientConfiguration();
+
+            switch (c.getLocalization()) {
+                case "Español":
+                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_es_ES");
+                    break;
+                case "Ingles":
+                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
+                    break;
+                default:
+                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
+                    break;
+            }
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private void centrarPantalla() {
         Dimension tamFrame = this.getSize();//para obtener las dimensiones del frame
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla
@@ -183,21 +206,21 @@ public class Settings extends javax.swing.JDialog {
         btnKeys = new javax.swing.JButton();
         btnGuardarCliente = new javax.swing.JButton();
 
-        setTitle("Configuracion");
+        setTitle(settings_es_ES.getString("CONFIGURACION")); // NOI18N
 
-        contenedorServidor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Servidor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        contenedorServidor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, settings_es_ES.getString("Servidor"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
-        lblNombreServidor.setText("Nombre del Servidor");
+        lblNombreServidor.setText(settings_es_ES.getString("NOMBRE DEL SERVIDOR")); // NOI18N
 
-        lblNombreUsuario.setText("Nombre del Usuario");
+        lblNombreUsuario.setText(settings_es_ES.getString("NOMBRE DEL USUARIO")); // NOI18N
 
-        lblContraseniaUsuario.setText("Contraseña del Usuario");
+        lblContraseniaUsuario.setText(settings_es_ES.getString("CONTRASEÑA DEL USUARIO")); // NOI18N
 
-        lblIPServidor.setText("IP del Servidor FTP");
+        lblIPServidor.setText(settings_es_ES.getString("IP DEL SERVIDOR FTP")); // NOI18N
 
         txtIPServidor.setEnabled(false);
 
-        btnGuardarServidor.setText("Guardar Configuracion");
+        btnGuardarServidor.setText(settings_es_ES.getString("GUARDAR CONFIGURACION")); // NOI18N
         btnGuardarServidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarServidorActionPerformed(evt);
@@ -212,7 +235,7 @@ public class Settings extends javax.swing.JDialog {
             }
         });
 
-        btnConexion.setText("Comprobar Conexion");
+        btnConexion.setText(settings_es_ES.getString("COMPROBAR CONEXION")); // NOI18N
         btnConexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConexionActionPerformed(evt);
@@ -291,15 +314,15 @@ public class Settings extends javax.swing.JDialog {
                 .addContainerGap(104, Short.MAX_VALUE))
         );
 
-        tabbedSettings.addTab("Configuracion Servidor", panelConfiguracionServidor);
+        tabbedSettings.addTab(settings_es_ES.getString("ConfiguracionServidor"), panelConfiguracionServidor);
 
-        contenedorMailProps.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Propiedades del mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        contenedorMailProps.setBorder(javax.swing.BorderFactory.createTitledBorder(null, settings_es_ES.getString("PropiedadesMail"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
-        lblHost.setText("Host");
+        lblHost.setText(settings_es_ES.getString("HOST")); // NOI18N
 
-        lblTLS.setText("TLS Habilitado");
+        lblTLS.setText(settings_es_ES.getString("TLS HABILITADO")); // NOI18N
 
-        lblPuerto.setText("Puerto");
+        lblPuerto.setText(settings_es_ES.getString("PUERTO")); // NOI18N
 
         txtHost.setEnabled(false);
 
@@ -307,9 +330,9 @@ public class Settings extends javax.swing.JDialog {
 
         txtPuerto.setEnabled(false);
 
-        lblUsuario.setText("Usuario");
+        lblUsuario.setText(settings_es_ES.getString("USUARIO")); // NOI18N
 
-        lblAutenticacion.setText("Autenticacion Requerida");
+        lblAutenticacion.setText(settings_es_ES.getString("AUTENTICACION REQUERIDA")); // NOI18N
 
         txtUsuario.setEnabled(false);
 
@@ -362,31 +385,31 @@ public class Settings extends javax.swing.JDialog {
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Contenido del Mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, settings_es_ES.getString("ContenidoMail"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
-        lblFrom.setText("De");
+        lblFrom.setText(settings_es_ES.getString("DE")); // NOI18N
 
-        lblRecipient.setText("Para");
+        lblRecipient.setText(settings_es_ES.getString("PARA")); // NOI18N
 
-        lblSubject.setText("Asunto");
+        lblSubject.setText(settings_es_ES.getString("ASUNTO")); // NOI18N
 
-        lblProtocolo.setText("Protocolo");
+        lblProtocolo.setText(settings_es_ES.getString("PROTOCOLO")); // NOI18N
 
-        lblUsuarioMail.setText("Usuario");
+        lblUsuarioMail.setText(settings_es_ES.getString("USUARIO")); // NOI18N
 
-        lblContraseniaMail.setText("Contraseña");
+        lblContraseniaMail.setText(settings_es_ES.getString("CONTRASEÑA")); // NOI18N
 
         txtRecipient.setEnabled(false);
 
         txtProtocolo.setEnabled(false);
 
-        lblTextoContenido.setText("Contenido del Mail");
+        lblTextoContenido.setText(settings_es_ES.getString("CONTENIDO DEL MAIL")); // NOI18N
 
         txtAreaCuerpo.setColumns(20);
         txtAreaCuerpo.setRows(5);
         jScrollPane1.setViewportView(txtAreaCuerpo);
 
-        btnGuardarMail.setText("Guardar Configuracion");
+        btnGuardarMail.setText(settings_es_ES.getString("GUARDAR CONFIGURACION")); // NOI18N
         btnGuardarMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarMailActionPerformed(evt);
@@ -502,23 +525,23 @@ public class Settings extends javax.swing.JDialog {
             .addComponent(contenedorMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        tabbedSettings.addTab("Configuracion Mail", panelMail);
+        tabbedSettings.addTab(settings_es_ES.getString("ConfiguracionMail"), panelMail);
 
-        contenedorCliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
+        contenedorCliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, settings_es_ES.getString("Cliente"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
 
-        lblNombreCliente.setText("Nombre del Cliente");
+        lblNombreCliente.setText(settings_es_ES.getString("NOMBRE DEL CLIENTE")); // NOI18N
 
-        lblApellidoCliente.setText("Apellido del Cliente");
+        lblApellidoCliente.setText(settings_es_ES.getString("APELLIDO DEL CLIENTE")); // NOI18N
 
-        lblOrganizacion.setText("Organizacion");
+        lblOrganizacion.setText(settings_es_ES.getString("ORGANIZACION")); // NOI18N
 
-        lblLocale.setText("Idioma del la Interfaz");
+        lblLocale.setText(settings_es_ES.getString("IDIOMA DEL LA INTERFAZ")); // NOI18N
 
-        lblDescarga.setText("Carpeta de Descarga");
+        lblDescarga.setText(settings_es_ES.getString("CARPETA DE DESCARGA")); // NOI18N
 
-        lblPublico.setText("Carpeta de Almacenamiento de Clave Publica");
+        lblPublico.setText(settings_es_ES.getString("CARPETA DE ALMACENAMIENTO DE CLAVE PUBLICA")); // NOI18N
 
-        lblPrivado.setText("Carpeta de Almacenamiento de Clave Privada");
+        lblPrivado.setText(settings_es_ES.getString("CARPETA DE ALMACENAMIENTO DE CLAVE PRIVADA")); // NOI18N
 
         comboLocale.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Español", "Ingles" }));
 
@@ -542,7 +565,7 @@ public class Settings extends javax.swing.JDialog {
             }
         });
 
-        btnGuardarCliente.setText("Guardar Configuracion");
+        btnGuardarCliente.setText(settings_es_ES.getString("GUARDAR CONFIGURACION")); // NOI18N
         btnGuardarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarClienteActionPerformed(evt);
@@ -640,7 +663,7 @@ public class Settings extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabbedSettings.addTab("Configuracion Cliente", panelConfiguracionCliente);
+        tabbedSettings.addTab(settings_es_ES.getString("ConfiguracionCliente"), panelConfiguracionCliente);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -663,9 +686,9 @@ public class Settings extends javax.swing.JDialog {
 
         String conc = new String(password);
         if (!Validator.isPassword(conc)) {
-            String err = "No es una contraseña valida";
-            String wrr2 = "Consulte la ayuda para mas informacion";
-            String jkd = "Contraseña no valida";
+            String err = settings_es_ES.getString("NO ES UNA CONTRASEÑA VALIDA");
+            String wrr2 = settings_es_ES.getString("CONSULTE LA AYUDA PARA MAS INFORMACION");
+            String jkd = settings_es_ES.getString("CONTRASEÑA NO VALIDA");
 
             JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
             return;
@@ -683,22 +706,22 @@ public class Settings extends javax.swing.JDialog {
 
                     d.setServerConfiguration(co);
 
-                    String pp = "Configuracion Guardada.";
-                    String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
-                    String gf = "Exito";
+                    String pp = settings_es_ES.getString("CONFIGURACION GUARDADA.");
+                    String tt = settings_es_ES.getString("LOS CAMBIOS SURTIRAN EFECTO LA PROXIMA VEZ QUE INICIE EL PROGRAMA");
+                    String gf = settings_es_ES.getString("EXITO");
 
                     JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    String err = "No es una contraseña valida";
-                    String wrr2 = "Consulte la ayuda para mas informacion";
-                    String jkd = "Contraseña no valida";
+                    String err = settings_es_ES.getString("NO ES UNA CONTRASEÑA VALIDA");
+                    String wrr2 = settings_es_ES.getString("CONSULTE LA AYUDA PARA MAS INFORMACION");
+                    String jkd = settings_es_ES.getString("CONTRASEÑA NO VALIDA");
 
                     JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                String err = "No es una contraseña valida";
-                String wrr2 = "Consulte la ayuda para mas informacion";
-                String jkd = "Contraseña no valida";
+                String err = settings_es_ES.getString("NO ES UNA CONTRASEÑA VALIDA");
+                String wrr2 = settings_es_ES.getString("CONSULTE LA AYUDA PARA MAS INFORMACION");
+                String jkd = settings_es_ES.getString("CONTRASEÑA NO VALIDA");
 
                 JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
             }
@@ -716,9 +739,9 @@ public class Settings extends javax.swing.JDialog {
 
         String conc = new String(this.txtContraseniaMail.getPassword());
         if (!Validator.isPassword(conc)) {
-            String err = "No es una contraseña valida";
-            String wrr2 = "Consulte la ayuda para mas informacion";
-            String jkd = "Contraseña no valida";
+            String err = settings_es_ES.getString("NO ES UNA CONTRASEÑA VALIDA");
+            String wrr2 = settings_es_ES.getString("CONSULTE LA AYUDA PARA MAS INFORMACION");
+            String jkd = settings_es_ES.getString("CONTRASEÑA NO VALIDA");
 
             JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
             return;
@@ -745,14 +768,14 @@ public class Settings extends javax.swing.JDialog {
                 l.setMailProperties(mailUserName);
                 l.setMailContent(mail.getContent());
 
-                String pp = "Configuracion Guardada.";
-                String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
-                String gf = "Exito";
+                String pp = settings_es_ES.getString("CONFIGURACION GUARDADA.");
+                String tt = settings_es_ES.getString("LOS CAMBIOS SURTIRAN EFECTO LA PROXIMA VEZ QUE INICIE EL PROGRAMA");
+                String gf = settings_es_ES.getString("EXITO");
 
                 JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
             } else {
-                String l = "No es un mail valido";
-                String h = "Mail no valido. Solo compatible con Gmail.";
+                String l = settings_es_ES.getString("NO ES UN MAIL VALIDO");
+                String h = settings_es_ES.getString("MAIL NO VALIDO. SOLO COMPATIBLE CON GMAIL.");
 
                 JOptionPane.showMessageDialog(this, l, h, JOptionPane.ERROR_MESSAGE);
             }
@@ -779,9 +802,9 @@ public class Settings extends javax.swing.JDialog {
             Loader l = LoaderProvider.getInstance();
             l.setClientConfiguration(co);
 
-            String pp = "Configuracion Guardada.";
-            String tt = "Los cambios surtiran efecto la proxima vez que inicie el programa";
-            String gf = "Exito";
+            String pp = settings_es_ES.getString("CONFIGURACION GUARDADA.");
+            String tt = settings_es_ES.getString("LOS CAMBIOS SURTIRAN EFECTO LA PROXIMA VEZ QUE INICIE EL PROGRAMA");
+            String gf = settings_es_ES.getString("EXITO");
 
             JOptionPane.showMessageDialog(this, pp + "\n" + tt, gf, JOptionPane.INFORMATION_MESSAGE);
 
@@ -795,7 +818,7 @@ public class Settings extends javax.swing.JDialog {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFileChooser jfc = new JFileChooser();
 
-            jfc.setApproveButtonText("Seleccionar");
+            jfc.setApproveButtonText(settings_es_ES.getString("SELECCIONAR"));
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jfc.setMultiSelectionEnabled(false);
             int response = jfc.showOpenDialog(this);
@@ -814,7 +837,7 @@ public class Settings extends javax.swing.JDialog {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFileChooser jfc = new JFileChooser();
 
-            jfc.setApproveButtonText("Seleccionar");
+            jfc.setApproveButtonText(settings_es_ES.getString("SELECCIONAR"));
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jfc.setMultiSelectionEnabled(false);
             int response = jfc.showOpenDialog(this);
@@ -853,9 +876,9 @@ public class Settings extends javax.swing.JDialog {
 
             String conc = new String(password);
             if (!Validator.isPassword(conc)) {
-                String err = "No es una contraseña valida";
-                String wrr2 = "Consulte la ayuda para mas informacion";
-                String jkd = "Contraseña no valida";
+                String err = settings_es_ES.getString("NO ES UNA CONTRASEÑA VALIDA");
+                String wrr2 = settings_es_ES.getString("CONSULTE LA AYUDA PARA MAS INFORMACION");
+                String jkd = settings_es_ES.getString("CONTRASEÑA NO VALIDA");
 
                 JOptionPane.showMessageDialog(this, err + "\n" + wrr2, jkd, JOptionPane.ERROR_MESSAGE);
                 return;
@@ -867,8 +890,8 @@ public class Settings extends javax.swing.JDialog {
             RouterRetrieve r = new RouterRetrieve(co);
             r.testConnection();
 
-            String l = "Conexion a servidor FTP exitosa";
-            String p = "Prueba de conexion";
+            String l = settings_es_ES.getString("CONEXION A SERVIDOR FTP EXITOSA");
+            String p = settings_es_ES.getString("PRUEBA DE CONEXION");
             JOptionPane.showMessageDialog(this, l, p, JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SocketException ex) {
@@ -876,7 +899,7 @@ public class Settings extends javax.swing.JDialog {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (FTPConectionRefusedException ex) {
-            String q = "Prueba de conexion fallida";
+            String q = settings_es_ES.getString("PRUEBA DE CONEXION FALLIDA");
             JOptionPane.showMessageDialog(this, ex.getMessage(), q, JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnConexionActionPerformed

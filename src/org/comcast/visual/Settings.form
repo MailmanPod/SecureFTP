@@ -2,7 +2,9 @@
 
 <Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
-    <Property name="title" type="java.lang.String" value="Configuracion"/>
+    <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CONFIGURACION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -39,8 +41,10 @@
         <Container class="javax.swing.JPanel" name="panelConfiguracionServidor">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Configuracion Servidor">
-                <Property name="tabTitle" type="java.lang.String" value="Configuracion Servidor"/>
+              <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="settings_es_ES.getString(&quot;ConfiguracionServidor&quot;)" type="code"/>
+                </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -70,7 +74,8 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Servidor">
+                    <TitledBorder title="&lt;User Code&gt;">
+                      <Connection PropertyName="titleX" code="settings_es_ES.getString(&quot;Servidor&quot;)" type="code"/>
                       <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                       <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                     </TitledBorder>
@@ -150,22 +155,30 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblNombreServidor">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Nombre del Servidor"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="NOMBRE DEL SERVIDOR" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblNombreUsuario">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Nombre del Usuario"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="NOMBRE DEL USUARIO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblContraseniaUsuario">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Contrase&#xf1;a del Usuario"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CONTRASE&#xd1;A DEL USUARIO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblIPServidor">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="IP del Servidor FTP"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="IP DEL SERVIDOR FTP" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNombreServidor">
@@ -179,7 +192,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnGuardarServidor">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Guardar Configuracion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="GUARDAR CONFIGURACION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarServidorActionPerformed"/>
@@ -197,7 +212,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnConexion">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Comprobar Conexion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="COMPROBAR CONEXION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConexionActionPerformed"/>
@@ -210,8 +227,10 @@
         <Container class="javax.swing.JPanel" name="panelMail">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Configuracion Mail">
-                <Property name="tabTitle" type="java.lang.String" value="Configuracion Mail"/>
+              <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="settings_es_ES.getString(&quot;ConfiguracionMail&quot;)" type="code"/>
+                </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -254,7 +273,8 @@
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Propiedades del mail">
+                        <TitledBorder title="&lt;User Code&gt;">
+                          <Connection PropertyName="titleX" code="settings_es_ES.getString(&quot;PropiedadesMail&quot;)" type="code"/>
                           <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                           <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                         </TitledBorder>
@@ -322,17 +342,23 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="lblHost">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Host"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="HOST" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblTLS">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="TLS Habilitado"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="TLS HABILITADO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblPuerto">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Puerto"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="PUERTO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtHost">
@@ -352,12 +378,16 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblUsuario">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Usuario"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="USUARIO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblAutenticacion">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Autenticacion Requerida"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="AUTENTICACION REQUERIDA" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtUsuario">
@@ -376,7 +406,8 @@
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Contenido del Mail">
+                        <TitledBorder title="&lt;User Code&gt;">
+                          <Connection PropertyName="titleX" code="settings_es_ES.getString(&quot;ContenidoMail&quot;)" type="code"/>
                           <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                           <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                         </TitledBorder>
@@ -484,32 +515,44 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="lblFrom">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="De"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="DE" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblRecipient">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Para"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="PARA" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblSubject">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Asunto"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="ASUNTO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblProtocolo">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Protocolo"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="PROTOCOLO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblUsuarioMail">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Usuario"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="USUARIO" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblContraseniaMail">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Contrase&#xf1;a"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CONTRASE&#xd1;A" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtFrom">
@@ -532,7 +575,9 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblTextoContenido">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Contenido del Mail"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CONTENIDO DEL MAIL" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -552,7 +597,9 @@
                     </Container>
                     <Component class="javax.swing.JButton" name="btnGuardarMail">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Guardar Configuracion"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="GUARDAR CONFIGURACION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarMailActionPerformed"/>
@@ -572,8 +619,10 @@
         <Container class="javax.swing.JPanel" name="panelConfiguracionCliente">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Configuracion Cliente">
-                <Property name="tabTitle" type="java.lang.String" value="Configuracion Cliente"/>
+              <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="settings_es_ES.getString(&quot;ConfiguracionCliente&quot;)" type="code"/>
+                </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -603,7 +652,8 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Cliente">
+                    <TitledBorder title="&lt;User Code&gt;">
+                      <Connection PropertyName="titleX" code="settings_es_ES.getString(&quot;Cliente&quot;)" type="code"/>
                       <Font PropertyName="font" name="Segoe UI" size="11" style="0"/>
                       <Color PropertyName="color" blue="33" green="33" red="ff" type="rgb"/>
                     </TitledBorder>
@@ -706,37 +756,51 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblNombreCliente">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Nombre del Cliente"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="NOMBRE DEL CLIENTE" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblApellidoCliente">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Apellido del Cliente"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="APELLIDO DEL CLIENTE" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblOrganizacion">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Organizacion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="ORGANIZACION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblLocale">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Idioma del la Interfaz"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="IDIOMA DEL LA INTERFAZ" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblDescarga">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Carpeta de Descarga"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CARPETA DE DESCARGA" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblPublico">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Carpeta de Almacenamiento de Clave Publica"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CARPETA DE ALMACENAMIENTO DE CLAVE PUBLICA" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblPrivado">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Carpeta de Almacenamiento de Clave Privada"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="CARPETA DE ALMACENAMIENTO DE CLAVE PRIVADA" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNombreCliente">
@@ -788,7 +852,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnGuardarCliente">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Guardar Configuracion"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="org/comcast/locale/Settings_es_ES.properties" key="GUARDAR CONFIGURACION" replaceFormat="settings_es_ES.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarClienteActionPerformed"/>

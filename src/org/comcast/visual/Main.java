@@ -742,12 +742,11 @@ public class Main extends javax.swing.JFrame {
         menuOpciones.setText(main_es_ES.getString("OPCIONES")); // NOI18N
 
         menuItemAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/comcast/locale/Main_es_ES"); // NOI18N
-        menuItemAyuda.setText(bundle.getString("MenuAyuda")); // NOI18N
+        menuItemAyuda.setText(main_es_ES.getString("MenuAyuda"));
         menuOpciones.add(menuItemAyuda);
 
         menuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        menuItemSalir.setText(bundle.getString("MenuSalir")); // NOI18N
+        menuItemSalir.setText(main_es_ES.getString("MenuSalir"));
         menuOpciones.add(menuItemSalir);
 
         jMenuBar1.add(menuOpciones);

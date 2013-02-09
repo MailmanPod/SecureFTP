@@ -747,6 +747,11 @@ public class Main extends javax.swing.JFrame {
 
         menuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         menuItemSalir.setText(main_es_ES.getString("MenuSalir"));
+        menuItemSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSalirActionPerformed(evt);
+            }
+        });
         menuOpciones.add(menuItemSalir);
 
         jMenuBar1.add(menuOpciones);
@@ -964,13 +969,13 @@ public class Main extends javax.swing.JFrame {
                 toTransefer[i] = valueAt;
                 i++;
             }
-            
-            for(Message aux : toTransefer){
+
+            for (Message aux : toTransefer) {
                 buffer.append(aux.getLocalFile().getName()).append("\n");
             }
-            
+
             this.areaSeleccion.setText(buffer.toString());
-            
+
             settings.remove("selectedFiles");
             settings.put("selectedFiles", toTransefer);
         } else {
@@ -1034,13 +1039,13 @@ public class Main extends javax.swing.JFrame {
                 toTransefer[i] = valueAt;
                 i++;
             }
-            
-            for(Message aux : toTransefer){
+
+            for (Message aux : toTransefer) {
                 buffer.append(aux.getLocalFile().getName()).append("\n");
             }
-            
+
             this.areaSeleccionRemota.setText(buffer.toString());
-            
+
             download.remove("selectedFiles");
             download.put("selectedFiles", toTransefer);
         } else {
@@ -1283,26 +1288,30 @@ public class Main extends javax.swing.JFrame {
         download.remove("selectedFiles");
         this.areaSeleccionRemota.setText("");
     }//GEN-LAST:event_btnBorrarSeleccionRemotaActionPerformed
+
+    private void menuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSalirActionPerformed
+        formWindowClosing(null);
+    }//GEN-LAST:event_menuItemSalirActionPerformed
     /**
      * Sun property pointing the main class and its arguments. Might not be
      * defined on non Hotspot VM implementations.
      */
     public static final String SUN_JAVA_COMMAND = "sun.java.command";
     private ResourceBundle main_es_ES;
-    
-    private void locale(){
+
+    private void locale() {
         try {
             Client c = LoaderProvider.getInstance().getClientConfiguration();
 
             switch (c.getLocalization()) {
                 case "Español":
-                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_es_ES");
+                    main_es_ES = ResourceBundle.getBundle("org/comcast/locale/Main_es_ES");
                     break;
                 case "Ingles":
-                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
+                    main_es_ES = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
                     break;
                 default:
-                    main_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
+                    main_es_ES = ResourceBundle.getBundle("org/comcast/locale/Main_en_US");
                     break;
             }
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {

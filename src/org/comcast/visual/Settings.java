@@ -36,8 +36,8 @@ import org.xml.sax.SAXException;
  * @author Quality of Service
  */
 public class Settings extends javax.swing.JDialog {
-    private ResourceBundle settings_es_ES;
 
+    private ResourceBundle settings_es_ES;
     private Loader loader = LoaderProvider.getInstance();
     private Client c;
     private ServerConfig config;
@@ -55,26 +55,26 @@ public class Settings extends javax.swing.JDialog {
         initAll();
     }
 
-    private void locale(){
+    private void locale() {
         try {
-            Client c = LoaderProvider.getInstance().getClientConfiguration();
+            Client cc = LoaderProvider.getInstance().getClientConfiguration();
 
-            switch (c.getLocalization()) {
+            switch (cc.getLocalization()) {
                 case "Español":
-                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_es_ES");
+                    settings_es_ES = ResourceBundle.getBundle("org/comcast/locale/Settings_es_ES");
                     break;
                 case "Ingles":
-                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
+                    settings_es_ES = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
                     break;
                 default:
-                    settings_es_ES  = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
+                    settings_es_ES = ResourceBundle.getBundle("org/comcast/locale/Settings_en_US");
                     break;
             }
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void centrarPantalla() {
         Dimension tamFrame = this.getSize();//para obtener las dimensiones del frame
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();//para obtener el tamaño de la pantalla

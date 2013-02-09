@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +22,8 @@ import javax.swing.tree.TreeNode;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.comcast.builder.Client;
+import org.comcast.exceptions.InformationRequiredException;
 import org.comcast.logic.ServerConfig;
 import org.comcast.router.Message;
 import org.comcast.strategy.FileListing;
@@ -39,6 +42,7 @@ import org.xml.sax.SAXException;
  */
 public class RemoteTree extends javax.swing.JDialog {
 
+    private ResourceBundle remoteTree_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteTree_es_ES");
     private Loader loader;
     private ServerConfig config;
     private DefaultTreeModel model;
@@ -54,6 +58,7 @@ public class RemoteTree extends javax.swing.JDialog {
      * Creates new form RemoteTree
      */
     public RemoteTree(JLabel lbl, JTable r, JComboBox sort, JRadioButton menor, JRadioButton mayor) {
+        locale();
         initComponents();
         setImageIconFrame();
         initElements();
@@ -63,6 +68,26 @@ public class RemoteTree extends javax.swing.JDialog {
         this.boxSort = sort;
         this.radioMenor = menor;
         this.radioMayor = mayor;
+    }
+
+    private void locale() {
+        try {
+            Client cc = LoaderProvider.getInstance().getClientConfiguration();
+
+            switch (cc.getLocalization()) {
+                case "Español":
+                    remoteTree_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteTree_es_ES");
+                    break;
+                case "Ingles":
+                    remoteTree_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteTree_en_US");
+                    break;
+                default:
+                    remoteTree_es_ES = ResourceBundle.getBundle("org/comcast/locale/RemoteTree_en_US");
+                    break;
+            }
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException | URISyntaxException | InformationRequiredException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void centrarPantalla() {
@@ -104,7 +129,7 @@ public class RemoteTree extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         treeRemote = new javax.swing.JTree();
 
-        setTitle("Carpetas Remotas");
+        setTitle(remoteTree_es_ES.getString("CARPETAS REMOTAS")); // NOI18N
         setAlwaysOnTop(true);
         setModalExclusionType(null);
         setResizable(false);
@@ -195,8 +220,8 @@ public class RemoteTree extends javax.swing.JDialog {
     }
 
     private void initRemoteTable(String pathName) {
-        String o = "Cantidad de Archivos: ";
-        String p = "Tamaño total: ";
+        String o = remoteTree_es_ES.getString("CANTIDAD DE ARCHIVOS: ");
+        String p = remoteTree_es_ES.getString("TAMAÑO TOTAL: ");
 
         try {
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -262,8 +287,8 @@ public class RemoteTree extends javax.swing.JDialog {
 
     private void treeRemoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeRemoteMouseClicked
 
-        String w = "Error en la conexion al servidor FTP.";
-        String l = "Por favor revise su configuracion";
+        String w = remoteTree_es_ES.getString("ERROR EN LA CONEXION AL SERVIDOR FTP.");
+        String l = remoteTree_es_ES.getString("POR FAVOR REVISE SU CONFIGURACION");
         try {
             if (evt.getButton() == 1 && evt.getClickCount() == 2) {
                 pathCalculator();

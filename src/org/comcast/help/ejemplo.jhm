@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<map version="1.0">
+	<!-- Paginas Web -->
+	<mapID target="presentacion"   url="Presentacion.html"/>
+	<mapID target="comentarios"   	 url="Comentarios.html"/>
+	<mapID target="consid"  	 url="Consid.html"/>
+	
+	<!-- Iconos a utilizar en las distintas ventanas del sistema de ayuda -->
+	<mapID target="FolderClosed"	 url="images/FolderClosed.gif"/>
+	<mapID target="FolderOpened"	 url="images/FolderOpened.gif"/>
+	<mapID target="ItemIco"		 url="images/book.png"/>
+	<mapID target="ContentIco"	 url="images/bookBlue.png"/>
+	<!--<mapID target="SearchIco"	 url="images/view.png"/>-->
+	<mapID target="PrintIco"	 url="images/printer.png"/>
+	<mapID target="PrintSetupIco"	 url="images/printersetup.png"/>
+	<mapID target="BackwardIco"	 url="images/Previous.gif"/>
+	<mapID target="ForwardIco"	 url="images/Next.gif"/>
+</map>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+.caratula {
+	font-family: "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Semilight";
+	font-size: xx-large;
+	text-align: center;
+	display: block;
+	color: #900;
+}
+.contenido {
+	font-family: "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Semilight";
+	font-size: large;
+	color: #000;
+	text-align: left;
+	display: block;
+}
+.remarcado {
+	font-family: "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Semilight";
+	font-size: large;
+	font-style: normal;
+	color: #009;
+	text-align: left;
+	display: block;
+}
+.resaltado {
+	font-family: "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Semilight";
+	font-size: large;
+	font-style: italic;
+	color: #009;
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body class="caratula">
+<p>Comentarios Sobre el Trabajo</p>
+<dl>
+  <dt class="contenido">El programa implementa los siguientes patrones de diseño: &nbsp;</dt>
+  <dd class="contenido"><span class="resaltado"><span class="resaltado">Patron Singleton.</span></span></dd>
+  <dd class="contenido"><span class="resaltado"><span class="resaltado">Patron Router (aprox).</span></span></dd>
+  <dd class="contenido"><span class="resaltado"><span class="resaltado">Patron Secure Proxy.</span></span></dd>
+  <dd class="contenido"><span class="resaltado"><span class="resaltado">Patron Builder.</span></span></dd>
+  <dd class="contenido"><span class="resaltado"><span class="resaltado">Patron Strategy.</span></span><span class="resaltado"></span></dd>
+  <dt>&nbsp;</dt>
+</dl>
+<p class="contenido">Para el manejo de la planificacion de las tareas se utiliza la libreria <span class="resaltado">Quartz.</span></p>
+<p class="contenido">El programa utiliza la libreria <span class="resaltado">TIKA</span> para determinar el tipo de archivo <span class="resaltado">MIME.</span></p>
+<p class="contenido">Sobre la encriptacion, su utiliza la <span class="resaltado">tecnica simetrica (AES)</span> para encriptar todo el contenido del archivo, y luego se utiliza la <span class="resaltado">tecnica asimetrica (RSA 1024)</span> para realizar un <span class="resaltado">Wrapped</span> sobre la llave simetrica (AES).</p>
+<p class="contenido">El manejo de xml, lo realizan los modulos <span class="resaltado">DOM</span> del paquete de JAVA.</p>
+<p class="contenido">Para crear los <span class="resaltado">wizards</span> que se encargan de subir y descargar archivos, se utilizo la libreria wizard desarrollada por JAVA.</p>
+<p class="contenido">Apache nos proveyo de las dependencias <span class="resaltado">commons.net y commons.codec y commons.io</span>, que se utilizaron para el manejo de la conexion hacia el servidor ftp y para realizar formateo de los datos a presentar al usuario.</p>
+<p class="contenido">La dependencia <span class="resaltado">smtp</span> es la encargada de realizar las transacciones hacia el smtp de Gmail.</p>
+
+</body>
+</html>

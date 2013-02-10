@@ -23,10 +23,14 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.SocketException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -81,6 +85,7 @@ public class Main extends javax.swing.JFrame {
         centrarPantalla();
         initObjects();
         initElements();
+        helpViewer();
 //        connection();
     }
 
@@ -158,6 +163,19 @@ public class Main extends javax.swing.JFrame {
 
             Settings s = new Settings();
             s.setVisible(true);
+        }
+    }
+
+    private void helpViewer() {
+        try {
+            URL hsURL = this.getClass().getResource("../help/ejemplo.hs");
+            HelpSet helpset = new HelpSet(null, hsURL);
+            HelpSet.Presentation hsp = helpset.getPresentation("MainWin");
+            HelpBroker help_browser = helpset.createHelpBroker();
+            help_browser.setHelpSetPresentation(hsp);
+            help_browser.enableHelpOnButton(menuItemAyuda, "presentacion", helpset);
+        } catch (HelpSetException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage() + "\n\n" + ex.getStackTrace(), "Help Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

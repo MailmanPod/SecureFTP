@@ -1,9 +1,5 @@
 package org.comcast.router;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.SocketException;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -19,6 +15,11 @@ import org.comcast.structures.LocalIterator;
 import org.comcast.structures.SimpleList;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.SocketException;
 
 /**
  * Clase que se encarga de realizar la recuperacion de los archivos, con el fin
@@ -58,7 +59,7 @@ public class RouterRetrieve {
      * Este Metodo recupera el nombre de todos los directorios remotos qu se
      * encuentran bajo un directorio remoto.
      *
-     * @param dir Con el directorio remoto.
+     * @param path Con el directorio remoto.
      * @return Listado de todos los nombres de los directorios.
      * @throws SocketException Si hay error de conexion con el servidor.
      * @throws IOException Por errores de entrada o salida.

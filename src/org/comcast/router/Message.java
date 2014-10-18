@@ -1,9 +1,10 @@
 package org.comcast.router;
 
-import java.io.File;
-import java.io.Serializable;
 import org.apache.commons.net.ftp.FTPFile;
 import org.comcast.exceptions.NullObjectParameterException;
+
+import java.io.File;
+import java.io.Serializable;
 
 /**
  * Esta clase representa un paquete que contiene el archivo a bajar o a subir.
